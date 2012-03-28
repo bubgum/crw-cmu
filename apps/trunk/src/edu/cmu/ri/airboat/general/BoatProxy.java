@@ -384,7 +384,11 @@ public class BoatProxy extends Thread {
     public Position getCurrWaypoint() {
         return currWaypoint;
     }
-
+    
+    public void asyncGetWaypointStatus(FunctionObserver<WaypointState> fo) {
+        _server.getWaypointStatus(fo);
+    }
+    
     public double getFuelLevel() {
         return fuelLevel;
     }

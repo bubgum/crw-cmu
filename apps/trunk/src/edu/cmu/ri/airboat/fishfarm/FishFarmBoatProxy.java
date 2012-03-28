@@ -6,12 +6,12 @@ package edu.cmu.ri.airboat.fishfarm;
 
 import edu.cmu.ri.airboat.general.BoatProxy;
 import edu.cmu.ri.crw.AsyncVehicleServer;
+import edu.cmu.ri.crw.FunctionObserver.FunctionError;
 import edu.cmu.ri.crw.ImageListener;
 import edu.cmu.ri.crw.SensorListener;
 import edu.cmu.ri.crw.VehicleServer.WaypointState;
 import edu.cmu.ri.crw.WaypointListener;
 import edu.cmu.ri.crw.data.SensorData;
-import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.coords.UTMCoord;
@@ -22,8 +22,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import robotutils.Quaternion;
 
@@ -161,13 +159,28 @@ public class FishFarmBoatProxy {
                 } catch (InterruptedException e) {
                 }               
                 if (running && isAutonomous) {
+                    
+                    edu.cmu.ri.crw.FunctionObserver<WaypointState> fo = new edu.cmu.ri.crw.FunctionObserver<WaypointState>() {
+
+                        public void completed(WaypointState v) {
+                            if (v == WaypointState.DONE)
+                                actAutonomous();
+                        }
+
+                        public void failed(FunctionError fe) {
+                            System.out.println("WHAT TO DO WHEN WAYPOINT STATUS FAILS? (FishFarmBoatProxy)");
+                        }
+                        
+                    };
+                    
+                    /*
                     long currTime = System.currentTimeMillis();
                     // Abhinav, you might want to play with this number which is how long between waypoints before it panics and replans
                     if (currTime - lastWaypointTime > timeoutTime) {
                         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TIMED OUT");
                         actAutonomous();
                     } 
-                    
+                    */
                     
                 } else {
                     synchronized (running) {
