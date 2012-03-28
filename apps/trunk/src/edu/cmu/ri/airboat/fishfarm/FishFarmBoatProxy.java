@@ -22,6 +22,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import robotutils.Quaternion;
 
@@ -67,6 +69,9 @@ public class FishFarmBoatProxy {
             }
         });
 
+        // for (int i = 0; i < 3; i++) {
+            
+            
         proxy.addSensorListener(0, new SensorListener() {
 
             HashMap<String, Object> seen = new HashMap<String, Object>();
@@ -146,7 +151,7 @@ public class FishFarmBoatProxy {
     
     class WaypointWatchDog extends Thread {
 
-        boolean running = false;
+        Boolean running = false;
         public long lastWaypointTime = 0L;
 
         public void run() {
@@ -162,8 +167,17 @@ public class FishFarmBoatProxy {
                         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TIMED OUT");
                         actAutonomous();
                     } 
-                }
                     
+                    
+                } else {
+                    synchronized (running) {
+                        try {
+                            running.wait();
+                        } catch (InterruptedException ex) {
+                            System.out.println("Watchdog woken");
+                        }
+                    }
+                }                    
             }
         }
 
@@ -172,6 +186,9 @@ public class FishFarmBoatProxy {
                 super.start();
             }
             running = true;
+            synchronized (running) {
+                running.notify();
+            } 
         }
 
         public void safeStop() {

@@ -43,7 +43,7 @@ public class LocationInfo {
         mean = tot / count;
         // System.out.println("Count now " + count + " and mean " + mean);
 
-        System.out.print(lowerBound + " - " + upperBound + " " + o.getValue() + " " + o.getGradient());
+        // ABHINAV COMMENT IN System.out.print(lowerBound + " - " + upperBound + " " + o.getValue() + " " + o.getGradient());
         if (o.getGradient() > 0.0) {
             if (o.getValue() > lowerBound) {
                 lowerBound = o.getValue();
@@ -66,7 +66,7 @@ public class LocationInfo {
             upperBound = o.getValue();
             lowerBound = o.getValue();
         }*/
-        System.out.println(" " + lowerBound + " " + upperBound);
+        // ABHINAV COMMENT IN System.out.println(" " + lowerBound + " " + upperBound);
         // @todo Notice we do nothing with 0.0 gradient, which could help a lot
     }
 
@@ -101,12 +101,17 @@ public class LocationInfo {
     public double valueOfMoreObservations() {
         double d = 0.0;
         double s = getStdDev();
+        
         if (count == 0 || count == 1) {
             d = Double.MAX_VALUE;
         } else {
             d = (s * s) * Math.pow(0.99, count);
         }
         return d;
+    }
+    
+    public double interpolatedValueOfMoreObservations() {
+        return 100.0 / interpolationContributions;
     }
 
     public double getBoundsMidpoint() {

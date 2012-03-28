@@ -20,6 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -269,7 +270,7 @@ public class DataRepository {
 
         double ret = mf.getGradient();
 
-        System.out.println("Gradient: " + key + " = " + ret + " for " + filterHash.get(key).getDataAsString());
+        // ABHINAV COMMENT IN System.out.println("Gradient: " + key + " = " + ret + " for " + filterHash.get(key).getDataAsString());
 
         return ret;
 
@@ -289,7 +290,7 @@ public class DataRepository {
             }
         }
 
-        public void addValue(double v) {
+        public synchronized void addValue(double v) {
 
             obsToDate++;
 
@@ -306,6 +307,8 @@ public class DataRepository {
                 windows.add(new ArrayList<Double>());
             }
 
+            // ABHINAV COMMENT IN 
+            /*
             System.out.print("MedianFilterOutput: ");
             for (int i = 0; i < windows.size(); i++) {
                 if (windows.get(i).size() > 0.0) {
@@ -313,6 +316,8 @@ public class DataRepository {
                 }
             }
             System.out.println("");
+            * 
+            */
         }
 
         private void _add(ArrayList<Double> window, double v) {
@@ -368,7 +373,7 @@ public class DataRepository {
             double beta0 = avgY - beta1 * avgX;
 
             // print results
-            System.out.println("y   = " + beta1 + " * x + " + beta0);
+            // ABHINAV COMMENT IN  System.out.println("y   = " + beta1 + " * x + " + beta0);
 
 
             return beta1;
@@ -441,7 +446,7 @@ public class DataRepository {
         int bx = toXIndex(o.getWaypoint()[0]);
         int by = toYIndex(o.getWaypoint()[1]);
 
-        System.out.println("Obs\t" + o.variable + "\t" + index + "\t" + bx + "\t" + by + "\t" + o.waypoint[0] + "\t" + o.waypoint[1] + "\t" + o.getValue() + "\t" + o.getGradient() + "\t" + System.currentTimeMillis());
+        // ABHINAV COMMENT IN System.out.println("Obs\t" + o.variable + "\t" + index + "\t" + bx + "\t" + by + "\t" + o.waypoint[0] + "\t" + o.waypoint[1] + "\t" + o.getValue() + "\t" + o.getGradient() + "\t" + System.currentTimeMillis());
 
 
         try {
@@ -449,7 +454,7 @@ public class DataRepository {
                 li[bx][by] = new LocationInfo(lowerFilterBound, upperFilterBound);
             }
 
-            System.out.print("Bounds for\t" + bx + "\t" + by + "\t");
+            // ABHINAV COMMENT IN System.out.print("Bounds for\t" + bx + "\t" + by + "\t");
             li[bx][by].addObs(o);
 
             // System.out.println("Added obs to " + bx + " " + by + " mean " + li[bx][by].getMean() + " std. dev. " + li[bx][by].getStdDev() + " count " + li[bx][by].getCount());
@@ -549,7 +554,7 @@ public class DataRepository {
                 return getMaxUncertaintyPlan();
 
             case Contour:
-                return getContourFocusPlan();
+                return getContourFocusPlan(autonomousProxies.size(), autonomousProxies.indexOf(proxy));
 
             case Bounded:
                 return getBoundedPlan(proxy);
@@ -577,7 +582,7 @@ public class DataRepository {
 
     private ArrayList<Position> getBoundedPlan(FishFarmBoatProxy proxy) {
 
-        System.out.println("CALLED!!!");
+        System.out.println("Bounded planning called!!!");
 
         ArrayList<Position> p = new ArrayList<Position>();
 
@@ -632,7 +637,7 @@ public class DataRepository {
 
     private ArrayList<Position> getLawnmowerPlan(int count, int index) {
 
-        System.out.println("Index is " + index);
+        System.out.println("Lawnmower planning for " + index + "th robot");
 
         int yPer = (int) Math.max(2.0, Math.ceil((double) (divisions - 1) / (double) count));
 
@@ -655,9 +660,13 @@ public class DataRepository {
         return path;
     }
 
-    private ArrayList<Position> getContourFocusPlan() {
+    HashMap<Integer, Point> contourAllocations = new HashMap<Integer, Point>();
+    
+    private synchronized ArrayList<Position> getContourFocusPlan(int count, int index) {
         ArrayList<Position> p = new ArrayList<Position>();
 
+        contourAllocations.remove(index);
+        
         LocationInfo[][] data = locInfo.get(indexOfInterest);
         if (data == null) {
             // No data, select random point
@@ -667,17 +676,33 @@ public class DataRepository {
             int bestI = -1, bestJ = -1;
             for (int i = 0; i < data.length; i++) {
                 for (int j = 0; j < data[0].length; j++) {
-                    double pureVal = data[i][j].valueOfMoreObservations();
+                    double pureVal = data[i][j].interpolatedValueOfMoreObservations();
+                    
                     // Want this to be 1.0 when same, 0 when very different
-                    double contourDist = Math.abs(contourValue - data[i][j].interpolationValue) / contourValue;
+                    double contourDist = Math.exp(-Math.abs(contourValue - data[i][j].interpolationValue))/Math.E;                                                            
+                    
+                    boolean alreadyAllocated = false;
+                    for (Point point : contourAllocations.values()) {
+                        if (point.x == i && point.y == j) {
+                            System.out.println("Already allocated");
+                            alreadyAllocated = true;
+                        }
+                    }
+                    
+                    if (index == 0) {
+                        System.out.println("Contour dist " + pureVal + " " + contourValue + " " + data[i][j].interpolationValue + " " + contourDist);
+                    }
+                    
                     double v = pureVal * contourDist;
-                    if (v > best) {
+                    if (!alreadyAllocated && v > best) {
                         best = v;
                         bestI = i;
                         bestJ = j;
                     }
                 }
             }
+            
+            contourAllocations.put(index, new Point(bestI, bestJ));
             p.add(indexToPosition(bestI, bestJ));
         }
 
