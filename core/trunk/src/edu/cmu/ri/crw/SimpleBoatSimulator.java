@@ -212,7 +212,7 @@ public class SimpleBoatSimulator extends AbstractVehicleServer {
             if (_waypoints.length > 0) {
                 return _isAutonomous.get() ? WaypointState.PAUSED : WaypointState.GOING;
             } else {
-                return WaypointState.OFF;
+                return WaypointState.DONE;
             }
         }
     }
