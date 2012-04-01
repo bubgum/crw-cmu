@@ -57,18 +57,30 @@ public enum AirboatController {
 				server.startWaypoints(queuedWaypoints,
 						AirboatController.POINT_AND_SHOOT.toString());
 				
-			} else if (Math.abs(angle) > 1.0) {
+			} else if (Math.abs(angle) <= 0.78) { /*split into 45 deg increments */
 
 				// If we are facing away, turn around first
-				twist.dx(Math.min(distanceSq / 10.0, 2.0));
-				twist.drz(Math.max(Math.min(angle / 0.5, 1.0), -1.0));
+				twist.dx(Math.min(distanceSq / 10.0, 3.0)); /* Min speed of 1 m/s and Max speed of 3 m/s and max speed of whatever its capped at*/
+				twist.drz(Math.max(Math.min(angle/0.5, 0.78), -0.78)); //Ensures min turn rate (apart from 0) is increased by a factor of 2 capped off at 0.78
 				
-			} else {
+			}else if ((Math.abs(angle) > 0.78) && (Math.abs(angle)<= 1.56)) {/*45-90 deg; sharper turn slower thrust*/
+
+				// If we are facing away, turn around first
+				twist.dx(Math.min(distanceSq / 15.0, 1.5));/* Min speed of 0.67 m/s and Max speed of 1.5 m/s and max speed of whatever its capped at*/
+				twist.drz(Math.max(Math.min(angle, 1.2), -1.2));
+				
+			}else if ((Math.abs(angle) > 1.56)) {/*90-180 deg; sharp turn slow thrust*/
+
+				// If we are facing away, turn around first
+				twist.dx(Math.min(distanceSq / 20.0, 1.0));/* Min speed of 0.5 m/s and Max speed of 1.5 m/s and max speed of whatever its capped at*/
+				twist.drz(Math.max(Math.min(angle, 1.56), -1.56)); /*Max turn angle of 90 deg */	
+			}  /*
+			else {
 
 				// If we are far away, drive forward and turn
 				twist.dx(Math.min(distanceSq / 10.0, 2.0));
 				twist.drz(Math.max(Math.min(angle / 0.5, 1.0), -1.0));
-			} 
+			} */
 
 			// Set the desired velocity
 			server.setVelocity(twist);

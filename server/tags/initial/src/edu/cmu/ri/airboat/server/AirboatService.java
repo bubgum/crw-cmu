@@ -347,7 +347,7 @@ public class AirboatService extends Service {
 	 * Called when there are no longer any consumers of the service and 
 	 * stopService has been called.
 	 * 
-	 * This is where the RPC server and update loops are killed, the sensors 
+	 * This is where the RPC and update loops are killed, the sensors 
 	 * are unregistered, and the current vehicle implementation is unhooked 
 	 * from all of its callbacks and discarded (allowing safe spawning of a new
 	 * implementation when the service is restarted).
