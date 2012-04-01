@@ -21,6 +21,8 @@ import edu.cmu.ri.crw.CrwSecurityManager;
 import gov.nasa.worldwind.geom.LatLon;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.security.AccessControlException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -104,6 +106,18 @@ public class FishFarmF extends javax.swing.JFrame {
         indexC.setModel(indexCDataModel);
         
         dm.repo.setLatestTP(latestTP);
+        
+        dataViewP.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                if (me.isShiftDown() && proxyC.getSelectedItem() != null) {                    
+                    gov.nasa.worldwind.geom.Position pos = dm.repo.getPositionFor((double)me.getPoint().x/dataViewP.getWidth(), 1.0 - ((double)me.getPoint().y/dataViewP.getHeight()));
+                    ((FishFarmBoatProxy)proxyC.getSelectedItem()).setWaypoint(pos);
+                }
+            }
+            
+        });
     }
 
     /** This method is called from within the constructor to

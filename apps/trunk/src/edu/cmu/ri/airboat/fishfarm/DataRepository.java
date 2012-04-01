@@ -96,6 +96,18 @@ public class DataRepository {
         setds();
     }
 
+    Position getPositionFor(double dx, double dy) {
+        
+        double lat = mins.latitude.degrees + (dy*(maxs.latitude.degrees - mins.latitude.degrees));
+        double lon = mins.longitude.degrees + (dx*(maxs.longitude.degrees - mins.longitude.degrees));
+        
+        Position p = new Position(LatLon.fromDegrees(lat, lon), 0.0);
+        
+        System.out.println("Translated " + dx + " " + dy + " to " + p);
+        
+        return p;        
+    }
+
     public void setImgType(ImageType imgType) {
         this.imgType = imgType;
     }
@@ -233,12 +245,11 @@ public class DataRepository {
     public static void main(String[] argv) {
         try {
             /*
-            DataRepository repo = new DataRepository(LatLon.ZERO, LatLon.fromDegrees(2.0, 2.0));
-            Random rand = new Random();
-            for (int i = 0; i < 40; i++) {
-            double d = repo.valueToGradient("test", i * rand.nextDouble());
-            System.out.println("Gradient: " + d);
-            }
+             * DataRepository repo = new DataRepository(LatLon.ZERO,
+             * LatLon.fromDegrees(2.0, 2.0)); Random rand = new Random(); for
+             * (int i = 0; i < 40; i++) { double d =
+             * repo.valueToGradient("test", i * rand.nextDouble());
+             * System.out.println("Gradient: " + d); }
              */
             DataRepository repo = new DataRepository(LatLon.ZERO, LatLon.fromDegrees(2.0, 2.0));
             FileReader fr = new FileReader("/tmp/data");
@@ -309,15 +320,12 @@ public class DataRepository {
 
             // ABHINAV COMMENT IN 
             /*
-            System.out.print("MedianFilterOutput: ");
-            for (int i = 0; i < windows.size(); i++) {
-                if (windows.get(i).size() > 0.0) {
-                    System.out.print(" " + median(windows.get(i)));
-                }
-            }
-            System.out.println("");
-            * 
-            */
+             * System.out.print("MedianFilterOutput: "); for (int i = 0; i <
+             * windows.size(); i++) { if (windows.get(i).size() > 0.0) {
+             * System.out.print(" " + median(windows.get(i))); } }
+             * System.out.println("");
+             *
+             */
         }
 
         private void _add(ArrayList<Double> window, double v) {
@@ -345,8 +353,10 @@ public class DataRepository {
         }
 
         /**
-         * "Stolen" from http://introcs.cs.princeton.edu/java/97data/LinearRegression.java.html
-         * @return 
+         * "Stolen" from
+         * http://introcs.cs.princeton.edu/java/97data/LinearRegression.java.html
+         *
+         * @return
          */
         private double _getGradient() {
 
@@ -469,6 +479,17 @@ public class DataRepository {
                     }
                     li[i][j].interpolationContributions += contrib;
                     li[i][j].interpolationValue += (o.value * contrib);
+
+                    /*
+                     * if (i == 0 && j == 0 && index == 0)
+                     * System.out.println("Added : " + contrib + " and " +
+                     * (o.value * contrib) + " now " +
+                     * li[i][j].interpolationContributions + " and " +
+                     * li[i][j].interpolationValue + " for " +
+                     * (li[i][j].interpolationValue /
+                     * li[i][j].interpolationContributions));
+                     *
+                     */
                 }
             }
 
@@ -501,7 +522,7 @@ public class DataRepository {
     }
 
     /*
-     *  Autonomous sensing algorithm stuff
+     * Autonomous sensing algorithm stuff
      */
     public enum AutonomyAlgorithm {
 
@@ -551,7 +572,7 @@ public class DataRepository {
                 return getLawnmowerPlan(autonomousProxies.size(), autonomousProxies.indexOf(proxy));
 
             case Uncertainty:
-                return getMaxUncertaintyPlan();
+                return getMaxUncertaintyPlan(autonomousProxies.size(), autonomousProxies.indexOf(proxy));
 
             case Contour:
                 return getContourFocusPlan(autonomousProxies.size(), autonomousProxies.indexOf(proxy));
@@ -659,14 +680,13 @@ public class DataRepository {
 
         return path;
     }
-
     HashMap<Integer, Point> contourAllocations = new HashMap<Integer, Point>();
-    
+
     private synchronized ArrayList<Position> getContourFocusPlan(int count, int index) {
         ArrayList<Position> p = new ArrayList<Position>();
 
         contourAllocations.remove(index);
-        
+
         LocationInfo[][] data = locInfo.get(indexOfInterest);
         if (data == null) {
             // No data, select random point
@@ -677,10 +697,10 @@ public class DataRepository {
             for (int i = 0; i < data.length; i++) {
                 for (int j = 0; j < data[0].length; j++) {
                     double pureVal = data[i][j].interpolatedValueOfMoreObservations();
-                    
+
                     // Want this to be 1.0 when same, 0 when very different
-                    double contourDist = Math.exp(-Math.abs(contourValue - data[i][j].interpolationValue))/Math.E;                                                            
-                    
+                    double contourDist = Math.exp(-Math.abs(contourValue - data[i][j].interpolationValue)) / Math.E;
+
                     boolean alreadyAllocated = false;
                     for (Point point : contourAllocations.values()) {
                         if (point.x == i && point.y == j) {
@@ -688,11 +708,14 @@ public class DataRepository {
                             alreadyAllocated = true;
                         }
                     }
-                    
-                    if (index == 0) {
-                        System.out.println("Contour dist " + pureVal + " " + contourValue + " " + data[i][j].interpolationValue + " " + contourDist);
-                    }
-                    
+
+                    /*
+                     * if (index == 0) { System.out.println("Contour dist " +
+                     * pureVal + " " + contourValue + " " +
+                     * data[i][j].interpolationValue + " " + contourDist); }
+                     *
+                     */
+
                     double v = pureVal * contourDist;
                     if (!alreadyAllocated && v > best) {
                         best = v;
@@ -701,7 +724,7 @@ public class DataRepository {
                     }
                 }
             }
-            
+
             contourAllocations.put(index, new Point(bestI, bestJ));
             p.add(indexToPosition(bestI, bestJ));
         }
@@ -709,9 +732,12 @@ public class DataRepository {
         return p;
     }
 
-    private ArrayList<Position> getMaxUncertaintyPlan() {
+    HashMap<Integer, Point> uncertaintyAllocations = new HashMap<Integer, Point>();
+    private ArrayList<Position> getMaxUncertaintyPlan(int count, int index) {
         ArrayList<Position> p = new ArrayList<Position>();
 
+        uncertaintyAllocations.remove(index);
+        
         LocationInfo[][] data = locInfo.get(indexOfInterest);
         if (data == null) {
             // No data, select random point
@@ -722,13 +748,23 @@ public class DataRepository {
             for (int i = 0; i < data.length; i++) {
                 for (int j = 0; j < data[0].length; j++) {
                     double v = data[i][j].valueOfMoreObservations();
-                    if (v > best) {
+                    
+                    boolean alreadyAllocated = false;
+                    for (Point point : uncertaintyAllocations.values()) {
+                        if (point.x == i && point.y == j) {
+                            System.out.println("Already allocated");
+                            alreadyAllocated = true;
+                        }
+                    }
+                    
+                    if (!alreadyAllocated && v > best) {
                         best = v;
                         bestI = i;
                         bestJ = j;
                     }
                 }
             }
+            uncertaintyAllocations.put(index, new Point(bestI, bestJ));
             p.add(indexToPosition(bestI, bestJ));
         }
 
@@ -736,7 +772,7 @@ public class DataRepository {
     }
 
     /*
-     *  END Autonomous sensing algorithm stuff
+     * END Autonomous sensing algorithm stuff
      */
     private Position indexToPosition(int x, int y) {
         System.out.println("Index to pos with " + x + " " + y);
@@ -989,6 +1025,8 @@ public class DataRepository {
         double dx = 1.0;
         double dy = 1.0;
 
+        double epsilon = 0.00001;
+
         g2.clearRect(0, 0, (int) width, (int) height);
 
         LocationInfo[][] model = null;
@@ -1034,7 +1072,10 @@ public class DataRepository {
                     g2.setColor(Color.black);
                     g2.drawString(df.format(v), bx * i, (int) (height - by * (j + 1)));
 
-                    double alpha = Math.abs((mean - v) / maxExtent);
+                    double alpha = 0.0;
+                    if (maxExtent > epsilon) {
+                        alpha = Math.abs((mean - v) / maxExtent);
+                    }
                     alpha = Math.min(1.0, alpha);
 
                     if (v < mean) {
@@ -1185,15 +1226,15 @@ public class DataRepository {
     }
 
     /**
-     * Intuition here is the bigger the gap the more important, but further curr is from 
-     * midpoint of gap the worse.
-     * 
+     * Intuition here is the bigger the gap the more important, but further curr
+     * is from midpoint of gap the worse.
+     *
      * @todo Take into account multiple visits
-     * 
+     *
      * @param l
      * @param u
      * @param c
-     * @return 
+     * @return
      */
     private double getValue(double l, double u, double c) {
         double d = u - l;
