@@ -409,6 +409,8 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
             server.setPose(p1);
 
             proxyManager.createSimulatedBoatProxy(nameF.getText(), new InetSocketAddress("localhost", port + i), colorB.getBackground());
+            
+            colorB.setBackground(randomColor());
         }
 
         simPortNo.setValue(port + count);

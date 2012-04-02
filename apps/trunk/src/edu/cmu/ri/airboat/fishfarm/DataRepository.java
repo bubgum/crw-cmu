@@ -39,7 +39,7 @@ public class DataRepository {
     ArrayList<SensorData> rawData = new ArrayList<SensorData>(1000);
     ArrayList<Observation> observations = new ArrayList<Observation>(1000);
     ArrayList<LocationInfo[][]> locInfo = new ArrayList<LocationInfo[][]>();
-    int divisions = 10;
+    int divisions = 8;
     double dx = 1.0, dy = 1.0;
     private Hashtable<String, Integer> baseIndicies = new Hashtable<String, Integer>();
     private LatLon mins;
@@ -97,15 +97,31 @@ public class DataRepository {
     }
 
     Position getPositionFor(double dx, double dy) {
-        
-        double lat = mins.latitude.degrees + (dy*(maxs.latitude.degrees - mins.latitude.degrees));
-        double lon = mins.longitude.degrees + (dx*(maxs.longitude.degrees - mins.longitude.degrees));
-        
+
+        double lat = mins.latitude.degrees + (dy * (maxs.latitude.degrees - mins.latitude.degrees));
+        double lon = mins.longitude.degrees + (dx * (maxs.longitude.degrees - mins.longitude.degrees));
+
         Position p = new Position(LatLon.fromDegrees(lat, lon), 0.0);
-        
+
         System.out.println("Translated " + dx + " " + dy + " to " + p);
-        
-        return p;        
+
+        return p;
+    }
+
+    void changeValues(double dx, double dy, boolean up) {
+        if (locInfo.size() > indexOfInterest) {
+            LocationInfo[][] model = locInfo.get(indexOfInterest);
+            if (model == null) {
+                System.out.println("No data");
+            } else {
+                int x = (int) Math.floor(divisions * dx);
+                int y = (int) Math.floor(divisions * dy);
+
+                if (model[x][y] != null) {
+                    model[x][y].userChange(up);
+                }                
+            }
+        }
     }
 
     public void setImgType(ImageType imgType) {
@@ -170,7 +186,6 @@ public class DataRepository {
                         ll[i][j].setLowerBound(ret);
                     }
                 }
-
             }
         }
 
@@ -412,7 +427,7 @@ public class DataRepository {
     }
     Hashtable<BoatProxy, ArrayList<Double>> lastObs = new Hashtable<BoatProxy, ArrayList<Double>>();
 
-    public void newObservation(BoatProxy proxy, Observation o, int index) {
+    public synchronized void newObservation(BoatProxy proxy, Observation o, int index) {
         observations.add(o);
 
         LocationInfo[][] li = null;
@@ -540,8 +555,12 @@ public class DataRepository {
 
         this.alg = alg;
         for (FishFarmBoatProxy proxy : autonomousProxies) {
-            ArrayList<Position> path = getAutonomyPath(proxy);
+            
+            /*ArrayList<Position> path = getAutonomyPath(proxy);
             proxy.setWaypoints(path);
+            * 
+            */
+            proxy.actAutonomous();
         }
     }
 
@@ -685,7 +704,7 @@ public class DataRepository {
     private synchronized ArrayList<Position> getContourFocusPlan(int count, int index) {
         ArrayList<Position> p = new ArrayList<Position>();
 
-        contourAllocations.remove(index);
+        Point prev = contourAllocations.remove(index);
 
         LocationInfo[][] data = locInfo.get(indexOfInterest);
         if (data == null) {
@@ -699,7 +718,7 @@ public class DataRepository {
                     double pureVal = data[i][j].interpolatedValueOfMoreObservations();
 
                     // Want this to be 1.0 when same, 0 when very different
-                    double contourDist = Math.exp(-Math.abs(contourValue - data[i][j].interpolationValue)) / Math.E;
+                    double contourDist = Math.exp(-Math.abs(contourValue - data[i][j].getInterpolatedValue())) / Math.E;
 
                     boolean alreadyAllocated = false;
                     for (Point point : contourAllocations.values()) {
@@ -708,16 +727,12 @@ public class DataRepository {
                             alreadyAllocated = true;
                         }
                     }
-
-                    /*
-                     * if (index == 0) { System.out.println("Contour dist " +
-                     * pureVal + " " + contourValue + " " +
-                     * data[i][j].interpolationValue + " " + contourDist); }
-                     *
-                     */
-
-                    double v = pureVal * contourDist;
-                    if (!alreadyAllocated && v > best) {
+                    
+                    // if (index == 0) { System.out.println(i + " " + j + " Contour dist " + contourDist + " " + data[i][j].getInterpolatedValue() + " " + contourValue); }
+                     
+                    // double v = pureVal * contourDist;
+                    double v = contourDist;
+                    if (!alreadyAllocated && v > best && !(prev != null && prev.x == i && prev.y == j)) {
                         best = v;
                         bestI = i;
                         bestJ = j;
@@ -731,13 +746,13 @@ public class DataRepository {
 
         return p;
     }
-
     HashMap<Integer, Point> uncertaintyAllocations = new HashMap<Integer, Point>();
+
     private ArrayList<Position> getMaxUncertaintyPlan(int count, int index) {
         ArrayList<Position> p = new ArrayList<Position>();
 
         uncertaintyAllocations.remove(index);
-        
+
         LocationInfo[][] data = locInfo.get(indexOfInterest);
         if (data == null) {
             // No data, select random point
@@ -748,7 +763,7 @@ public class DataRepository {
             for (int i = 0; i < data.length; i++) {
                 for (int j = 0; j < data[0].length; j++) {
                     double v = data[i][j].valueOfMoreObservations();
-                    
+
                     boolean alreadyAllocated = false;
                     for (Point point : uncertaintyAllocations.values()) {
                         if (point.x == i && point.y == j) {
@@ -756,7 +771,7 @@ public class DataRepository {
                             alreadyAllocated = true;
                         }
                     }
-                    
+
                     if (!alreadyAllocated && v > best) {
                         best = v;
                         bestI = i;

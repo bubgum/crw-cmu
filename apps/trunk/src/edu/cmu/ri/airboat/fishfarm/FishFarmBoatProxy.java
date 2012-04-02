@@ -233,8 +233,8 @@ public class FishFarmBoatProxy {
     public ArrayList<Position> getCurrPlan() {
         return currPlan;
     }
-
-    private void actAutonomous() {
+    
+    public void actAutonomous() {
         System.out.println("GETTING PLAN");
         ArrayList<Position> p = repo.getAutonomyPath(this);
         currPlan = p;

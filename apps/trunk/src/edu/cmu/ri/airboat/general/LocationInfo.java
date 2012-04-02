@@ -133,4 +133,17 @@ public class LocationInfo {
     public void setUpperBound(double upperBound) {
         this.upperBound = upperBound;
     }
+
+    public void userChange(boolean up) {
+        double userContrib = 0.001;
+        double value = getInterpolatedValue();
+        
+        if (up) value *= 1.1;
+        else value *= 0.9;
+        
+        // System.out.print("Before " + getInterpolatedValue());
+        interpolationValue += value * userContrib;
+        interpolationContributions += userContrib;
+        // System.out.println("  after " + getInterpolatedValue());
+    }
 }

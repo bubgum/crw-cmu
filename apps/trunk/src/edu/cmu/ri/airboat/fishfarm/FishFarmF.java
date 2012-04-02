@@ -21,8 +21,10 @@ import edu.cmu.ri.crw.CrwSecurityManager;
 import gov.nasa.worldwind.geom.LatLon;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.security.AccessControlException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -55,6 +57,9 @@ public class FishFarmF extends javax.swing.JFrame {
     // @todo make this cleaner, probably a listener on Repo
     public static DefaultComboBoxModel indexCDataModel = new DefaultComboBoxModel();
     edu.cmu.ri.airboat.client.gui.TeleopFrame teleOpFrame = null;
+    
+    Point dragStart = null;
+    Point dragLast = null;
 
     /** Creates new form FishFarmF */
     public FishFarmF() {
@@ -114,6 +119,41 @@ public class FishFarmF extends javax.swing.JFrame {
                 if (me.isShiftDown() && proxyC.getSelectedItem() != null) {                    
                     gov.nasa.worldwind.geom.Position pos = dm.repo.getPositionFor((double)me.getPoint().x/dataViewP.getWidth(), 1.0 - ((double)me.getPoint().y/dataViewP.getHeight()));
                     ((FishFarmBoatProxy)proxyC.getSelectedItem()).setWaypoint(pos);
+                }
+                 
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                dragStart = null;
+                dragLast = null;                                
+            }                        
+            
+        });
+        
+        dataViewP.addMouseMotionListener(new MouseMotionAdapter() {
+
+            @Override
+            public void mouseDragged(MouseEvent me) {
+                super.mouseDragged(me);
+                
+                if (dragStart == null) {
+                    System.out.println("Drag starting");
+                    dragStart = me.getPoint();
+                    dragLast = me.getPoint();
+                } else {
+                    Point curr = me.getPoint();
+                    
+                    
+                    if (curr.y < dragLast.y) {                        
+                        dm.repo.changeValues((double)dragStart.x/dataViewP.getWidth(), 1.0 - ((double)dragStart.y/dataViewP.getHeight()), true);                
+                    } else if (curr.y > dragLast.y) {
+                        dm.repo.changeValues((double)dragStart.x/dataViewP.getWidth(), 1.0 - ((double)dragStart.y/dataViewP.getHeight()), false);
+                    }
+                    
+                    dragLast = curr;
+                    
+                    dataViewP.repaint();
                 }
             }
             
