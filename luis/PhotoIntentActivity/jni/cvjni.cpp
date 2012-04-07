@@ -17,8 +17,8 @@
 #include <string.h>
 #include <jni.h>
 #include <android/log.h>
-//#include "highgui.h"
-//#include "ml.h"
+#include "highgui.h"
+#include "ml.h"
 #include "cv.h"
 #include "cxcore.h"
 #include "bmpfmt.h"
@@ -137,7 +137,7 @@ IplImage* getIplImageFromIntArray(JNIEnv* env, jintArray array_data,
 
 JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
 		JNIEnv* env, jobject thiz) {
-	IplImage *pWorkImage = cvCreateImage(cvGetSize(boatFront),IPL_DEPTH_8U,1);
+	//IplImage *pWorkImage = cvCreateImage(cvGetSize(boatFront),IPL_DEPTH_8U,1);
 	//cvCvtColor(pImage,pWorkImage,CV_BGR2GRAY);
 	//CvMemStorage* storage = cvCreateMemStorage(0);
 	//CvSeq *imageKeypoints = 0, *imageDescriptors = 0;
@@ -145,9 +145,9 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
 	//cvExtractSURF( pWorkImage, 0, &imageKeypoints, &imageDescriptors, storage, params );
 	/***********************************************************************/
     //live image coming streamed straight from the boat's camera
-    //IplImage *pWorkImage = cvCreateImage(cvGetSize(boatFront),IPL_DEPTH_8U,1);
-		//cvCvtColor(boatFront,pWorkImage,CV_BGR2GRAY);
-    //IplImage* boatFront = cvLoadImage(imageFile);         //load the image takend and saved on the SD card
+    IplImage *pWorkImage = cvCreateImage(cvGetSize(boatFront),IPL_DEPTH_32F,3);
+		cvCvtColor(boatFront,pWorkImage,CV_BGR2GRAY);
+    //IplImage* boatFront = cvLoadImage(imageFile);         //load the image taken and saved on the SD card
     //The boat takes flipped images, so you need to flip them back to normal
     //cvFlip(boatFront, boatFront, 0);
     IplImage* backUpImage = cvCloneImage(pWorkImage);
@@ -331,11 +331,11 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
     cvCvtColor(pWorkImage, pWorkImage, CV_BGR2HSV);
     cvCvtColor(backUpImage, backUpImage, CV_BGR2HSV);
     //cvCvtColor(groundTruth, groundTruth, CV_BGR2HSV);
-    //HsvImage I(pWorkImage);
-    //HsvImage IBackUp(backUpImage);
+    HsvImage I(pWorkImage);
+    HsvImage IBackUp(backUpImage);
     //RgbImage ILabeled(groundTruth);     //access in RGB cause it does not work in HSV for some reason
     
-    /***********************************************************************
+    /***********************************************************************/
     //offline input pictures. Samples of water properties are taken from these 
     //pictures to get a range of values for H, S, V that will be stored into a 
     //pre-defined classifier
@@ -445,7 +445,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
     
     /*********** Main loop. It traverses through the picture**********/
     
-    /******************** Live water samples *******************************
+    /******************** Live water samples *******************************/
     //learn how "current water" looks like on the fly
     row1 = 0;
     column1 = 0;
@@ -495,7 +495,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
         }
     }
     
-    /**********************************************************
+    /**********************************************************/
     for(int i = 0; i < 3; i++)
     {   
         comparator[i] = 0;
@@ -661,7 +661,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
        // ix = 0;
     }
     
-    /*********************************************************************
+    /*********************************************************************/
     for(int i = 0; i < 3; i++)
     {   
         comparator[i] = 0;
@@ -737,7 +737,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
         //ix = 0;
     }
     
-    /***************Deal with reflection*****************
+    /***************Deal with reflection*****************/
     for(int i = 0; i < 3; i++)
     {   
         comparator[i] = 0;
@@ -816,7 +816,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
     }
     
     /**********Resample the entire patch**********/
-    /*********find a new min and max for a new sample range*************
+    /*********find a new min and max for a new sample range*************/
     for(int i = 0; i < 3; i++)
     {   
         comparator[i] = 0;
@@ -904,7 +904,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
     x = xPicDivisions;
     y = 0;
     
-    /***************Divide the picture in cells for filtering**********
+    /***************Divide the picture in cells for filtering**********/
     while (x < X-1)         //start analysis from the horizon down
     {
         //get a random sample taken from the picture. Must be determined whether
@@ -972,7 +972,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
     }
     
     /********************Isolate obstacles************************/
-    /***************Divide the picture in cells for filtering**********
+    /***************Divide the picture in cells for filtering**********/
     votesSum = 0;
     int paint = 0;
     column1 = 0;
@@ -1195,7 +1195,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
     cvReleaseImage(&backUpImage);
     cvReleaseImage(&grayImage);
     cvReleaseImage(&bwImage);
-    /*cvReleaseImage(&imageSample1);
+    cvReleaseImage(&imageSample1);
     cvReleaseImage(&imageSample2);
     cvReleaseImage(&imageSample3);
     cvReleaseImage(&imageSample4);
@@ -1206,7 +1206,7 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
     cvReleaseImage(&imageSample9);
     cvReleaseImage(&imageSample10);
     cvReleaseImage(&imageSample11);
-    cvReleaseImage(&imageSample12);*/
+    cvReleaseImage(&imageSample12);
     cvReleaseMemStorage(&grayStorage);
     //cvReleaseMat(&trainClassesH);
     //cvReleaseMat(&trainClassesH);

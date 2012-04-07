@@ -7,27 +7,21 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Images;
-import android.provider.MediaStore.Images.Media;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 
@@ -39,11 +33,9 @@ public class PhotoIntentActivity extends Activity {
 
 	private static final String BITMAP_STORAGE_KEY = "viewbitmap";
 	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
-	public static final String QUALITY_EXTRA = "JpegQuality";
-	public static final String WIDTH_EXTRA = "ImageWidth";
-	public static final String HEIGHT_EXTRA = "ImageHeight";
 	private ImageView mImageView;
 	private Bitmap mImageBitmap;
+	private OpenCV opencv = new OpenCV();
 
 	private static final String VIDEO_STORAGE_KEY = "viewvideo";
 	private static final String VIDEOVIEW_VISIBILITY_STORAGE_KEY = "videoviewvisibility";
@@ -56,14 +48,7 @@ public class PhotoIntentActivity extends Activity {
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
 
 	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
-	
-	private Camera mCam = null;
-	
-	private OpenCV opencv = new OpenCV();
-	
-	private int mQuality = 30;
-	private int mWidth = 30;
-	private int mHeight = 30;
+
 	
 	/* Photo album for this application */
 	private String getAlbumName() {
@@ -112,35 +97,34 @@ public class PhotoIntentActivity extends Activity {
 	}
 
 	private void setPic() {
+
 		/* There isn't enough memory to open up more than a couple camera photos */
 		/* So pre-scale the target bitmap into which the file is decoded */
 
+		/* Get the size of the ImageView */
+		int targetW = mImageView.getWidth();
+		int targetH = mImageView.getHeight();
+
+		/* Get the size of the image */
 		BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 		bmOptions.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		int photoW = bmOptions.outWidth;
+		int photoH = bmOptions.outHeight;
+		
+		/* Figure out which way needs to be reduced less */
+		int scaleFactor = 1;
+		if ((targetW > 0) || (targetH > 0)) {
+			scaleFactor = Math.min(photoW/targetW, photoH/targetH);	
+		}
 
 		/* Set bitmap options to scale the image decode target */
 		bmOptions.inJustDecodeBounds = false;
-		bmOptions.inSampleSize = 4;//scaleFactor;
+		bmOptions.inSampleSize = scaleFactor;
 		bmOptions.inPurgeable = true;
 
 		/* Decode the JPEG file into a Bitmap */
 		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-		/* Get the size of the ImageView */
-		int targetW = mImageView.getWidth();
-		int targetH = mImageView.getHeight();
-		int[] pixels = new int[targetW * targetH];
-		bitmap.getPixels(pixels, 0, targetW, 0, 0, targetW, targetH);
-		opencv.setSourceImage(pixels, targetW, targetW);
-		long start = System.currentTimeMillis();
-		opencv.extractWater();
-		long end = System.currentTimeMillis();
-		byte[] imageData = opencv.getSourceImage();
-		long elapse = end - start;
-		Toast.makeText(this, "" + elapse + " ms is used to extract water.",
-				Toast.LENGTH_LONG).show();
-		bitmap = BitmapFactory.decodeByteArray(imageData, 0,
-				imageData.length);
 		
 		/* Associate the Bitmap to the ImageView */
 		mImageView.setImageBitmap(bitmap);
@@ -190,43 +174,37 @@ public class PhotoIntentActivity extends Activity {
 
 	private void handleSmallCameraPhoto(Intent intent) {
 		Bundle extras = intent.getExtras();
-		//try reducing the image size
-		BitmapFactory.Options option = new BitmapFactory.Options();
-		option.inSampleSize = 4;
 		mImageBitmap = (Bitmap) extras.get("data");
-		//mImageBitmap = BitmapFactory.decodeFile(mImageBitmap,option);
-		int width = mImageBitmap.getWidth();
-		int height = mImageBitmap.getHeight();
-		int[] pixels = new int[width * height];
-		mImageBitmap.getPixels(pixels, 0, width, 0, 0, width, height);
-		opencv.setSourceImage(pixels, width, height);
-		long start = System.currentTimeMillis();
+		mImageView.setImageBitmap(mImageBitmap);
+		/* Get the size of the ImageView */
+		int targetW = mImageView.getWidth();
+		int targetH = mImageView.getHeight();
+		int[] pixels = new int[targetW * targetH];
+		//TextView pictureWidth = new TextView(this);   //used for debugging
+	    //TextView pictureHeight = new TextView(this);
+		mImageBitmap.getPixels(pixels, 0, targetW, 0, 0, targetW, targetH);
+		/* Perform Image Processing with native code */
+		opencv.setSourceImage(pixels, targetW, targetW);
 		opencv.extractWater();
-		long end = System.currentTimeMillis();
-		byte[] imageData = opencv.getSourceImage();
-		long elapse = end - start;
-		Toast.makeText(this, "" + elapse + " ms is used to extract features.",
-				Toast.LENGTH_LONG).show();
-		mImageBitmap = BitmapFactory.decodeByteArray(imageData, 0,
-				imageData.length);
+		byte[] finalImageData = opencv.getSourceImage();
+		mImageBitmap = BitmapFactory.decodeByteArray(finalImageData, 0,finalImageData.length);
+		/* Associate the Bitmap to the ImageView */
 		mImageView.setImageBitmap(mImageBitmap);
 		mVideoUri = null;
 		mImageView.setVisibility(View.VISIBLE);
 		mVideoView.setVisibility(View.INVISIBLE);
 	}
-	
-	private void handleBigCameraPhoto() 
-	{
 
-		if (mCurrentPhotoPath != null) 
-		{
+	private void handleBigCameraPhoto() {
+
+		if (mCurrentPhotoPath != null) {
 			setPic();
 			galleryAddPic();
 			mCurrentPhotoPath = null;
 		}
 
 	}
-	
+
 	private void handleCameraVideo(Intent intent) {
 		mVideoUri = intent.getData();
 		mVideoView.setVideoURI(mVideoUri);
@@ -234,7 +212,7 @@ public class PhotoIntentActivity extends Activity {
 		mVideoView.setVisibility(View.VISIBLE);
 		mImageView.setVisibility(View.INVISIBLE);
 	}
-	
+
 	Button.OnClickListener mTakePicOnClickListener = 
 		new Button.OnClickListener() {
 		@Override
@@ -250,7 +228,7 @@ public class PhotoIntentActivity extends Activity {
 			dispatchTakePictureIntent(ACTION_TAKE_PHOTO_S);
 		}
 	};
-	
+
 	Button.OnClickListener mTakeVidOnClickListener = 
 		new Button.OnClickListener() {
 		@Override
@@ -270,10 +248,6 @@ public class PhotoIntentActivity extends Activity {
 		mImageBitmap = null;
 		mVideoUri = null;
 
-		//mQuality = getIntent().getIntExtra(QUALITY_EXTRA, 85);
-		//mWidth = getIntent().getIntExtra(WIDTH_EXTRA, 1600);
-		//mHeight = getIntent().getIntExtra(HEIGHT_EXTRA, 1200);
-		
 		Button picBtn = (Button) findViewById(R.id.btnIntend);
 		setBtnListenerOrDisable( 
 				picBtn, 
@@ -305,7 +279,6 @@ public class PhotoIntentActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
-
 		case ACTION_TAKE_PHOTO_B: {
 			if (resultCode == RESULT_OK) {
 				handleBigCameraPhoto();
@@ -325,7 +298,7 @@ public class PhotoIntentActivity extends Activity {
 				handleCameraVideo(data);
 			}
 			break;
-		} 
+		} // ACTION_TAKE_VIDEO
 		} // switch
 	}
 
