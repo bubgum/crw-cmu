@@ -135,7 +135,7 @@ IplImage* loadPixels(int* pixels, int width, int height);
 IplImage* getIplImageFromIntArray(JNIEnv* env, jintArray array_data,
 		jint width, jint height);
 
-JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
+JNIEXPORT void JNICALL Java_com_example_android_photobyintent_OpenCV_extractWater(
 		JNIEnv* env, jobject thiz) {
 	//IplImage *pWorkImage = cvCreateImage(cvGetSize(boatFront),IPL_DEPTH_8U,1);
 	//cvCvtColor(pImage,pWorkImage,CV_BGR2GRAY);
@@ -1210,10 +1210,11 @@ JNIEXPORT void JNICALL Java_edu_stanford_android_OpenCV_extractWater(
     cvReleaseMemStorage(&grayStorage);
     //cvReleaseMat(&trainClassesH);
     //cvReleaseMat(&trainClassesH);
+    LOGI("Water Extraction Done.");
     //return 0;
 }
 
-JNIEXPORT jboolean JNICALL Java_edu_stanford_android_OpenCV_setSourceImage(
+JNIEXPORT jboolean JNICALL Java_com_example_android_photobyintent_OpenCV_setSourceImage(
 		JNIEnv* env, jobject thiz, jintArray photo_data, jint width,
 		jint height) 
 {
@@ -1231,7 +1232,7 @@ JNIEXPORT jboolean JNICALL Java_edu_stanford_android_OpenCV_setSourceImage(
 	return 1;
 }
 
-JNIEXPORT jbooleanArray JNICALL Java_edu_stanford_android_OpenCV_getSourceImage(
+JNIEXPORT jbooleanArray JNICALL Java_com_example_android_photobyintent_OpenCV_getSourceImage(
 		JNIEnv* env, jobject thiz) {
 	if (boatFront == NULL) 
 	{
@@ -1276,13 +1277,14 @@ JNIEXPORT jbooleanArray JNICALL Java_edu_stanford_android_OpenCV_getSourceImage(
 	}
 	env->SetBooleanArrayRegion(bytes, 0, fileSize, (jboolean*) image);
 	delete[] image;
+	LOGI("Get Image Done.");
 	return bytes;
 }
 
 IplImage* loadPixels(int* pixels, int width, int height) 
 {
 	int x, y;
-	IplImage *img = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 1);
+	IplImage *img = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
 	unsigned char* base = (unsigned char*) (img->imageData);
 	unsigned char* ptr;
 	for (y = 0; y < height; y++) 
@@ -1298,6 +1300,7 @@ IplImage* loadPixels(int* pixels, int width, int height)
 			ptr[3 * x + 2] = pixels[x + y * width] >> 16 & 0xFF;
 		}
 	}
+	LOGI("Load Pixels Done.");
 	return img;
 }
 
@@ -1317,6 +1320,7 @@ IplImage* getIplImageFromIntArray(JNIEnv* env, jintArray array_data,
 		LOGE("Error loading pixel array.");
 		return 0;
 	}
+	LOGI("Get IplImage From IntArray Done.");
 	return image;
 }
 
