@@ -48,6 +48,8 @@ public class FishFarmF extends javax.swing.JFrame {
     private final String MAX_LON_S = "MAX_LON_S";
     private final String UPPER_BOUND_TF_S = "UPPER_BOUND_TF_S";
     private final String LOWER_BOUND_TF_S = "LOWER_BOUND_TF_S";
+    private final String CONTOUR_VALUE_TF_S = "CONTOUR_VALUE_TF_S";
+    private final String CONTOUR_TF_S = "CONTOUR_TF_S";
     
     private LatLon mins = LatLon.ZERO;
     private LatLon maxs = LatLon.ZERO;
@@ -79,6 +81,9 @@ public class FishFarmF extends javax.swing.JFrame {
 
             upperBTF.setText(Preferences.userRoot().get(UPPER_BOUND_TF_S, "85.0"));
             lowerBTF.setText(Preferences.userRoot().get(LOWER_BOUND_TF_S, "75.0"));
+            
+            contourValueTF.setText(Preferences.userRoot().get(CONTOUR_VALUE_TF_S, "80.0"));
+            contourTF.setText(Preferences.userRoot().get(CONTOUR_TF_S, "50.0"));
             
         } catch (AccessControlException e) {
             System.out.println("Failed to access preferences");
@@ -547,6 +552,7 @@ public class FishFarmF extends javax.swing.JFrame {
         try {
             int i = Integer.parseInt(contourTF.getText());
             contourS.setValue(i);
+            savePref(CONTOUR_TF_S, contourTF.getText());                    
         } catch (NumberFormatException e) {
         }
     }//GEN-LAST:event_contourTFActionPerformed
@@ -559,11 +565,13 @@ public class FishFarmF extends javax.swing.JFrame {
         contourTF.setText("" + contourS.getValue());
         double v = dm.repo.setContourPercentOfMax(contourS.getValue() / 100.0);
         contourValueTF.setText(df.format(v));
+        savePref(CONTOUR_TF_S, contourTF.getText());
     }//GEN-LAST:event_contourSStateChanged
 
     private void contourValueTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contourValueTFActionPerformed
         try {
             dm.repo.setContourValue(Double.parseDouble(contourValueTF.getText()));
+            savePref(CONTOUR_VALUE_TF_S, contourValueTF.getText());
         } catch (NumberFormatException e) {
         }
     }//GEN-LAST:event_contourValueTFActionPerformed
@@ -605,7 +613,7 @@ public class FishFarmF extends javax.swing.JFrame {
         try {
             double ret = dm.setUpperBound(Double.parseDouble(upperBTF.getText()));
             upperBTF.setText("" + ret);
-            savePref(LOWER_BOUND_TF_S, upperBTF.getText());
+            savePref(UPPER_BOUND_TF_S, upperBTF.getText());
         } catch (NumberFormatException e) {
             System.out.println("Badly formatted upper bound");
         }

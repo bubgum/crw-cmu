@@ -42,7 +42,7 @@ import robotutils.Pose3D;
 
 /**
  * @todo Need a flag for autonomous or under human control
- * 
+ *
  * @author pscerri
  */
 public class BoatProxy extends Thread {
@@ -104,7 +104,38 @@ public class BoatProxy extends Thread {
         RANDOM, LAWNMOWER, MAX_UNCERTAINTY
     };
     public static AutonomousSearchAlgorithmOptions autonomousSearchAlgorithm = AutonomousSearchAlgorithmOptions.MAX_UNCERTAINTY;
+    // Stuff for simulated data creation
+    static double base = 100.0;
+    static double distFactor = 0.01;
+    static double valueFactor = 10.0;
+    static double sigmaIncreaseRate = 0.001;
+    static double valueDecreaseRate = 0.9999;
+    static double addRate = 0.01;
+    static ArrayList<Double> xs = new ArrayList<Double>();
+    static ArrayList<Double> ys = new ArrayList<Double>();
+    static ArrayList<Double> vs = new ArrayList<Double>();
+    static ArrayList<Double> sigmas = new ArrayList<Double>();
+    static boolean simpleData = false;
+    static boolean hysteresis = true;
 
+    static public double computeGTValue(double lat, double lon) {
+        double v = base;
+        synchronized (xs) {
+            for (int i = 0; i < xs.size(); i++) {
+
+                double dx = xs.get(i) - lon;
+                double dy = ys.get(i) - lat;
+                double distSq = dx * dx + dy * dy;
+
+                double dv = vs.get(i) * (1.0 / Math.sqrt(2.0 * Math.PI * sigmas.get(i) * sigmas.get(i))) * Math.pow(Math.E, -(distSq / (2.0 * sigmas.get(i) * sigmas.get(i))));
+                // if (i == 0) System.out.println("Delta at dist " + Math.sqrt(distSq) + " for " + sigmas.get(i) + " is " + dv);
+                v += dv;
+            }
+        }
+        return v;
+    }
+
+    // End stuff for simulated data creation
     public BoatProxy(final String name, Color color, final int boatNo, InetSocketAddress addr) {
 
         System.out.println("Boat proxy created");
@@ -147,6 +178,8 @@ public class BoatProxy extends Thread {
 
                     LatLon latlon = new LatLon(boatPos.getLatitude(), boatPos.getLongitude());
 
+                    // System.out.println("boatPos " + boatPos.getLatitude() + " " +  boatPos.getLongitude() + " latlon " + latlon.latitude.degrees + " " + latlon.longitude.degrees + " " + latlon);
+                    
                     Position p = new Position(latlon, 0.0);
 
                     // Update state variables
@@ -180,10 +213,11 @@ public class BoatProxy extends Thread {
 
                 while (true) {
 
-                    double [] prev = null;
-                    
+                    double[] prev = null;
+
                     if (currLoc != null) {
                         SensorData sd = new SensorData();
+
                         // @todo Observation
                         if (rand.nextBoolean()) {
                             sd.type = SensorType.TE;
@@ -192,11 +226,51 @@ public class BoatProxy extends Thread {
                         }
 
                         sd.data = new double[4];
-                        for (int i = 0; i < sd.data.length; i++) {
-                            if (prev == null)
-                                sd.data[i] = Math.abs(currLoc.longitude.degrees); //  + rand.nextDouble();
-                            else 
-                                sd.data[i] = (Math.abs(currLoc.longitude.degrees) + prev[i])/2.0;
+
+                        if (simpleData) {
+                            for (int i = 0; i < sd.data.length; i++) {
+                                if (prev == null || !hysteresis) {
+                                    sd.data[i] = Math.abs(currLoc.longitude.degrees); //  + rand.nextDouble();
+                                } else {
+                                    sd.data[i] = (Math.abs(currLoc.longitude.degrees) + prev[i]) / 2.0;
+                                }
+                            }
+                        } else {
+                            double v = computeGTValue(currLoc.latitude.degrees, currLoc.longitude.degrees);
+                            System.out.println("Created data = " + v);
+                            for (int i = 0; i < sd.data.length; i++) {
+                                sd.data[i] = v;
+                            }
+
+                            synchronized (xs) {
+                                // Possibly add another
+                                if ((rand.nextDouble() < addRate && xs.size() < 20) || (xs.size() == 0)) {
+                                    System.out.println(">>>>>>>>>>>>>> Creating");
+                                    double lon = currLoc.longitude.degrees + (distFactor * (rand.nextDouble() - 0.5));
+                                    double lat = currLoc.latitude.degrees + (distFactor * (rand.nextDouble() - 0.5));
+                                    double value = rand.nextDouble() * valueFactor;
+                                    if (rand.nextBoolean()) value = -value;
+
+                                    xs.add(lon);
+                                    ys.add(lat);
+                                    vs.add(value);
+                                    sigmas.add(0.01);
+                                }
+
+                                // Decay 
+                                for (int i = 0; i < xs.size(); i++) {
+                                    sigmas.set(i, sigmas.get(i) + sigmaIncreaseRate);
+                                    vs.set(i, vs.get(i) * valueDecreaseRate);
+                                    if (Math.abs(vs.get(i)) <= 0.001) {
+                                        System.out.println("xxxxxxxxxxxxxxxxxxxxxxx Removing");
+                                        xs.remove(i);
+                                        ys.remove(i);
+                                        vs.remove(i);
+                                        sigmas.remove(i);
+                                        i--;
+                                    }
+                                }
+                            }
                         }
 
                         if (_sensorListener != null) {
@@ -209,6 +283,7 @@ public class BoatProxy extends Thread {
                         sleep(500L);
                     } catch (InterruptedException e) {
                     }
+
                 }
             }
         }).start();
@@ -342,8 +417,7 @@ public class BoatProxy extends Thread {
     }
 
     /**
-     * @deprecated 
-     * @param wputm 
+     * @deprecated @param wputm
      */
     public void setWaypoint(UtmPose wputm) {
 
@@ -384,11 +458,11 @@ public class BoatProxy extends Thread {
     public Position getCurrWaypoint() {
         return currWaypoint;
     }
-    
+
     public void asyncGetWaypointStatus(FunctionObserver<WaypointState> fo) {
         _server.getWaypointStatus(fo);
     }
-    
+
     public double getFuelLevel() {
         return fuelLevel;
     }
@@ -427,9 +501,10 @@ public class BoatProxy extends Thread {
 
     /**
      * From: http://forum.worldwindcentral.com/showthread.php?t=20739
+     *
      * @param point
      * @param positions
-     * @return 
+     * @return
      */
     public static boolean isLocationInside(LatLon point, ArrayList<? extends LatLon> positions) {
         if (point == null) {

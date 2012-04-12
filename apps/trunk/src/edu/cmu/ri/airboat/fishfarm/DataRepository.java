@@ -39,7 +39,7 @@ public class DataRepository {
     ArrayList<SensorData> rawData = new ArrayList<SensorData>(1000);
     ArrayList<Observation> observations = new ArrayList<Observation>(1000);
     ArrayList<LocationInfo[][]> locInfo = new ArrayList<LocationInfo[][]>();
-    int divisions = 8;
+    int divisions = 100;
     double dx = 1.0, dy = 1.0;
     private Hashtable<String, Integer> baseIndicies = new Hashtable<String, Integer>();
     private LatLon mins;
@@ -58,7 +58,7 @@ public class DataRepository {
 
     public enum ImageType {
 
-        Grid, Point, Interpolated, Uncertainty, Bounds, None;
+        Grid, Point, Interpolated, Uncertainty, Bounds, None, GT;
     };
     private ImageType imgType = ImageType.Grid;
 
@@ -119,7 +119,7 @@ public class DataRepository {
 
                 if (model[x][y] != null) {
                     model[x][y].userChange(up);
-                }                
+                }
             }
         }
     }
@@ -230,6 +230,7 @@ public class DataRepository {
     private String sensorToDisplay = "WATERCANARY";
     private int indexToDisplay = 0;
     private int filterWindow = 30;
+    int count = 0;
 
     void addData(BoatProxy proxy, SensorData sd, UtmPose _pose) {
 
@@ -254,6 +255,34 @@ public class DataRepository {
         } catch (NullPointerException e) {
             System.out.println("Caught (and ignoring) null pointer exception in DataRepository.addData, printing stack trace");
             e.printStackTrace();
+        }
+
+        if (++count % 10 == 0) {
+
+            int correct = 0;
+
+            for (int i = 0; i < divisions; i++) {
+                for (int j = 0; j < divisions; j++) {
+
+                    Position pos = indexToPosition(i, j);
+
+                    double gt = BoatProxy.computeGTValue(pos.latitude.degrees, pos.longitude.degrees);
+                    double est = locInfo.get(indexOfInterest)[i][j].getInterpolatedValue();
+
+                    if ((gt > contourValue && est > contourValue) || (gt < contourValue && est < contourValue)) {
+                        correct++;
+                    }
+
+                    //System.out.print("\t" + df.format(Math.abs(gt-est)));
+                    // System.out.print("\t" + df.format(gt) + " " + df.format(est));
+
+                }
+                // System.out.println("");
+            }
+            System.out.println("Correct: " + correct + " of " + (divisions * divisions));
+
+        } else {
+            // System.out.println("Count now: " + count);
         }
     }
 
@@ -492,9 +521,16 @@ public class DataRepository {
                     if (li[i][j] == null) {
                         li[i][j] = new LocationInfo(lowerFilterBound, upperFilterBound);
                     }
+                    
+                    /* Non temporal version
                     li[i][j].interpolationContributions += contrib;
                     li[i][j].interpolationValue += (o.value * contrib);
-
+                    */
+                    
+                    // Temporal version
+                    li[i][j].interpolationContributions = (0.99 * li[i][j].interpolationContributions) + (1.01 * contrib);
+                    li[i][j].interpolationValue = (0.99 * li[i][j].interpolationValue) + (1.01 * o.value * contrib);
+                    
                     /*
                      * if (i == 0 && j == 0 && index == 0)
                      * System.out.println("Added : " + contrib + " and " +
@@ -555,11 +591,12 @@ public class DataRepository {
 
         this.alg = alg;
         for (FishFarmBoatProxy proxy : autonomousProxies) {
-            
-            /*ArrayList<Position> path = getAutonomyPath(proxy);
-            proxy.setWaypoints(path);
-            * 
-            */
+
+            /*
+             * ArrayList<Position> path = getAutonomyPath(proxy);
+             * proxy.setWaypoints(path);
+             *
+             */
             proxy.actAutonomous();
         }
     }
@@ -727,9 +764,9 @@ public class DataRepository {
                             alreadyAllocated = true;
                         }
                     }
-                    
+
                     // if (index == 0) { System.out.println(i + " " + j + " Contour dist " + contourDist + " " + data[i][j].getInterpolatedValue() + " " + contourValue); }
-                     
+
                     // double v = pureVal * contourDist;
                     double v = contourDist;
                     if (!alreadyAllocated && v > best && !(prev != null && prev.x == i && prev.y == j)) {
@@ -790,7 +827,7 @@ public class DataRepository {
      * END Autonomous sensing algorithm stuff
      */
     private Position indexToPosition(int x, int y) {
-        System.out.println("Index to pos with " + x + " " + y);
+        // System.out.println("Index to pos with " + x + " " + y);
         UTMCoord utm = UTMCoord.fromUTM(utmMin.getZone(), utmMin.getHemisphere(), utmMin.getEasting() + (dx * (x + 0.5)), utmMin.getNorthing() + (dy * (y + 0.5)));
         LatLon ll = new LatLon(utm.getLatitude(), utm.getLongitude());
         return new Position(ll, 0.0);
@@ -813,6 +850,9 @@ public class DataRepository {
 
             case Point:
                 return makePointBufferedImage(index);
+
+            case GT:
+                return makeGTImage();
 
             case None:
             default:
@@ -957,6 +997,81 @@ public class DataRepository {
             }
         }
         return maxExtent;
+    }
+
+    double computeGTMean() {
+        double v = 0.0;
+        for (int i = 0; i < divisions; i++) {
+            for (int j = 0; j < divisions; j++) {
+
+                Position pos = indexToPosition(i, j);
+                v += BoatProxy.computeGTValue(pos.latitude.degrees, pos.longitude.degrees);
+            }
+        }
+        return v / (double) (divisions * divisions);
+    }
+
+    double computeGTExtent(double mean) {
+        double maxExtent = 0.0;
+        for (int i = 0; i < divisions; i++) {
+            for (int j = 0; j < divisions; j++) {
+
+                Position pos = indexToPosition(i, j);
+                double v = BoatProxy.computeGTValue(pos.latitude.degrees, pos.longitude.degrees);
+                if (Math.abs(v - mean) > maxExtent) {
+                    maxExtent = Math.abs(v - mean);
+                }
+            }
+        }
+        return maxExtent;
+    }
+
+    private BufferedImage makeGTImage() {
+        int width = 100;
+        int height = 100;
+
+        BufferedImage bimage = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2 = bimage.createGraphics();
+
+        double dx = 1.0;
+        double dy = 1.0;
+
+        g2.clearRect(0, 0, (int) width, (int) height);
+
+        int bx = (int) (width / divisions);
+        int by = (int) (height / divisions);
+
+        double mean = computeGTMean();
+        double maxExtent = computeGTExtent(mean);
+
+        for (int i = 0; i < divisions; i++) {
+            for (int j = 0; j < divisions; j++) {
+
+                Position pos = indexToPosition(i, j);
+                double v = BoatProxy.computeGTValue(pos.latitude.degrees, pos.longitude.degrees);
+
+                g2.setColor(Color.black);
+                g2.drawString(df.format(v), bx * i, (int) (height - by * (j + 1)));
+
+                double alpha = Math.abs((mean - v) / maxExtent);
+                alpha = Math.min(1.0, alpha);
+
+                if (v < mean) {
+                    g2.setColor(new Color(1.0f, 0.0f, 0.0f, (float) alpha));
+                } else {
+                    g2.setColor(new Color(0.0f, 1.0f, 0.0f, (float) alpha));
+                }
+
+                // System.out.println("v = " + v + " mean = " + mean + " maxExtent=" + maxExtent + " alpha=" + alpha);
+
+
+                g2.fillRect(bx * i, (int) (height - by * (j + 1)), bx, by);
+
+            }
+        }
+
+        return bimage;
     }
 
     private BufferedImage makeGridBufferedImage(int index, boolean useMean, boolean useBounds) {
