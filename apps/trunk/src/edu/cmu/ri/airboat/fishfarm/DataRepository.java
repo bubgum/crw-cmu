@@ -1315,6 +1315,7 @@ public class DataRepository {
 
         // System.out.println("Starting planning");
         while (!queue.isEmpty() && count < 10000) {
+            System.out.print(".");
             Point cp = queue.poll();
             if (cp.value > o.value) {
                 best = cp;
@@ -1324,6 +1325,7 @@ public class DataRepository {
             for (Point point : ex) {
                 point.value = cp.value + getValue(lower[point.x][point.y], upper[point.x][point.y], cp.sensor);
                 // Work out the expectation of the sensor
+                // System.out.println("New value: " + point.value);
                 double change = ((upper[point.x][point.y] + lower[point.x][point.y]) / 2.0) - cp.sensor;
                 if (change < 0) {
                     change = Math.max(-maxChange, change);
@@ -1372,7 +1374,9 @@ public class DataRepository {
         double d = u - l;
         double m = (u + l) / 2.0;
         double v = Math.abs(m - c);
-        return Math.max(0.0, d - v);
+        ///System.out.println("Deets: " + u + " " + l + " " + m + " " + c);
+        // @todo This isn't a very good calculation, since v might often be bigger than d
+        return Math.max(0.001, d - v);
 
 
     }
