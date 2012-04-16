@@ -108,8 +108,8 @@ public class BoatProxy extends Thread {
     static double base = 100.0;
     static double distFactor = 0.01;
     static double valueFactor = 10.0;
-    static double sigmaIncreaseRate = 0.001;
-    static double valueDecreaseRate = 0.9999;
+    static double sigmaIncreaseRate = 0.00;
+    static double valueDecreaseRate = 1.00;
     static double addRate = 0.01;
     static ArrayList<Double> xs = new ArrayList<Double>();
     static ArrayList<Double> ys = new ArrayList<Double>();
@@ -237,7 +237,7 @@ public class BoatProxy extends Thread {
                             }
                         } else {
                             double v = computeGTValue(currLoc.latitude.degrees, currLoc.longitude.degrees);
-                            System.out.println("Created data = " + v);
+                            // System.out.println("Created data = " + v);
                             for (int i = 0; i < sd.data.length; i++) {
                                 sd.data[i] = v;
                             }

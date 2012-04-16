@@ -10,6 +10,8 @@
  */
 package edu.cmu.ri.airboat.general;
 
+import edu.cmu.ri.airboat.fishfarm.FishFarmBoatProxy;
+import edu.cmu.ri.airboat.fishfarm.FishFarmF;
 import edu.cmu.ri.airboat.floodtest.ImagePanel;
 import edu.cmu.ri.airboat.generalAlmost.FastSimpleBoatSimulator;
 import edu.cmu.ri.crw.VehicleServer;
@@ -59,6 +61,38 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
             physicalServer.setText("http://168.192.1.X:11411");
             imagesF.setText("/tmp");
         }
+        
+        /*
+        (new Thread() {
+            public void run() {
+                try {
+                    sleep(10000);
+                } catch (InterruptedException e) {}
+    
+                simNoS.setValue(10);
+                createSimBActionPerformed(null);
+                FishFarmF.algC.setSelectedIndex(3);
+                FishFarmF.allAutoCB.setSelected(true);
+                
+                try {
+                    sleep(3000);
+                } catch (InterruptedException e) {}
+                
+                for (FishFarmBoatProxy p : FishFarmF.proxies) {
+                    p.setAutonomous(true);
+                }
+                
+                try {
+                    sleep(15*60*1000);
+                } catch (InterruptedException e) {}
+                
+                System.out.println("Successfully finished");
+                
+                System.exit(0);
+                
+            }
+        }).start();
+        */
     }
 
     /**

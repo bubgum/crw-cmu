@@ -528,8 +528,8 @@ public class DataRepository {
                     */
                     
                     // Temporal version
-                    li[i][j].interpolationContributions = (0.99 * li[i][j].interpolationContributions) + (1.01 * contrib);
-                    li[i][j].interpolationValue = (0.99 * li[i][j].interpolationValue) + (1.01 * o.value * contrib);
+                    li[i][j].interpolationContributions = (0.999 * li[i][j].interpolationContributions) + (1.001 * contrib);
+                    li[i][j].interpolationValue = (0.999 * li[i][j].interpolationValue) + (1.001 * o.value * contrib);
                     
                     /*
                      * if (i == 0 && j == 0 && index == 0)
@@ -767,8 +767,8 @@ public class DataRepository {
 
                     // if (index == 0) { System.out.println(i + " " + j + " Contour dist " + contourDist + " " + data[i][j].getInterpolatedValue() + " " + contourValue); }
 
-                    // double v = pureVal * contourDist;
-                    double v = contourDist;
+                    double v = pureVal * contourDist;
+                    // double v = contourDist;
                     if (!alreadyAllocated && v > best && !(prev != null && prev.x == i && prev.y == j)) {
                         best = v;
                         bestI = i;
@@ -1324,7 +1324,7 @@ public class DataRepository {
             for (Point point : ex) {
                 point.value = cp.value + getValue(lower[point.x][point.y], upper[point.x][point.y], cp.sensor);
                 // Work out the expectation of the sensor
-                double change = ((upper[point.x][point.y] - lower[point.x][point.y]) / 2.0) - cp.sensor;
+                double change = ((upper[point.x][point.y] + lower[point.x][point.y]) / 2.0) - cp.sensor;
                 if (change < 0) {
                     change = Math.max(-maxChange, change);
                 }
@@ -1334,7 +1334,9 @@ public class DataRepository {
                 point.sensor = cp.sensor + change;
                 point.prev = cp;
                 point.depth = cp.depth + 1;
-                queue.offer(point);
+                
+                if (point.depth < horizon)
+                    queue.offer(point);
                 // System.out.println("Offered: " + point);
             }
             count++;

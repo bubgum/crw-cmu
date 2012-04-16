@@ -50,7 +50,7 @@ public class LocationInfo {
             }
             
             if (o.getValue() > upperBound) {
-                System.out.println(">>>>>>>>>> Reassessing upper bound " + upperBound + " to " + o.getValue());
+                // System.out.println(">>>>>>>>>> Reassessing upper bound " + upperBound + " to " + o.getValue());
                 upperBound = o.getValue();
             }
         } else if (o.getGradient() < 0.0) {
@@ -59,7 +59,7 @@ public class LocationInfo {
             }
             
             if (o.getValue() < lowerBound) {
-                System.out.println(">>>>>>>>>> Reassessing lower bound " + lowerBound + " to " + o.getValue());
+                // System.out.println(">>>>>>>>>> Reassessing lower bound " + lowerBound + " to " + o.getValue());
                 lowerBound = o.getValue();
             }
         }/* else if (o.getGradient() == 0.0) {

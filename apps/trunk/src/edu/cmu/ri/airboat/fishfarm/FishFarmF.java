@@ -53,7 +53,9 @@ public class FishFarmF extends javax.swing.JFrame {
     
     private LatLon mins = LatLon.ZERO;
     private LatLon maxs = LatLon.ZERO;
-    private ArrayList<FishFarmBoatProxy> proxies = new ArrayList<FishFarmBoatProxy>();
+    
+    // Temp for experiments
+    public static ArrayList<FishFarmBoatProxy> proxies = new ArrayList<FishFarmBoatProxy>();
     private DataManager dm = new DataManager(proxies);
     private DecimalFormat df = new DecimalFormat("#.###");
     // @todo make this cleaner, probably a listener on Repo
@@ -679,8 +681,8 @@ public class FishFarmF extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox algC;
-    private javax.swing.JCheckBox allAutoCB;
+    public static javax.swing.JComboBox algC;
+    public static javax.swing.JCheckBox allAutoCB;
     private javax.swing.JCheckBox autoCB;
     private javax.swing.JPanel contourP;
     private javax.swing.JSlider contourS;
