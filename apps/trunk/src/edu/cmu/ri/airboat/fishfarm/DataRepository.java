@@ -614,7 +614,10 @@ public class DataRepository {
         // if "out of extent" return a plan the brings it to the middle
         if (x < 0 || x > divisions || y < 0 || y > divisions) {
             ArrayList<Position> p = new ArrayList<Position>();
-            p.add(indexToPosition((int) (divisions / 2), (int) (divisions / 2)));
+            // p.add(indexToPosition((int) (divisions / 2), (int) (divisions / 2)));
+            x = Math.max(1, Math.min(divisions - 2, x));
+            y = Math.max(1, Math.min(divisions - 2, y));
+            p.add(indexToPosition(x, y));
             return p;
         }
 
