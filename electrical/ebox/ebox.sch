@@ -1417,8 +1417,13 @@ http://dbserv.maxim-ic.com/</description>
 <text x="396.24" y="7.62" size="3.81" layer="94" font="vector">A</text>
 <text x="355.6" y="246.38" size="1.778" layer="94">TODO: Replace with multi-con-X</text>
 <text x="355.6" y="243.84" size="1.778" layer="94">TODO: Replace with mini-con-x</text>
-<text x="281.94" y="205.74" size="1.778" layer="94">Use the: SN74LVC1T45</text>
-<text x="281.94" y="200.66" size="1.778" layer="94">Use the: MAX3323</text>
+<text x="281.94" y="205.74" size="1.778" layer="94">Use the: SN74LVC1T45?</text>
+<text x="281.94" y="200.66" size="1.778" layer="94">Use the: MAX3221</text>
+<text x="281.94" y="195.58" size="1.778" layer="94">Use the: SOT23 Dual Zener (5.1V, UC3 is 5V tolerant)</text>
+<text x="281.94" y="193.04" size="1.778" layer="94">Use the: 50mA PTC on all signal lines (R1206)</text>
+<text x="281.94" y="210.82" size="1.778" layer="94">Use the: MCP1703 for +5V</text>
+<text x="281.94" y="215.9" size="1.778" layer="94">Use the: Zetex FET for +12V</text>
+<text x="281.94" y="213.36" size="1.778" layer="94">Use the: 1.5A PTC on +12V (R1812)</text>
 </plain>
 <instances>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
@@ -1475,7 +1480,7 @@ http://dbserv.maxim-ic.com/</description>
 <instance part="X9" gate="-7" x="368.3" y="73.66"/>
 <instance part="U$1" gate="G$1" x="104.14" y="238.76"/>
 <instance part="U1" gate="NAME" x="147.32" y="132.08"/>
-<instance part="IC1" gate="G$1" x="284.48" y="175.26"/>
+<instance part="IC1" gate="G$1" x="289.56" y="170.18"/>
 </instances>
 <busses>
 </busses>
