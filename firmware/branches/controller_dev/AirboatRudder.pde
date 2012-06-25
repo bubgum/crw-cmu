@@ -24,7 +24,6 @@ float rBufferSum = 0;
 int rIndx = 0;
 
 int send_pos_cnt = 3;
-int send_input = 0;
 
 void initRudder()
 {
@@ -82,15 +81,6 @@ void updateRudder()
   else
   if (input > SERVO_MIN)
       input = SERVO_MIN;
-      
-  send_input++;
-  if (send_input > 10)
-  {
-    amarino.send('X');
-    amarino.send(desiredVelocity[5]);
-    amarino.send(input);
-    send_input = 0;
-  }
   
   rudder.write((int)input);
   
