@@ -16,6 +16,94 @@ import edu.cmu.ri.crw.data.UtmPose;
  */
 public enum AirboatController {
 
+	
+	/**
+	 * This is the implementation of Yunde's controller. This controller also updates the velocities twist as done in POINT_AND_SHOOT,
+	 * but instead of velocities, it passes in servo commands to the thruster and rudder. The process of converting desired velocities
+	 * to thrust and angle commands used to be done in the Arduino but has been moved here. The thruster and rudder commands will be
+	 * at indexes 0 and 5 respectively.
+	 */
+	YUNDE(new VehicleController() {
+		// variable for monitoring previous destination angle for error calculation 
+		private double prev_angle_destination = 0;
+		
+		@Override
+		public void update(VehicleServer server, double dt) {
+			Twist twist = new Twist();
+			
+			// Get the position of the vehicle
+			UtmPose state = server.getPose();
+			Pose3D pose = state.pose;
+			
+			// Get the current waypoint, or return if there are none
+			UtmPose[] waypoints = server.getWaypoints();
+			if (waypoints == null || waypoints.length <= 0) {
+				server.setVelocity(twist);
+				return;
+			}
+			Pose3D waypoint = waypoints[0].pose;
+			
+			double distanceSq = planarDistanceSq(pose, waypoint);
+			
+			if (distanceSq < 9)
+			{
+				
+				// If we are "at" the destination, de-queue current waypoint
+				UtmPose[] queuedWaypoints = new UtmPose[waypoints.length - 1];
+				System.arraycopy(waypoints, 1, queuedWaypoints, 0,
+						queuedWaypoints.length);
+				server.startWaypoints(queuedWaypoints,
+						AirboatController.YUNDE.toString());
+			}
+			else
+			{
+				// ANGLE CONTROL SEGMENT
+				
+				// find destination angle between boat and waypoint position
+				double angle_destination = angleBetween(pose, waypoint);
+				
+				// use compass information to get heading of the boat
+				double angle_boat = pose.getRotation().toYaw();
+				
+				// use gyro information from arduino to get rotation rate of heading
+				double[] _gyroReadings = ((AirboatImpl) server).getGyro();
+				double drz = _gyroReadings[2];
+				
+				// use previous data to get rate of change of destination angle
+				double angle_destination_change = (angle_destination - prev_angle_destination) / dt;
+				
+				// Define PID constants and boundary pos constants
+				AirboatImpl server_impl = (AirboatImpl) server;
+				double[] rudder_pids = server_impl.getRudderPIDS();
+				double[] rudder_consts = server_impl.getRudderConstants();
+				double[] thruster_consts = server_impl.getThrusterConstants();				
+
+				double pos = rudder_pids[0]*(angle_destination - angle_boat) + rudder_pids[2]*(angle_destination_change - drz);
+				// ensure values are within bounds
+				if (pos < rudder_consts[0])
+					pos = rudder_consts[0];
+				else if (pos > rudder_consts[1])
+					pos = rudder_consts[1];
+				
+				pos = AirboatImpl.map(pos, rudder_consts[0], rudder_consts[1], rudder_consts[2], rudder_consts[3]);
+				
+				// THRUST CONTROL SEGMENT
+				// if outside 3m radius, give constant thrust at about 50% of capability
+				double thrust = (thruster_consts[3] + thruster_consts[2])/2;
+				
+				// update twist
+				twist.dx(thrust);
+				twist.drz(pos);
+				// update angle error
+				prev_angle_destination = angle_destination;
+				
+				// Set the desired velocity
+				server.setVelocity(twist);
+				
+			}
+		}
+	}),
+	
 	/**
 	 * This controller turns the boat around until it is facing the waypoint,
 	 * then drives roughly in an arc towards the waypoint. When it gets within a

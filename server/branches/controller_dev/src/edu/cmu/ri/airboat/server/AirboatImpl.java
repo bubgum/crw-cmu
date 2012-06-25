@@ -42,7 +42,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	private static final String logTag = AirboatImpl.class.getName();
 	public static final int UPDATE_INTERVAL_MS = 200;
 	public static final int NUM_SENSORS = 4;
-	public static final AirboatController DEFAULT_CONTROLLER = AirboatController.POINT_AND_SHOOT;
+	public static final AirboatController DEFAULT_CONTROLLER = AirboatController.YUNDE;
 
 	protected final SensorType[] _sensorTypes = new SensorType[NUM_SENSORS];
 	protected UtmPose[] _waypoints = new UtmPose[0];
@@ -112,6 +112,14 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * Raw gyroscopic readings, as reported from the Arduino.
 	 */
 	final double[] _gyroReadings = new double[3];
+	/**
+	 * Hard-coded constants used in Yunde's controller and for new implementation of Arduino code.
+	 * CONSTANTS FORMAT: range_min, range_max, servo_min, servo_max
+	 */
+	final double[] r_PID = {5, 0, 30}; // Kp, Ki, Kd
+	final double[] R_CONSTANTS = {-1000, 1000, 150, 30};
+	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
+	
 
 	/**
 	 * Creates a new instance of the vehicle implementation. This function
@@ -151,6 +159,8 @@ public class AirboatImpl extends AbstractVehicleServer {
 			 * 0) ? currentUpdateMs - _lastUpdateMs : 0; _lastUpdateMs =
 			 * currentUpdateMs;
 			 */
+			// start timer
+			long startnow = android.os.SystemClock.uptimeMillis();
 
 			// Do an intelligent state prediction update here
 			_utmPose = filter.pose(System.currentTimeMillis());
@@ -175,6 +185,11 @@ public class AirboatImpl extends AbstractVehicleServer {
 			// Send velocities
 			Twist vel = _velocities.clone();
 			sendVelocity(vel);
+			// end timer
+			long endnow = android.os.SystemClock.uptimeMillis();
+			// log elapsed time
+			logger.info("Elapsed Time of run() loop in ms: " + (endnow-startnow));
+			
 		}
 	};
 
@@ -231,7 +246,43 @@ public class AirboatImpl extends AbstractVehicleServer {
 						(float) k[2] });
 		logger.info("SETGAINS: " + axis + " " + Arrays.toString(k));
 	}
-
+	/**
+	 * Returns the current gyro readings
+	 */
+	public double[] getGyro()
+	{
+		return _gyroReadings.clone();
+	}
+	/**
+	 * Function that maps a value between one range to a representative value in another range. Use for modifying servo commands
+	 * to send to Arduino   
+	 */
+	public static double map(double x, double in_min, double in_max, double out_min, double out_max)
+	{
+	  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	}
+	/**
+	 * Accessor method for rudder PID constants
+	 */
+	public double[] getRudderPIDS()
+	{
+		return r_PID.clone();
+	}
+	/**
+	 * Accessor method for rudder constants
+	 * 
+	 */
+	public double[] getRudderConstants()
+	{
+		return R_CONSTANTS.clone();
+	}
+	/**
+	 * Accessor method for thruster constants
+	 */
+	public double[] getThrusterConstants()
+	{
+		return T_CONSTANTS.clone();
+	}
 	/**
 	 * @see AirboatCommand#isConnected()
 	 */
@@ -728,7 +779,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 	public void setVelocity(Twist vel) {
 		_velocities = vel.clone();
 	}
-
 	@Override
 	public boolean isAutonomous() {
 		return _isAutonomous.get();
