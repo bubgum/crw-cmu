@@ -4,7 +4,7 @@
  * Contains a few helper functions for loading and unloading data
  * from persistent EEPROM memory.
  */
-#include <WProgram.h>
+#include <Arduino.h>
 
 template <class T> int EEPROM_writeAnything(int ee, const T& value)
 {

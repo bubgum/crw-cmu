@@ -11,18 +11,20 @@
 #define RBUFSIZE  100
 #define RMIN  -1000
 #define RMAX  1000
+#define SERVO_MIN 150
+#define SERVO_MAX 30
 
 #define RECV_RUDDER_POS 'r'
 
 Servo rudder;
 
-int pos;
 float rBuffer[RBUFSIZE];
 float rprevError = 0;
 float rBufferSum = 0;
 int rIndx = 0;
 
 int send_pos_cnt = 3;
+int send_input = 0;
 
 void initRudder()
 {
@@ -34,6 +36,7 @@ void initRudder()
 
 void updateRudder()
 {
+  /*
   float rError = desiredVelocity[5] - actualVelocity[5];
   
   rIndx++;
@@ -63,6 +66,40 @@ void updateRudder()
   {
      amarino.send(RECV_RUDDER_POS);
      amarino.send(pos);
+     amarino.sendln();
+     
+     send_pos_cnt = 0;
+  }
+  */
+  
+  // changed so that input at desiredVelocity[5] from android is sent as a command directly to the rudder servo
+  double input = desiredVelocity[5];
+
+  
+  // check to ensure input values are within the bounds
+  if (input < SERVO_MAX)
+      input = SERVO_MAX;
+  else
+  if (input > SERVO_MIN)
+      input = SERVO_MIN;
+      
+  send_input++;
+  if (send_input > 10)
+  {
+    amarino.send('X');
+    amarino.send(desiredVelocity[5]);
+    amarino.send(input);
+    send_input = 0;
+  }
+  
+  rudder.write((int)input);
+  
+  send_pos_cnt++;
+  
+  if (send_pos_cnt > 10)
+  {
+     amarino.send(RECV_RUDDER_POS);
+     amarino.send(input);
      amarino.sendln();
      
      send_pos_cnt = 0;

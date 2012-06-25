@@ -39,7 +39,7 @@
 #define UPDATE_INTERVAL 10
 
 // Arrays to store the actual and desired velocity of the vehicle in 6D
-float desiredVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+float desiredVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 90.0 };
 float actualVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
 // Structure storing PID constants for each axis
@@ -122,7 +122,7 @@ void update()
 void watchdog()
 {
   // Slow the vehicle down by reducing velocity in every direction
-  for (int i = 0; i < 6; ++i)
+  for (int i = 0; i < 3; ++i)
     desiredVelocity[i] *= 0.75;
 }
 

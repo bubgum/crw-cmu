@@ -9,8 +9,8 @@
 #include <Servo.h> 
 
 #define TBUFSIZE  100
-#define TMIN  0
-#define TMAX  1000
+#define TMIN  1000
+#define TMAX  2200
 
 #define RECV_THRUSTER_DEG 't'
 
@@ -45,7 +45,8 @@ void initThruster()
 }
 
 void updateThruster()
-{ 
+{
+   /*
    float tError = desiredVelocity[0] - actualVelocity[0];
    
    tIndx = (tIndx >= 100)?0 : tIndx++;
@@ -74,4 +75,27 @@ void updateThruster()
      
       send_thruster_cnt = 0;
    }
+   */
+   // take command directly from Android and push to servo
+   int deg = desiredVelocity[0];
+   
+   if (deg < TMIN) 
+       deg = TMIN;
+   if (deg > TMAX)
+       deg = TMAX;
+
+   thruster.write(deg);
+   
+      send_thruster_cnt++;
+  
+   if (send_thruster_cnt > 10)
+   {
+      amarino.send(RECV_THRUSTER_DEG);
+      amarino.send(deg);
+      amarino.sendln();
+     
+      send_thruster_cnt = 0;
+   }
+   
+ 
 }
