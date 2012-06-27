@@ -42,7 +42,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	private static final String logTag = AirboatImpl.class.getName();
 	public static final int UPDATE_INTERVAL_MS = 200;
 	public static final int NUM_SENSORS = 4;
-	public static final AirboatController DEFAULT_CONTROLLER = AirboatController.YUNDE;
+	public static final AirboatController DEFAULT_CONTROLLER = AirboatController.POINT_AND_SHOOT;
 
 	protected final SensorType[] _sensorTypes = new SensorType[NUM_SENSORS];
 	protected UtmPose[] _waypoints = new UtmPose[0];
@@ -90,6 +90,8 @@ public class AirboatImpl extends AbstractVehicleServer {
 	final Object _velocityGainLock = new Object();
 	final double[] _velocityGain = new double[3];
 	double _velocityGainAxis = -1;
+	// UPDATE: new default twist of servo commands rather than "velocities"
+	public static final double[] DEFAULT_TWIST = {1000, 0, 0, 0, 0, 90}; 
 
 	/**
 	 * Inertial state vector, currently containing a 6D pose estimate:
@@ -106,7 +108,8 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * Inertial velocity vector, containing a 6D angular velocity estimate: [rx,
 	 * ry, rz, rPhi, rPsi, rOmega]
 	 */
-	Twist _velocities = new Twist();
+	//UPDATE: instantiate with expected resting servo commands
+	Twist _velocities = new Twist(DEFAULT_TWIST);
 
 	/**
 	 * Raw gyroscopic readings, as reported from the Arduino.

@@ -22,8 +22,9 @@ public enum AirboatController {
 	 * but instead of velocities, it passes in servo commands to the thruster and rudder. The process of converting desired velocities
 	 * to thrust and angle commands used to be done in the Arduino but has been moved here. The thruster and rudder commands will be
 	 * at indexes 0 and 5 respectively.
+	 * UPDATE: renamed POINT_AND_SHOOT to be compatible with all code. 
 	 */
-	YUNDE(new VehicleController() {
+	POINT_AND_SHOOT(new VehicleController() {
 		// variable for monitoring previous destination angle for error calculation 
 		private double prev_angle_destination = 0;
 		
@@ -53,7 +54,7 @@ public enum AirboatController {
 				System.arraycopy(waypoints, 1, queuedWaypoints, 0,
 						queuedWaypoints.length);
 				server.startWaypoints(queuedWaypoints,
-						AirboatController.YUNDE.toString());
+						AirboatController.POINT_AND_SHOOT.toString());
 			}
 			else
 			{
@@ -109,7 +110,7 @@ public enum AirboatController {
 	 * then drives roughly in an arc towards the waypoint. When it gets within a
 	 * certain range, it will cut power to the boat entirely.
 	 */
-	POINT_AND_SHOOT(new VehicleController() {
+	OLD_POINT_AND_SHOOT(new VehicleController() {
 
 		@Override
 		public void update(VehicleServer server, double dt) {
