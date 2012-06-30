@@ -91,7 +91,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	final double[] _velocityGain = new double[3];
 	double _velocityGainAxis = -1;
 	// UPDATE: new default twist of servo commands rather than "velocities"
-	public static final double[] DEFAULT_TWIST = {1000, 0, 0, 0, 0, 90}; 
+	public static final double[] DEFAULT_TWIST = {1100, 0, 0, 0, 0, 90}; 
 
 	/**
 	 * Inertial state vector, currently containing a 6D pose estimate:
@@ -119,8 +119,9 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * Hard-coded constants used in Yunde's controller and for new implementation of Arduino code.
 	 * CONSTANTS FORMAT: range_min, range_max, servo_min, servo_max
 	 */
-	final double[] r_PID = {5, 0, 30}; // Kp, Ki, Kd
-	final double[] R_CONSTANTS = {-1000, 1000, 150, 30};
+	// UPDATE: 6/30 - Begin experimenting with r_PID constants from original values {5 0 30}
+	final double[] r_PID = {100, 0, 5}; // Kp, Ki, Kd
+	final double[] R_CONSTANTS = {-300, 300, 150, 30};
 	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
 	
 
@@ -171,16 +172,17 @@ public class AirboatImpl extends AbstractVehicleServer {
 			sendState(_utmPose.clone());
 
 			// Call Amarino with new velocities here
-			Amarino.sendDataToArduino(
-					_context,
-					_arduinoAddr,
-					SET_VELOCITY_FN,
-					new float[] { (float) _velocities.dx(),
-							(float) _velocities.dy(), (float) _velocities.dz(),
-							(float) _velocities.drx(),
-							(float) _velocities.dry(),
-							(float) _velocities.drz() });
 			// Yes, I know this looks silly, but Amarino doesn't handle doubles
+			Amarino.sendDataToArduino(
+										_context,
+										_arduinoAddr,
+										SET_VELOCITY_FN,
+										new float[] { (float) _velocities.dx(),
+												(float) _velocities.dy(), (float) _velocities.dz(),
+												(float) _velocities.drx(),
+												(float) _velocities.dry(),
+												(float) _velocities.drz() });
+
 
 			// Log velocities
 			logger.info("VEL: " + _velocities);
@@ -265,7 +267,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
 	/**
-	 * Accessor method for rudder PID constants
+	 * Accessor method for rudder constants
 	 */
 	public double[] getRudderPIDS()
 	{

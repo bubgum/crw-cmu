@@ -5,6 +5,7 @@ import edu.cmu.ri.crw.VehicleController;
 import edu.cmu.ri.crw.VehicleServer;
 import edu.cmu.ri.crw.data.Twist;
 import edu.cmu.ri.crw.data.UtmPose;
+import com.google.code.microlog4android.LoggerFactory;
 
 /**
  * A library of available navigation controllers that are accessible through the
@@ -27,6 +28,8 @@ public enum AirboatController {
 	POINT_AND_SHOOT(new VehicleController() {
 		// variable for monitoring previous destination angle for error calculation 
 		private double prev_angle_destination = 0;
+		private final com.google.code.microlog4android.Logger logger_osman = LoggerFactory
+				.getLogger(); // logger to debug
 		
 		@Override
 		public void update(VehicleServer server, double dt) {
@@ -79,24 +82,36 @@ public enum AirboatController {
 				double[] rudder_consts = server_impl.getRudderConstants();
 				double[] thruster_consts = server_impl.getThrusterConstants();				
 
-				double pos = rudder_pids[0]*(angle_destination - angle_boat) + rudder_pids[2]*(angle_destination_change - drz);
+				double pre_pos = rudder_pids[0]*(angle_destination - angle_boat) + rudder_pids[2]*(angle_destination_change - drz);
+				double pos = pre_pos;
 				// ensure values are within bounds
 				if (pos < rudder_consts[0])
 					pos = rudder_consts[0];
 				else if (pos > rudder_consts[1])
 					pos = rudder_consts[1];
 				
+				
 				pos = AirboatImpl.map(pos, rudder_consts[0], rudder_consts[1], rudder_consts[2], rudder_consts[3]);
 				
 				// THRUST CONTROL SEGMENT
 				// if outside 3m radius, give constant thrust at about 50% of capability
 				double thrust = (thruster_consts[3] + thruster_consts[2])/2;
-				
+				thrust = 1025; // temporary lower thrust
 				// update twist
 				twist.dx(thrust);
 				twist.drz(pos);
+				
+				
+				// UPDATE: 6/28/2012 - moved logger info to here to get better info, specifically the value of pos before it is mapped
+				// UPDATE: 6/29/2012 - changed logger convention to simplify matlab script
+				// log relevant variables 
+				logger_osman.info("DEBUG: " + distanceSq + " " + angle_destination + " " + angle_boat + " " + drz + " " +
+						prev_angle_destination + " " + angle_destination_change + " " + pre_pos + " " + pos + " " + thrust);
+				
+				
 				// update angle error
 				prev_angle_destination = angle_destination;
+				
 				
 				// Set the desired velocity
 				server.setVelocity(twist);
