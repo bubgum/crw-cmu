@@ -120,7 +120,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * CONSTANTS FORMAT: range_min, range_max, servo_min, servo_max
 	 */
 	// UPDATE: 6/30 - Begin experimenting with r_PID constants from original values {5 0 30}
-	final double[] r_PID = {100, 0, 5}; // Kp, Ki, Kd
+	double[] r_PID = {100, 0, 5}; // Kp, Ki, Kd
 	final double[] R_CONSTANTS = {-300, 300, 150, 30};
 	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
 	
@@ -246,9 +246,14 @@ public class AirboatImpl extends AbstractVehicleServer {
 	public void setGains(int axis, double[] k) {
 
 		// Call Amarino here
+		// UPDATE: 7/02 - change the rudder pids in the server code but not the arduino
+		/*
 		Amarino.sendDataToArduino(_context, _arduinoAddr, SET_GAINS_FN,
 				new float[] { (float) axis, (float) k[0], (float) k[1],
 						(float) k[2] });
+		*/
+		if (axis == 5)
+			r_PID = k.clone();
 		logger.info("SETGAINS: " + axis + " " + Arrays.toString(k));
 	}
 	/**

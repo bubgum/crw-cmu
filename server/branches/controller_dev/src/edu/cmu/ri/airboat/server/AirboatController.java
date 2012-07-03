@@ -68,6 +68,7 @@ public enum AirboatController {
 				
 				// use compass information to get heading of the boat
 				double angle_boat = pose.getRotation().toYaw();
+				double angle_between = normalizeAngle(angle_destination - angle_boat);
 				
 				// use gyro information from arduino to get rotation rate of heading
 				double[] _gyroReadings = ((AirboatImpl) server).getGyro();
@@ -80,9 +81,10 @@ public enum AirboatController {
 				AirboatImpl server_impl = (AirboatImpl) server;
 				double[] rudder_pids = server_impl.getRudderPIDS();
 				double[] rudder_consts = server_impl.getRudderConstants();
-				double[] thruster_consts = server_impl.getThrusterConstants();				
-
-				double pre_pos = rudder_pids[0]*(angle_destination - angle_boat) + rudder_pids[2]*(angle_destination_change - drz);
+				double[] thruster_consts = server_impl.getThrusterConstants();
+				
+				// UPDATE: 7/02 - tried to normalize angle to eliminate some of the spastic movement
+				double pre_pos = rudder_pids[0]*(angle_between) + rudder_pids[2]*(angle_destination_change - drz);
 				double pos = pre_pos;
 				// ensure values are within bounds
 				if (pos < rudder_consts[0])
@@ -96,12 +98,12 @@ public enum AirboatController {
 				// THRUST CONTROL SEGMENT
 				// if outside 3m radius, give constant thrust at about 50% of capability
 				double thrust = (thruster_consts[3] + thruster_consts[2])/2;
-				thrust = 1025; // temporary lower thrust
+				thrust = 1325; // temporary lower thrust
 				// update twist
 				twist.dx(thrust);
 				twist.drz(pos);
 				
-				
+				logger_osman.info("Waypoint: " + waypoint);
 				// UPDATE: 6/28/2012 - moved logger info to here to get better info, specifically the value of pos before it is mapped
 				// UPDATE: 6/29/2012 - changed logger convention to simplify matlab script
 				// log relevant variables 

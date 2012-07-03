@@ -266,8 +266,9 @@ public class AirboatControlActivity extends Activity {
 							return new double[][] { {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0} };
 		
 						// Update the PID gains
+						// UPDATE: use pidRudder thrust from server code rather than arduino
 						double[] pidThrust = server.getGains(0);
-						double[] pidRudder = server.getGains(5);
+						double[] pidRudder = _airboatService.getServer().getRudderPIDS();
 						
 						return new double[][] { pidThrust, pidRudder };
 					}
