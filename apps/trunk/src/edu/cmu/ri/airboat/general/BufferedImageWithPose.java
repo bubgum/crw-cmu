@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.cmu.ri.airboat.floodtest;
+package edu.cmu.ri.airboat.general;
 
+import edu.cmu.ri.airboat.floodtest.ImagePanel;
 import edu.cmu.ri.crw.data.UtmPose;
 import java.awt.image.BufferedImage;
 
@@ -13,7 +14,7 @@ import java.awt.image.BufferedImage;
  */
 public class BufferedImageWithPose implements Comparable<BufferedImageWithPose> {
     
-    final BufferedImage img;
+    public final BufferedImage img;
     private final UtmPose pose;
     long c = ImagePanel.count++;
 

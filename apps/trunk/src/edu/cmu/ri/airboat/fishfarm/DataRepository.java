@@ -47,6 +47,9 @@ public class DataRepository {
     private UTMCoord utmMin = null;
     private UTMCoord utmMax = null;
     boolean contoursOn = true;
+    
+    // @todo Actually set this properly
+    boolean contourIsPercentile = true;
     double contourValue = 80.01;
     // @todo Make bounds settable
     double lowerFilterBound = 75.0;
@@ -140,7 +143,13 @@ public class DataRepository {
         // System.out.println("Used " + utmMax.getEasting() + " " + utmMin.getEasting() + " and " + (double) divisions + " to get " + dx);
     }
 
+    double contourPercentile = 0.5;
+    double setContourPercentOfMax() {
+        return setContourPercentOfMax(contourPercentile);
+    }
+    
     double setContourPercentOfMax(double d) {
+        contourPercentile = d;
         try {
             LocationInfo[][] model = locInfo.get(indexOfInterest);
             if (model == null) {
@@ -157,6 +166,10 @@ public class DataRepository {
     }
 
     public double getContourValue() {
+        
+        if (contourIsPercentile)
+            setContourPercentOfMax();
+        
         return contourValue;
     }
 
@@ -227,19 +240,19 @@ public class DataRepository {
     }
     private static Hashtable<String, ArrayList<Double>> prevValues = new Hashtable<String, ArrayList<Double>>();
     private static Hashtable<String, MedianFilterSlidingWindow> filterHash = new Hashtable<String, MedianFilterSlidingWindow>();
-    private String sensorToDisplay = "WATERCANARY";
+    private String sensorToDisplay = "TE";
     private int indexToDisplay = 0;
     private int filterWindow = 30;
-    int count = 0;
+    int count = 0;               
 
     void addData(BoatProxy proxy, SensorData sd, UtmPose _pose) {
 
         try {
             rawData.add(sd);
 
-            if (sensorToDisplay.equalsIgnoreCase(sd.type.toString()) && latestTP != null) {
-                latestTP.setText(sensorToDisplay + " = " + sd.data[indexToDisplay]);
-            }
+            //if (sensorToDisplay.equalsIgnoreCase(sd.type.toString()) && latestTP != null) {
+            latestTP.setText(sd.type.toString() + " = " + df.format(sd.data[indexToDisplay]));
+            //}
 
             for (int i = 0; i < sd.data.length; i++) {
                 String sensorName = "Sensor" + sd.type;
@@ -269,6 +282,8 @@ public class DataRepository {
                     double gt = BoatProxy.computeGTValue(pos.latitude.degrees, pos.longitude.degrees);
                     double est = locInfo.get(indexOfInterest)[i][j].getInterpolatedValue();
 
+                    if (contourIsPercentile) setContourPercentOfMax();
+                    
                     if ((gt > contourValue && est > contourValue) || (gt < contourValue && est < contourValue)) {
                         correct++;
                     }
@@ -757,6 +772,9 @@ public class DataRepository {
                 for (int j = 0; j < data[0].length; j++) {
                     double pureVal = data[i][j].interpolatedValueOfMoreObservations();
 
+                    if (contourIsPercentile)
+                        setContourPercentOfMax();
+                    
                     // Want this to be 1.0 when same, 0 when very different
                     double contourDist = Math.exp(-Math.abs(contourValue - data[i][j].getInterpolatedValue())) / Math.E;
 

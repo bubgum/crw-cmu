@@ -62,6 +62,8 @@ public class FishFarmF extends javax.swing.JFrame {
     public static DefaultComboBoxModel indexCDataModel = new DefaultComboBoxModel();
     edu.cmu.ri.airboat.client.gui.TeleopFrame teleOpFrame = null;
     
+    ImagePanel imageP = new ImagePanel();
+    
     Point dragStart = null;
     Point dragLast = null;
 
@@ -69,14 +71,17 @@ public class FishFarmF extends javax.swing.JFrame {
     public FishFarmF() {
         initComponents();
 
+        imagePContainer.setLayout(new BorderLayout());
+        imagePContainer.add(imageP, BorderLayout.CENTER);
+        
         imgTypeCombo.setModel(new DefaultComboBoxModel(DataRepository.ImageType.values()));
 
         try {
 
-            longMinTF.setText(Preferences.userRoot().get(MIN_LON_S, "?"));
-            longMaxTF.setText(Preferences.userRoot().get(MAX_LON_S, "?"));
-            latMinTF.setText(Preferences.userRoot().get(MIN_LAT_S, "?"));
-            latMaxTF.setText(Preferences.userRoot().get(MAX_LAT_S, "?"));
+            longMinTF.setText(Preferences.userRoot().get(MIN_LON_S, "40.0"));
+            longMaxTF.setText(Preferences.userRoot().get(MAX_LON_S, "41.0"));
+            latMinTF.setText(Preferences.userRoot().get(MIN_LAT_S, "80.0"));
+            latMaxTF.setText(Preferences.userRoot().get(MAX_LAT_S, "81.0"));
 
             mins = LatLon.fromDegrees(Double.parseDouble(latMinTF.getText()), Double.parseDouble(longMinTF.getText()));
             maxs = LatLon.fromDegrees(Double.parseDouble(latMaxTF.getText()), Double.parseDouble(longMaxTF.getText()));
@@ -84,7 +89,7 @@ public class FishFarmF extends javax.swing.JFrame {
             upperBTF.setText(Preferences.userRoot().get(UPPER_BOUND_TF_S, "85.0"));
             lowerBTF.setText(Preferences.userRoot().get(LOWER_BOUND_TF_S, "75.0"));
             
-            contourValueTF.setText(Preferences.userRoot().get(CONTOUR_VALUE_TF_S, "80.0"));
+            contourValueTF.setText(Preferences.userRoot().get(CONTOUR_VALUE_TF_S, "100.0"));
             contourTF.setText(Preferences.userRoot().get(CONTOUR_TF_S, "50.0"));
             
         } catch (AccessControlException e) {
@@ -125,6 +130,7 @@ public class FishFarmF extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent me) {
                 if (me.isShiftDown() && proxyC.getSelectedItem() != null) {                    
                     gov.nasa.worldwind.geom.Position pos = dm.repo.getPositionFor((double)me.getPoint().x/dataViewP.getWidth(), 1.0 - ((double)me.getPoint().y/dataViewP.getHeight()));
+                    System.out.println("HUMAN SET WAYPOINT: " + proxyC.getSelectedItem() + " " + pos);
                     ((FishFarmBoatProxy)proxyC.getSelectedItem()).setWaypoint(pos);
                 }
                  
@@ -200,6 +206,7 @@ public class FishFarmF extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         latestTP = new javax.swing.JTextPane();
         allAutoCB = new javax.swing.JCheckBox();
+        imagePContainer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -234,7 +241,7 @@ public class FishFarmF extends javax.swing.JFrame {
         );
         dataViewPLayout.setVerticalGroup(
             dataViewPLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 609, Short.MAX_VALUE)
+            .add(0, 0, Short.MAX_VALUE)
         );
 
         longMaxTF.setText("jTextField4");
@@ -280,10 +287,10 @@ public class FishFarmF extends javax.swing.JFrame {
             .add(proxyPLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(proxyPLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(proxyC, 0, 199, Short.MAX_VALUE)
+                    .add(proxyC, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, proxyPLayout.createSequentialGroup()
                         .add(21, 21, 21)
-                        .add(autoCB, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                        .add(autoCB, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(teleopB)))
                 .addContainerGap())
@@ -297,7 +304,7 @@ public class FishFarmF extends javax.swing.JFrame {
                 .add(proxyPLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(teleopB)
                     .add(autoCB))
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         algC.setModel(new DefaultComboBoxModel(DataRepository.AutonomyAlgorithm.values()));
@@ -401,6 +408,17 @@ public class FishFarmF extends javax.swing.JFrame {
             }
         });
 
+        org.jdesktop.layout.GroupLayout imagePContainerLayout = new org.jdesktop.layout.GroupLayout(imagePContainer);
+        imagePContainer.setLayout(imagePContainerLayout);
+        imagePContainerLayout.setHorizontalGroup(
+            imagePContainerLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 223, Short.MAX_VALUE)
+        );
+        imagePContainerLayout.setVerticalGroup(
+            imagePContainerLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 334, Short.MAX_VALUE)
+        );
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -412,7 +430,7 @@ public class FishFarmF extends javax.swing.JFrame {
                             .add(latMinTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                             .add(longMinTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 413, Short.MAX_VALUE)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 419, Short.MAX_VALUE)
                             .add(longMaxTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 165, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
                         .add(layout.createSequentialGroup()
@@ -423,54 +441,58 @@ public class FishFarmF extends javax.swing.JFrame {
                         .add(dataViewP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                    .add(proxyP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(jButton1)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(allAutoCB, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, contourP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                    .add(imgTypeCombo, 0, 237, Short.MAX_VALUE)
-                    .add(indexC, 0, 237, Short.MAX_VALUE)
-                    .add(algC, 0, 237, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jScrollPane1)
+                            .add(proxyP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, contourP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(imgTypeCombo, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(indexC, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(algC, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .add(jLabel2)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(lowerBTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .add(jButton1)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(allAutoCB, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .add(layout.createSequentialGroup()
                                 .add(jLabel1)
-                                .add(19, 19, 19)
-                                .add(upperBTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(upperBTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(jLabel2)
+                                .add(18, 18, 18)
+                                .add(lowerBTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .add(layout.createSequentialGroup()
+                        .add(6, 6, 6)
+                        .add(imagePContainer, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(20, 20, 20)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 122, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 14, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(imgTypeCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(algC, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(indexC, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(30, 30, 30)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(imagePContainer, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel1)
+                    .add(upperBTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel2)
+                    .add(lowerBTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(contourP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(upperBTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel1))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(lowerBTF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel2))
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jButton1)
-                    .add(allAutoCB))
+                    .add(allAutoCB)
+                    .add(jButton1))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(proxyP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(11, 11, 11))
@@ -689,6 +711,7 @@ public class FishFarmF extends javax.swing.JFrame {
     private javax.swing.JTextField contourTF;
     private javax.swing.JTextField contourValueTF;
     private javax.swing.JPanel dataViewP;
+    private javax.swing.JPanel imagePContainer;
     private javax.swing.JComboBox imgTypeCombo;
     private javax.swing.JComboBox indexC;
     private javax.swing.JButton jButton1;

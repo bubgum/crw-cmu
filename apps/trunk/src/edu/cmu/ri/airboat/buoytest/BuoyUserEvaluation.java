@@ -11,7 +11,7 @@
 package edu.cmu.ri.airboat.buoytest;
 
 import edu.cmu.ri.airboat.buoytest.BuoyManager.BuoyIDModel;
-import edu.cmu.ri.airboat.floodtest.BufferedImageWithPose;
+import edu.cmu.ri.airboat.general.BufferedImageWithPose;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;

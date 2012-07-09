@@ -57,6 +57,8 @@ public class FishFarmBoatProxy {
                         if (image == null) {
                             System.err.println("Failed to decode image.");
                         }
+                        
+                        ImagePanel.addImage(image, proxy.getPose());
                     } else {
                         System.out.println("Image was null in receivedImage");
                     }

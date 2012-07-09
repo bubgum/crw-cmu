@@ -107,7 +107,7 @@ public class ProxyManager {
         }
 
         public void setCameraRates(double d) {
-            System.out.println("Setting camera speeds to " + d);
+            System.out.println("Setting camera on all boats to have time between frames = " + d);
             for (BoatProxy p : boatProxies) {
                 p._server.stopCamera(null);
                 p._server.startCamera(0, d, 640, 480, null);

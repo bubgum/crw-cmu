@@ -4,7 +4,7 @@
  */
 package edu.cmu.ri.airboat.buoytest;
 
-import edu.cmu.ri.airboat.floodtest.BufferedImageWithPose;
+import edu.cmu.ri.airboat.general.BufferedImageWithPose;
 import edu.cmu.ri.airboat.generalAlmost.ProxyManager;
 import edu.cmu.ri.crw.data.UtmPose;
 import gov.nasa.worldwind.geom.Angle;

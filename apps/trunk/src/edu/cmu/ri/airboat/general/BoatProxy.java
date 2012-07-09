@@ -4,7 +4,7 @@
  */
 package edu.cmu.ri.airboat.general;
 
-import edu.cmu.ri.airboat.floodtest.ImagePanel;
+import edu.cmu.ri.airboat.fishfarm.ImagePanel;
 import edu.cmu.ri.crw.FunctionObserver;
 import edu.cmu.ri.crw.FunctionObserver.FunctionError;
 import edu.cmu.ri.crw.ImageListener;

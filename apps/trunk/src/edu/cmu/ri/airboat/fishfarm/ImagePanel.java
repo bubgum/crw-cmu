@@ -8,14 +8,12 @@
  *
  * Created on Aug 25, 2011, 3:26:00 PM
  */
-package edu.cmu.ri.airboat.floodtest;
+package edu.cmu.ri.airboat.fishfarm;
 
 import edu.cmu.ri.airboat.general.BufferedImageWithPose;
-import edu.cmu.ri.airboat.generalAlmost.ProxyManager;
+import edu.cmu.ri.airboat.general.ProxyManager;
 import edu.cmu.ri.crw.data.UtmPose;
 import java.awt.GridLayout;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +37,7 @@ public class ImagePanel extends javax.swing.JPanel {
             imagesDir = null;
         }
     }
-    final int noPanels = 3;
+    final int noPanels = 1;
     private SingleImagePanel[] imgPanels = new SingleImagePanel[noPanels];
 
     /** Creates new form ImagePanel */

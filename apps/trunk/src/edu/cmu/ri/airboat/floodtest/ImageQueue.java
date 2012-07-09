@@ -4,6 +4,7 @@
  */
 package edu.cmu.ri.airboat.floodtest;
 
+import edu.cmu.ri.airboat.general.BufferedImageWithPose;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
