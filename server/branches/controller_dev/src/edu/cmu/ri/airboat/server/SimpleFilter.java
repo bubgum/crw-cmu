@@ -37,7 +37,7 @@ public class SimpleFilter implements VehicleFilter {
 	long _time = System.currentTimeMillis();
 	
 	protected void predict(long time) {
-		while(_time < time) {
+		/*while(_time < time) {
 			long step = Math.min(time - _time, MAX_STEP_MS);
 			double dt = step / 1000.0;
 			double yaw = _pose.pose.getRotation().toYaw();
@@ -50,13 +50,17 @@ public class SimpleFilter implements VehicleFilter {
 			
 			_time += step;
 		}
+		*/
 	}
 	
 	@Override
 	public synchronized void compassUpdate(double yaw, long time) {
-		predict(time);
+		// predict(time);
 		
-		// On the first compass update, simply take on the initial heading
+		_pose.pose = new Pose3D(_pose.pose.getX(), _pose.pose.getY(), _pose.pose.getZ(), 
+				Quaternion.fromEulerAngles(0, 0, yaw));
+		
+		/*// On the first compass update, simply take on the initial heading
 		if (_isInitializedCompass) {
 			double oldYaw = _pose.pose.getRotation().toYaw();
 			_pose.pose = new Pose3D(_pose.pose.getX(), _pose.pose.getY(), _pose.pose.getZ(), 
@@ -66,6 +70,7 @@ public class SimpleFilter implements VehicleFilter {
 					Quaternion.fromEulerAngles(0, 0, yaw));
 			_isInitializedCompass = true;
 		}
+		*/
 	}
 
 	@Override
@@ -100,8 +105,9 @@ public class SimpleFilter implements VehicleFilter {
 
 	@Override
 	public synchronized void gyroUpdate(double yawVel, long time) {
-		predict(time);
+		/*predict(time);
 		_vels.drz(yawVel);
+		*/
 	}
 
 	@Override

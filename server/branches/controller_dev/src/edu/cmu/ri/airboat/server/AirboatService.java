@@ -95,9 +95,9 @@ public class AirboatService extends Service {
 	
 	// Logger that pipes log information for airboat classes to file
 	private FileAppender _fileAppender; 
-	
-	// Raw accelerometer values (pre-integration with magnetometer)
-    private float[] accelerometerValues;
+    
+    // global variable to reference rotation vector values
+    private float[] rotationMatrix = new float[9];
 
 	/**
 	 * Handles GPS updates by calling the appropriate update.
@@ -134,58 +134,53 @@ public class AirboatService extends Service {
         	}
         }
       };
-    
-    /**
-  	 * Handles accelerometer updates by calling the appropriate update.
-  	 */
-    private final SensorEventListener accelerometerListener = new SensorEventListener() {
-		public void onAccuracyChanged(Sensor arg0, int arg1) {}
-		
+    private final SensorEventListener rotationVectorListener = new SensorEventListener() {
+		@Override
 		public void onSensorChanged(SensorEvent event) {
+			if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR)
+			{
+			// TODO Auto-generated method stub
+			SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values);
+			double yaw = Math.atan2(-rotationMatrix[5], -rotationMatrix[2]);
+			// Log.e("this app", "YAWWWWWW: " + Math.toDegrees(yaw));
 			
-			// Log these values, but do not use them directly in the filter
-			accelerometerValues = event.values;
-			logger.info("ACCELEROMETER: " + Float.toString(event.values[0]) + "," + Float.toString(event.values[1]) + "," + Float.toString(event.values[2]));
-		}
-    };
-    
-    /**
-  	 * Handles magnetometer updates by calling the appropriate update.
-  	 */
-    private final SensorEventListener magneticListener = new SensorEventListener() {
-		float[] R = new float[9];
-		float[] I = new float[9];
-		
-		public void onAccuracyChanged(Sensor arg0, int arg1) {}
-		
-		public void onSensorChanged(SensorEvent event) {
-			if (accelerometerValues == null)
-				return;
-			
-			// Combine magnetometer and accelerometer to get orientation
-			SensorManager.getRotationMatrix(R, I, accelerometerValues, event.values);
-			logger.info("ORIENTATION: " + R);
-			
-			// We want the heading of the boat (the projection of the camera direction)
-			// In world frame: +X = YxZ (roughly east), +Y = magnetic North, +Z = sky
-			// In phone frame: +X = right of phone, +Y = top of phone, +Z = front face of phone
-			// So we need a projection of -Z_phone onto the world-space X-Y plane (for yaw)
-			// /  M[ 0]   M[ 1]   M[ 2]  \ / 0 \ 
-			// |  M[ 3]   M[ 4]   M[ 5]  | | 0 |
-			// \  M[ 6]   M[ 7]   M[ 8]  / \-1 /
-			double yaw = Math.atan2(-R[5], -R[2]);
-			// TODO: compute phone-agnostic roll and pitch
-			// TODO: add magnetic declination compensation (class GeomagneticField)
-			//double xyMag = R[5]*R[5] + R[2]*R[2];
-			//double pitch = Math.atan2(R[8], xyMag);
-			
-			// Extract heading from orientation (in radians) and use in filter
 			if (_airboatImpl != null) {
 				_airboatImpl.filter.compassUpdate(yaw, System.currentTimeMillis());
 				logger.info("COMPASS: " +  yaw);
 			}
+			}
 		}
-    };
+		
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+	};
+    /**
+     * UPDATE: 7/03/12 - Handles gyro updates by calling the appropriate update.
+     */
+    private final SensorEventListener gyroListener = new SensorEventListener() {
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			// TODO Auto-generated method stub
+			/* Convert phone coordinates to world coordinates. use magnetometer and accelerometer to get orientation
+			 * Simple rotation is 90¼ clockwise about positive y axis. Thus, transformation is:
+			// /  M[ 0]   M[ 1]   M[ 2]  \ / values[0] \ = gyroValues[0]
+			// |  M[ 3]   M[ 4]   M[ 5]  | | values[1] | = gyroValues[1]
+			// \  M[ 6]   M[ 7]   M[ 8]  / \ values[2] / = gyroValues[2]
+			// 
+			*/
+			float[] gyroValues = new float[3];
+			gyroValues[0] = rotationMatrix[0] * event.values[0] + rotationMatrix[1] * event.values[1] + rotationMatrix[2] * event.values[2];
+			gyroValues[1] = rotationMatrix[3] * event.values[0] + rotationMatrix[4] * event.values[1] + rotationMatrix[5] * event.values[2];
+			gyroValues[2] = rotationMatrix[6] * event.values[0] + rotationMatrix[7] * event.values[1] + rotationMatrix[8] * event.values[2];
+			
+			if (_airboatImpl != null)
+				_airboatImpl.setPhoneGyro(gyroValues);
+    		//Log.w("this app", "gyroValues with RV: " + Float.toString(gyroValues[0]) + "," + Float.toString(gyroValues[1]) + "," + Float.toString(gyroValues[2]));
+    		//Log.e("this app", "event Values: " + Float.toString(event.values[0]) + "," + Float.toString(event.values[1]) + "," + Float.toString(event.values[2]));
+		}
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+	};
 
 	/**
      * Class for clients to access.  Because we know this service always
@@ -289,10 +284,11 @@ public class AirboatService extends Service {
 		// Hook up to necessary Android sensors
         SensorManager sm; 
         sm = (SensorManager)getSystemService(SENSOR_SERVICE);
-        Sensor compass  = sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        sm.registerListener(magneticListener, compass, SensorManager.SENSOR_DELAY_NORMAL);
-        Sensor accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sm.registerListener(accelerometerListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        //sm.registerListener(magneticListener, compass, SensorManager.SENSOR_DELAY_NORMAL);
+        Sensor gyro = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        sm.registerListener(gyroListener, gyro, SensorManager.SENSOR_DELAY_NORMAL);
+        Sensor rotation_vector = sm.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        sm.registerListener(rotationVectorListener, rotation_vector, SensorManager.SENSOR_DELAY_NORMAL);
         
         // Hook up to the GPS system
         LocationManager gps = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -434,8 +430,9 @@ public class AirboatService extends Service {
 		// Disconnect from the Android sensors
         SensorManager sm; 
         sm = (SensorManager)getSystemService(SENSOR_SERVICE);
-        sm.unregisterListener(magneticListener);
-        sm.unregisterListener(accelerometerListener);
+        //sm.unregisterListener(magneticListener);
+        sm.unregisterListener(gyroListener);
+        sm.unregisterListener(rotationVectorListener);
 		
         // Disconnect from GPS updates
         LocationManager gps;

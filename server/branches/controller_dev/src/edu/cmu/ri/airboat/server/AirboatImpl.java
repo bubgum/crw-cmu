@@ -39,6 +39,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	private static final com.google.code.microlog4android.Logger logger = LoggerFactory
 			.getLogger();
 
+	private final boolean usePhoneGyro = true;
 	private static final String logTag = AirboatImpl.class.getName();
 	public static final int UPDATE_INTERVAL_MS = 200;
 	public static final int NUM_SENSORS = 4;
@@ -116,11 +117,15 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 */
 	final double[] _gyroReadings = new double[3];
 	/**
+	 * Raw gyroscopic readings from the phone gyro. 
+	 */
+	final double[] _gyroPhone = new double[3];
+	/**
 	 * Hard-coded constants used in Yunde's controller and for new implementation of Arduino code.
 	 * CONSTANTS FORMAT: range_min, range_max, servo_min, servo_max
 	 */
 	// UPDATE: 6/30 - Begin experimenting with r_PID constants from original values {5 0 30}
-	double[] r_PID = {100, 0, 5}; // Kp, Ki, Kd
+	double[] r_PID = {100, 0, .5}; // Kp, Ki, Kd
 	final double[] R_CONSTANTS = {-300, 300, 150, 30};
 	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
 	
@@ -261,7 +266,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 */
 	public double[] getGyro()
 	{
-		return _gyroReadings.clone();
+		return (usePhoneGyro) ? _gyroPhone.clone() : _gyroReadings.clone();
 	}
 	/**
 	 * Function that maps a value between one range to a representative value in another range. Use for modifying servo commands
@@ -293,13 +298,17 @@ public class AirboatImpl extends AbstractVehicleServer {
 	{
 		return T_CONSTANTS.clone();
 	}
+	public void setPhoneGyro(float[] gyroValues)
+	{
+		for (int i = 0; i < gyroValues.length; i++)
+			_gyroPhone[i] =  (double) gyroValues[i];
+	}
 	/**
 	 * @see AirboatCommand#isConnected()
 	 */
 	public boolean isConnected() {
 		return _isConnected.get();
 	}
-
 	/**
 	 * Internal function used to set the connection status of this object
 	 * (indicating whether currently in contact with vehicle controller).
@@ -351,10 +360,16 @@ public class AirboatImpl extends AbstractVehicleServer {
 
 			// Update the gyro reading
 			try {
+				// 7/11 - code not active since arduino firmware updated
 				for (int i = 0; i < 3; i++)
 					_gyroReadings[i] = Double.parseDouble(cmd.get(i + 1));
-				filter.gyroUpdate(_gyroReadings[2], System.currentTimeMillis());
+				if (usePhoneGyro)
+					filter.gyroUpdate(_gyroPhone[2], System.currentTimeMillis());
+				else
+					filter.gyroUpdate(_gyroReadings[2], System.currentTimeMillis());
 				logger.info("GYRO: " + cmd);
+				Log.w("this app", "Android GYRO: " + _gyroPhone[0] + " " + _gyroPhone[1] + " " + _gyroPhone[2]);
+				Log.w("this app", "HW GYRO: " + _gyroReadings[0] + " " + _gyroReadings[1]+ " " + _gyroReadings[2]);
 			} catch (NumberFormatException e) {
 				for (int i = 0; i < 3; i++)
 					_gyroReadings[i] = Double.NaN;

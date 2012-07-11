@@ -49,7 +49,7 @@ public enum AirboatController {
 			
 			double distanceSq = planarDistanceSq(pose, waypoint);
 			
-			if (distanceSq < 9)
+			if (distanceSq <= 9)
 			{
 				
 				// If we are "at" the destination, de-queue current waypoint
