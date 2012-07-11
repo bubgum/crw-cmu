@@ -168,9 +168,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 			 * 0) ? currentUpdateMs - _lastUpdateMs : 0; _lastUpdateMs =
 			 * currentUpdateMs;
 			 */
-			// start timer
-			long startnow = android.os.SystemClock.uptimeMillis();
-
 			// Do an intelligent state prediction update here
 			_utmPose = filter.pose(System.currentTimeMillis());
 			logger.info("POSE: " + _utmPose);
@@ -194,12 +191,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 
 			// Send velocities
 			Twist vel = _velocities.clone();
-			sendVelocity(vel);
-			// end timer
-			long endnow = android.os.SystemClock.uptimeMillis();
-			// log elapsed time
-			logger.info("Elapsed Time of run() loop in ms: " + (endnow-startnow));
-			
+			sendVelocity(vel);			
 		}
 	};
 
@@ -723,7 +715,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 					} else if (_waypoints.length == 0) {
 						// If we are finished with waypoints, stop in place
 						sendWaypointUpdate(WaypointState.DONE);
-						setVelocity(new Twist());
+						setVelocity(new Twist(DEFAULT_TWIST));
 						this.cancel();
 						_navigationTask = null;
 					} else {
@@ -764,7 +756,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 				_navigationTask.cancel();
 				_navigationTask = null;
 				_waypoints = new UtmPose[0];
-				setVelocity(new Twist());
+				setVelocity(new Twist(DEFAULT_TWIST));
 			}
 		}
 		sendWaypointUpdate(WaypointState.CANCELLED);
@@ -814,7 +806,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 		_isAutonomous.set(isAutonomous);
 
 		// Set velocities to zero to allow for safer transitions
-		_velocities = new Twist();
+		_velocities = new Twist(DEFAULT_TWIST);
 	}
 
 	/**

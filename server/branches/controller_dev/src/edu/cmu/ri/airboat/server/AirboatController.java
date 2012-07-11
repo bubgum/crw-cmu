@@ -30,6 +30,11 @@ public enum AirboatController {
 		private double prev_angle_destination = 0;
 		private final com.google.code.microlog4android.Logger logger_osman = LoggerFactory
 				.getLogger(); // logger to debug
+		// variables for buffer and integration term
+		final int BUFFER_SIZE = 100;
+		double[] buffer = new double[BUFFER_SIZE];
+		int bIndex = 0;
+		double bSum = 0;
 		
 		@Override
 		public void update(VehicleServer server, double dt) {
@@ -51,6 +56,11 @@ public enum AirboatController {
 			
 			if (distanceSq <= 9)
 			{
+				// if reached the target, reset the buffer and previous angle
+				bIndex = 0;
+				bSum = 0;
+				buffer = new double[BUFFER_SIZE];
+				prev_angle_destination = 0;
 				
 				// If we are "at" the destination, de-queue current waypoint
 				UtmPose[] queuedWaypoints = new UtmPose[waypoints.length - 1];
@@ -76,6 +86,13 @@ public enum AirboatController {
 				
 				// use previous data to get rate of change of destination angle
 				double angle_destination_change = (angle_destination - prev_angle_destination) / dt;
+				double error = angle_between;
+				bIndex++;
+				if (bIndex == BUFFER_SIZE)
+					bIndex = 0;
+				bSum -= buffer[bIndex];
+				bSum += error;
+				buffer[bIndex] = error;
 				
 				// Define PID constants and boundary pos constants
 				AirboatImpl server_impl = (AirboatImpl) server;
@@ -84,7 +101,7 @@ public enum AirboatController {
 				double[] thruster_consts = server_impl.getThrusterConstants();
 				
 				// UPDATE: 7/02 - tried to normalize angle to eliminate some of the spastic movement
-				double pre_pos = rudder_pids[0]*(angle_between) + rudder_pids[2]*(angle_destination_change - drz);
+				double pre_pos = rudder_pids[0]*(angle_between) + rudder_pids[2]*(angle_destination_change - drz) + rudder_pids[1]*bSum;
 				double pos = pre_pos;
 				// ensure values are within bounds
 				if (pos < rudder_consts[0])
@@ -108,7 +125,8 @@ public enum AirboatController {
 				// UPDATE: 6/29/2012 - changed logger convention to simplify matlab script
 				// log relevant variables 
 				logger_osman.info("DEBUG: " + distanceSq + " " + angle_destination + " " + angle_boat + " " + drz + " " +
-						prev_angle_destination + " " + angle_destination_change + " " + pre_pos + " " + pos + " " + thrust);
+						prev_angle_destination + " " + angle_destination_change + " " + pre_pos + " " + pos + " " + thrust
+						+ " " + bSum + " " + rudder_pids[0] + " " + rudder_pids[1] + " " + rudder_pids[2]);
 				
 				
 				// update angle error
