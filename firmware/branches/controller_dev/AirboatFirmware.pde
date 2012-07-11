@@ -71,7 +71,7 @@ void setup()
   amarino.registerFunction(setSampler, SET_SAMPLER_FN);
 
   // Initialize device modules
-  initGyro();
+  // initGyro();
   initRudder();
   initThruster();
   initSampler();
@@ -104,7 +104,7 @@ void loop()
  */
 void update()
 {
-  updateGyro();
+  // updateGyro();
   updateRudder();
   updateThruster();
   updateSampler();
