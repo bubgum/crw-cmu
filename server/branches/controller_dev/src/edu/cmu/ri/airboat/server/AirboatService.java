@@ -38,6 +38,7 @@ import android.os.Debug;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.StrictMode;
 import android.util.Log;
 import at.abraxas.amarino.AmarinoIntent;
 
@@ -204,6 +205,10 @@ public class AirboatService extends Service {
 		// Disable all DNS lookups (safer for private/ad-hoc networks)
 		CrwSecurityManager.loadIfDNSIsSlow();
 		isRunning = true;
+		
+		// Disable strict-mode (TODO: remove this and use handlers)
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
 		
 		// TODO: optimize this to allocate resources up here and handle multiple start commands
 	}
