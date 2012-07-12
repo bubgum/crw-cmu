@@ -303,7 +303,7 @@ public class BoatPanel extends javax.swing.JPanel {
 
         if (teleOpFrame != null && teleOpFrame.isVisible()) {
         } else {
-            teleOpFrame = new TeleopFrame(AsyncVehicleServer.Util.toSync(proxy.getVehicleServer()));
+            teleOpFrame = new TeleopFrame(proxy.getVehicleServer());
             teleOpFrame.setVisible(true);
             System.out.println("Created teleop frame");
         }
@@ -314,7 +314,7 @@ public class BoatPanel extends javax.swing.JPanel {
         if (debugFrame != null && debugFrame.isVisible()) {
         } else {
             BoatDebugPanel boatPanel = new BoatDebugPanel();
-            boatPanel.setServer(AsyncVehicleServer.Util.toSync(proxy.getVehicleServer()));
+            boatPanel.setServer(proxy.getVehicleServer());
 
             JFrame mainFrame = new JFrame();
             mainFrame.setTitle("Boat Debugging Panel");

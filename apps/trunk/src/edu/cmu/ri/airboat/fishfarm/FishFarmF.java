@@ -545,7 +545,7 @@ public class FishFarmF extends javax.swing.JFrame {
     private void teleopBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teleopBActionPerformed
         if ((teleOpFrame != null && teleOpFrame.isVisible()) || proxyC.getSelectedItem() == null) {
         } else {
-            teleOpFrame = new TeleopFrame(AsyncVehicleServer.Util.toSync(((FishFarmBoatProxy) proxyC.getSelectedItem()).getProxy().getVehicleServer()));            
+            teleOpFrame = new TeleopFrame(((FishFarmBoatProxy) proxyC.getSelectedItem()).getProxy().getVehicleServer());            
             teleOpFrame.setVisible(true);
             // System.out.println("Created teleop frame");
         }
@@ -608,7 +608,7 @@ public class FishFarmF extends javax.swing.JFrame {
             FishFarmBoatProxy ffp = (FishFarmBoatProxy) proxyC.getSelectedItem();
             if (ffp != null) {
                 BoatDebugPanel boatPanel = new BoatDebugPanel();
-                boatPanel.setServer(AsyncVehicleServer.Util.toSync(ffp.getVehicleServer()));
+                boatPanel.setServer(ffp.getVehicleServer());
 
                 JFrame mainFrame = new JFrame();
                 mainFrame.setTitle("Boat Debugging Panel");
