@@ -89,7 +89,7 @@ public class SimpleFilter implements VehicleFilter {
 			double z = (utm.pose.getZ() == 0.0) ? _pose.pose.getZ() : utm.pose.getZ();
 			
 			// If we have a bearing, use it as well (yaw != exactly 0 in valid quaternions)
-			Quaternion orientation;
+			/*Quaternion orientation;
 			if (utm.pose.getRotation().toYaw() != 0.0) {
 				double oldYaw = _pose.pose.getRotation().toYaw();
 				double yaw = utm.pose.getRotation().toYaw();
@@ -97,9 +97,10 @@ public class SimpleFilter implements VehicleFilter {
 			} else {
 				orientation = _pose.pose.getRotation();
 			}
-			
+			*/
+			Quaternion orientation = _pose.pose.getRotation();
 			// Create new pose from update
-			_pose.pose = new Pose3D(x,y,z,orientation);
+			 _pose.pose = new Pose3D(x,y,z,orientation);
 		}
 	}
 
