@@ -13,7 +13,7 @@
 
 // Define the pins used to interface with the sensor
 #define SENSOR_RX_PIN 19
-#define SENSOR_PWR_PIN 32
+#define SENSOR_PWR_PIN 45
 
 // Set the sensor reading interval (in 10s of ms)
 #define SENSOR_INTERVAL 100

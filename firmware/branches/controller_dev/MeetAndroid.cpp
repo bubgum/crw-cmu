@@ -19,7 +19,7 @@
 
 // Includes
 #if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
+#include "WProgram.h"
 #else
 #include "WProgram.h"
 #include "WConstants.h"

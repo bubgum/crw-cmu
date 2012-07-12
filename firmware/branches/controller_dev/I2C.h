@@ -31,7 +31,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "Arduino.h"
+#include "WProgram.h"
 #include <inttypes.h>
 
 #ifndef I2C_h
