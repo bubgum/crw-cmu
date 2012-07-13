@@ -14,6 +14,7 @@ import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.util.Log;
 import edu.cmu.ri.crw.VehicleServer;
 import edu.cmu.ri.crw.data.Utm;
@@ -91,6 +92,10 @@ public class AirboatFailsafeService extends Service {
     public void onCreate() {
 		super.onCreate();
 		Log.i(LOG_TAG, "onCreate");
+		
+		// Disable strict-mode (TODO: remove this and use handlers)
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
 		
 		_handler = new Handler();
 		_connectionTest = new ConnectionTest();
@@ -210,7 +215,7 @@ public class AirboatFailsafeService extends Service {
 				synchronized(_homeLock) {
 					Log.i(LOG_TAG, "Failsafe triggered: " + _homePosition);
 					server.setAutonomous(true);
-					server.startWaypoints(new UtmPose[]{_homePosition}, null);
+					server.startWaypoints(new UtmPose[]{_homePosition}, "POINT_AND_SHOOT");
 				}
 			}
 			
