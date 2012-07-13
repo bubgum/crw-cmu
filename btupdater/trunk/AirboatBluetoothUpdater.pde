@@ -3,6 +3,8 @@ int ledPin = 13; // LED connected to digital pin 13
 
 void setup()  
 {
+  delay(1000);
+
   // Setup the LED
   pinMode(ledPin, OUTPUT);
 
@@ -25,7 +27,7 @@ void setup()
 
   // Now send renaming command
   Serial.flush();
-  Serial.print("AT + NAME=AIRBOAT-HW\r\n");
+  Serial.print("AT+NAME=AIRBOAT-HW\r\n");
   digitalWrite(ledPin, LOW);
   
   while (Serial.available() <= 0);
@@ -57,6 +59,7 @@ void setup()
 
 void loop() 
 {
+  delay(500); 
   Serial.print("PING");
-  delay(1000); 
+  delay(500); 
 }
