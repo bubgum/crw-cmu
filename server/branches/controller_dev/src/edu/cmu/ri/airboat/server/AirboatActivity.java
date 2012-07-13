@@ -427,7 +427,7 @@ public class AirboatActivity extends Activity {
 			        			utmLoc.northingValue(SI.METER),
 			        			location.getAltitude(),
 			        			0.0, 0.0, 0.0);
-			        	_homePosition.origin = new Utm(utmLoc.longitudeZone(), utmLoc.latitudeZone() > 'o');
+			        	_homePosition.origin = new Utm(utmLoc.longitudeZone(), utmLoc.latitudeZone() > 'O');
 			        	AirboatFailsafeService.setHome(_homePosition);
 						
 			        	// Now that we have the GPS location, stop listening
