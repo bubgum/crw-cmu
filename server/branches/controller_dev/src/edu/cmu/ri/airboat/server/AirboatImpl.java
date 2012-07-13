@@ -92,7 +92,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	final double[] _velocityGain = new double[3];
 	double _velocityGainAxis = -1;
 	// UPDATE: new default twist of servo commands rather than "velocities"
-	public static final double[] DEFAULT_TWIST = {1100, 0, 0, 0, 0, 90}; 
+	public static final double[] DEFAULT_TWIST = {1000, 0, 0, 0, 0, 90}; 
 
 	/**
 	 * Inertial state vector, currently containing a 6D pose estimate:
@@ -125,7 +125,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * CONSTANTS FORMAT: range_min, range_max, servo_min, servo_max
 	 */
 	// UPDATE: 6/30 - Begin experimenting with r_PID constants from original values {5 0 30}
-	double[] r_PID = {100, 0, .5}; // Kp, Ki, Kd
+	double[] r_PID = {600, 0, 500}; // Kp, Ki, Kd
 	final double[] R_CONSTANTS = {-300, 300, 150, 30};
 	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
 	

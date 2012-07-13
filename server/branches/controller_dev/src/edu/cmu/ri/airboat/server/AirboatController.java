@@ -54,7 +54,7 @@ public enum AirboatController {
 			
 			double distanceSq = planarDistanceSq(pose, waypoint);
 			
-			if (distanceSq <= 9)
+			if (distanceSq <= 25)
 			{
 				// if reached the target, reset the buffer and previous angle
 				bIndex = 0;
