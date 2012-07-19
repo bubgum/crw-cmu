@@ -50,9 +50,6 @@ public class AirboatControlActivity extends Activity {
 	public static final double RUDDER_MIN = -10.0; // Reversed to match +Z rotation. UPDATE: switched back
 	public static final double RUDDER_MAX = 10.0;
 	
-	// UPDATE: new default twist of servo commands rather than "velocities"
-	public static final double[] DEFAULT_TWIST = {1000, 0, 0, 0, 0, 90}; 
-	
 	// Contains a reference to the airboat service, or null if service is not running 
 	private AirboatService _airboatService = null;
 	
@@ -60,7 +57,7 @@ public class AirboatControlActivity extends Activity {
 	private boolean _isBound = false;
 	
 	// Stores current velocity values.
-	private Twist _velocities = new Twist(DEFAULT_TWIST);
+	private Twist _velocities = new Twist(AirboatImpl.DEFAULT_TWIST);
 	
 	// Timing functions to regularly update GUI
 	private Handler _velHandler = null;

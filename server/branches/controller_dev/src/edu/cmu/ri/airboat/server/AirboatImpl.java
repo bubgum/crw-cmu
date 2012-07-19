@@ -40,7 +40,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 			.getLogger();
 	public static final String OBSTACLE = "avoidObstacle";
 
-	private final boolean usePhoneGyro = true;
 	private static final String logTag = AirboatImpl.class.getName();
 	public static final int UPDATE_INTERVAL_MS = 200;
 	public static final int NUM_SENSORS = 4;
@@ -66,13 +65,10 @@ public class AirboatImpl extends AbstractVehicleServer {
 			Double.NaN, Double.NaN };
 
 	// Define Amarino function control codes
-	public static final char GET_GYRO_FN = 'g';
 	public static final char GET_RUDDER_FN = 'r';
 	public static final char GET_THRUST_FN = 't';
 	public static final char GET_TE_FN = 's';
 	public static final char SET_VELOCITY_FN = 'v';
-	public static final char GET_GAINS_FN = 'l';
-	public static final char SET_GAINS_FN = 'k';
 	public static final char GET_DEPTH_FN = 'd';
 	public static final char SET_SAMPLER_FN = 'q';
 	public static final char GET_WATERCANARY_FN = 'w';
@@ -89,10 +85,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 	final Context _context;
 	final String _arduinoAddr;
 	final List<String> _partialCommand = new ArrayList<String>(10);
-	final Object _velocityGainLock = new Object();
-	final double[] _velocityGain = new double[3];
-	double _velocityGainAxis = -1;
-	// UPDATE: new default twist of servo commands rather than "velocities"
 	public static final double[] DEFAULT_TWIST = {1000, 0, 0, 0, 0, 90}; 
 
 	/**
@@ -111,11 +103,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * ry, rz, rPhi, rPsi, rOmega]
 	 */
 	Twist _velocities = new Twist(DEFAULT_TWIST);
-
-	/**
-	 * Raw gyroscopic readings, as reported from the Arduino.
-	 */
-	final double[] _gyroReadings = new double[3];
 	/**
 	 * Raw gyroscopic readings from the phone gyro. 
 	 */
@@ -280,53 +267,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 
 		// Just like Amarino, we use a flag to differentiate channels
 		switch (cmd.get(0).charAt(0)) {
-		case GET_GAINS_FN:
-			// Check size of function
-			if (cmd.size() != 5) {
-				Log.w(logTag, "Received corrupt gain function: " + cmd);
-				return;
-			}
-
-			// Return a set of PID values
-			try {
-				synchronized (_velocityGainLock) {
-					// Read in the axis that was filled in
-					_velocityGainAxis = Double.parseDouble(cmd.get(1));
-
-					// Cast the parameters to double-valued gains
-					for (int i = 0; i < 3; i++)
-						_velocityGain[i] = Double.parseDouble(cmd.get(i + 2));
-
-					// Notify the calling function (this is a synchronous call)
-					_velocityGainLock.notifyAll();
-				}
-			} catch (NumberFormatException e) {
-				Log.w(logTag, "Received corrupt gain function: " + cmd);
-			}
-			break;
-		case GET_GYRO_FN:
-			// Check size of function
-			if (cmd.size() != 4) {
-				Log.w(logTag, "Received corrupt gyro function: " + cmd);
-				return;
-			}
-
-			// Update the gyro reading
-			try {
-				// 7/11 - code not active since arduino firmware updated
-				for (int i = 0; i < 3; i++)
-					_gyroReadings[i] = Double.parseDouble(cmd.get(i + 1));
-				if (usePhoneGyro)
-					filter.gyroUpdate(_gyroPhone[2], System.currentTimeMillis());
-				else
-					filter.gyroUpdate(_gyroReadings[2], System.currentTimeMillis());
-				logger.info("GYRO: " + cmd);	
-			} catch (NumberFormatException e) {
-				for (int i = 0; i < 3; i++)
-					_gyroReadings[i] = Double.NaN;
-				Log.w(logTag, "Received corrupt gyro reading: " + cmd);
-			}
-			break;
 		case GET_RUDDER_FN:
 			logger.info("RUDDER: " + cmd);
 			break;

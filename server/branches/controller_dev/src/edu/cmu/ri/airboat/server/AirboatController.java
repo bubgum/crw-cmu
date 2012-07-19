@@ -2,7 +2,6 @@ package edu.cmu.ri.airboat.server;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import android.util.Log;
 
 
 import robotutils.Pose3D;
@@ -104,7 +103,6 @@ public enum AirboatController {
 				double[] rudder_pids = server_impl.getGains(5);
 				double[] rudder_consts = server_impl.getRudderConstants();
 				
-				// UPDATE: 7/02 - tried to normalize angle to eliminate some of the spastic movement
 				double pre_pos = rudder_pids[0]*(angle_between) + rudder_pids[2]*(angle_destination_change - drz) + rudder_pids[1]*bSum;
 				double pos = pre_pos;
 				// ensure values are within bounds
