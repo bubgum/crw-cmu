@@ -124,8 +124,8 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * Hard-coded constants used in Yunde's controller and for new implementation of Arduino code.
 	 * CONSTANTS FORMAT: range_min, range_max, servo_min, servo_max
 	 */
-	// UPDATE: 6/30 - Begin experimenting with r_PID constants from original values {5 0 30}
 	double[] r_PID = {600, 0, 500}; // Kp, Ki, Kd
+	double [] t_PID = {5, 5, 5};
 	final double[] R_CONSTANTS = {-300, 300, 150, 30};
 	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
 	public static final double CONST_THRUST = 1325;
@@ -201,40 +201,13 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 */
 	@Override
 	public double[] getGains(int axis) {
-
-		// Call Amarino here
-		Amarino.sendDataToArduino(_context, _arduinoAddr, GET_GAINS_FN, axis);
-
-		// Wait for response here (only if connected)
-		if (_isConnected.get()) {
-			synchronized (_velocityGainLock) {
-
-				// Clear any old return value
-				_velocityGainAxis = -1;
-
-				try {
-					// Wait for the correct axis to be filled in,
-					// but if we start getting too backed up, drop calls
-					for (int i = 0; i < 3 && _velocityGainAxis != axis; ++i)
-						_velocityGainLock.wait(RESPONSE_TIMEOUT_MS);
-				} catch (InterruptedException ex) {
-					Log.w(logTag, "Interrupted function: " + GET_GAINS_FN, ex);
-				}
-
-				// If got the appropriate axis, make a copy immediately
-				if (_velocityGainAxis == axis) {
-					double[] output = new double[3];
-					System.arraycopy(_velocityGain, 0, output, 0, output.length);
-					return output;
-				} else {
-					Log.w(logTag, "No response for: " + GET_GAINS_FN);
-					return NAN_GAINS;
-				}
-			}
-		} else {
-			Log.w(logTag, "Not connected, can't perform: " + GET_GAINS_FN);
+		
+		if (axis == 5)
+			return r_PID.clone();
+		else if (axis == 0)
+			return t_PID.clone();
+		else
 			return NAN_GAINS;
-		}
 	}
 
 	/**
@@ -242,16 +215,10 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 */
 	@Override
 	public void setGains(int axis, double[] k) {
-
-		// Call Amarino here
-		// UPDATE: 7/02 - change the rudder pids in the server code but not the arduino
-		/*
-		Amarino.sendDataToArduino(_context, _arduinoAddr, SET_GAINS_FN,
-				new float[] { (float) axis, (float) k[0], (float) k[1],
-						(float) k[2] });
-		*/
 		if (axis == 5)
 			r_PID = k.clone();
+		else if (axis == 0)
+			t_PID = k.clone();
 		logger.info("SETGAINS: " + axis + " " + Arrays.toString(k));
 	}
 	/**
@@ -259,7 +226,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 */
 	public double[] getGyro()
 	{
-		return (usePhoneGyro) ? _gyroPhone.clone() : _gyroReadings.clone();
+		return _gyroPhone.clone();
 	}
 	/**
 	 * Function that maps a value between one range to a representative value in another range. Use for modifying servo commands
@@ -268,13 +235,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 	public static double map(double x, double in_min, double in_max, double out_min, double out_max)
 	{
 	  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-	}
-	/**
-	 * Accessor method for rudder constants
-	 */
-	public double[] getRudderPIDS()
-	{
-		return r_PID.clone();
 	}
 	/**
 	 * Accessor method for rudder constants
