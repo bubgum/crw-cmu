@@ -268,6 +268,7 @@ public class AirboatControlActivity extends Activity {
 						// Update the PID gains
 						// UPDATE: use pidRudder thrust from server code rather than arduino
 						double[] pidThrust = server.getGains(0);
+						// fix below statement; causes server to crash when shut down
 						double[] pidRudder = _airboatService.getServer().getRudderPIDS();
 						
 						return new double[][] { pidThrust, pidRudder };

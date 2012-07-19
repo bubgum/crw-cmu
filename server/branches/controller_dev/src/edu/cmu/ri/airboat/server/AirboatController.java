@@ -1,5 +1,10 @@
 package edu.cmu.ri.airboat.server;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import android.util.Log;
+
+
 import robotutils.Pose3D;
 import edu.cmu.ri.crw.VehicleController;
 import edu.cmu.ri.crw.VehicleServer;
@@ -98,7 +103,6 @@ public enum AirboatController {
 				AirboatImpl server_impl = (AirboatImpl) server;
 				double[] rudder_pids = server_impl.getRudderPIDS();
 				double[] rudder_consts = server_impl.getRudderConstants();
-				double[] thruster_consts = server_impl.getThrusterConstants();
 				
 				// UPDATE: 7/02 - tried to normalize angle to eliminate some of the spastic movement
 				double pre_pos = rudder_pids[0]*(angle_between) + rudder_pids[2]*(angle_destination_change - drz) + rudder_pids[1]*bSum;
@@ -109,30 +113,20 @@ public enum AirboatController {
 				else if (pos > rudder_consts[1])
 					pos = rudder_consts[1];
 				
-				
 				pos = AirboatImpl.map(pos, rudder_consts[0], rudder_consts[1], rudder_consts[2], rudder_consts[3]);
 				
 				// THRUST CONTROL SEGMENT
-				// if outside 3m radius, give constant thrust at about 50% of capability
-				double thrust = (thruster_consts[3] + thruster_consts[2])/2;
-				thrust = 1325; // temporary lower thrust
+				double thrust = AirboatImpl.CONST_THRUST;
 				// update twist
 				twist.dx(thrust);
 				twist.drz(pos);
-				
-				logger_osman.info("Waypoint: " + waypoint);
-				// UPDATE: 6/28/2012 - moved logger info to here to get better info, specifically the value of pos before it is mapped
-				// UPDATE: 6/29/2012 - changed logger convention to simplify matlab script
 				// log relevant variables 
+				logger_osman.info("Waypoint: " + waypoint);
 				logger_osman.info("DEBUG: " + distanceSq + " " + angle_destination + " " + angle_boat + " " + drz + " " +
 						prev_angle_destination + " " + angle_destination_change + " " + pre_pos + " " + pos + " " + thrust
 						+ " " + bSum + " " + rudder_pids[0] + " " + rudder_pids[1] + " " + rudder_pids[2]);
-				
-				
 				// update angle error
 				prev_angle_destination = angle_destination;
-				
-				
 				// Set the desired velocity
 				server.setVelocity(twist);
 				
@@ -223,7 +217,86 @@ public enum AirboatController {
 
 		}
 	}),
-
+	PRIMITIVES(new VehicleController() {
+		private final com.google.code.microlog4android.Logger logger = LoggerFactory
+				.getLogger();
+		private boolean log_boolean = true;
+		@Override
+		public void update(final VehicleServer server, double dt) {
+			server.setVelocity(new Twist(AirboatImpl.DEFAULT_TWIST));
+			
+			final double first_angle = server.getWaypoints()[0].pose.getX();
+			double first_time = server.getWaypoints()[0].pose.getY() * 1000; // convert to ms
+			final double second_angle = server.getWaypoints()[1].pose.getX();
+			double second_time = server.getWaypoints()[1].pose.getY() * 1000; // convert to ms
+			final double thrust = server.getWaypoints()[0].pose.getZ();
+			
+			if (first_time < 0 || second_time < 0)
+			{
+				logger.info("INVALID INPUT: DEFAULT BOTH TO 5 SEC AND 1125 THRUST");
+				first_time = 5000; second_time = 5000;
+			}
+			
+			final Timer t = new Timer();
+			final Timer log = new Timer();
+			
+			TimerTask first_step = new TimerTask() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if (log_boolean) { logger.info("START"); log_boolean = false;}
+					((AirboatImpl) server).setVelocity(new Twist(thrust, 0, 0, 0, 0, first_angle));
+					// when go testing, use AirboatImpl.CONST_THRUST
+				}
+			};
+			TimerTask second_step = new TimerTask() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					((AirboatImpl) server).setVelocity(new Twist(thrust, 0, 0, 0, 0, second_angle));
+					
+				}
+			};
+			TimerTask close = new TimerTask() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if (!log_boolean) {logger.info("END"); log_boolean = true;}
+					((AirboatImpl) server).setVelocity(new Twist(500, 0, 0, 0, 0, 90));
+					((AirboatImpl) server).startWaypoints(new UtmPose[0], "POINT_AND_SHOOT");
+					log.purge();
+					log.cancel();
+					t.purge();
+					t.cancel();
+				}
+			};
+			TimerTask logging = new TimerTask() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					// retrieve state information
+					AirboatImpl server_impl = (AirboatImpl) server;
+					double yawVel = server_impl.getGyro()[2];
+					Pose3D pose = server_impl.getPose().pose;
+					double xPos = pose.getX();
+					double yPos = pose.getY();
+					double heading = pose.getRotation().toYaw();
+					double rudder = server_impl.getVelocity().drz();
+					
+					logger.info("PROCESS: " + " " + rudder + " " + heading + " " + yawVel
+							+ " " + xPos + " " + yPos + " " + thrust);
+				}
+			};
+			
+			t.schedule(first_step, 0);
+			t.schedule(second_step, (long) first_time);
+			t.schedule(close, (long) (first_time + second_time));
+			log.scheduleAtFixedRate(logging, 0, 200); // 200 ms logging rate
+		}
+	}),
+	
 	/**
 	 * This controller shoots a picture only if it moves to a significantly
 	 * different pose

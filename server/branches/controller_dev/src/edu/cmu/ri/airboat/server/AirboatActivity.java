@@ -53,6 +53,7 @@ public class AirboatActivity extends Activity {
 	public static final String KEY_MASTER_URI = "KEY_MASTER_URI";
 	public static final String KEY_BT_ADDR = "KEY_BT_ADDR";
 	public static final String KEY_FAILSAFE_ADDR = "KEY_FAILSAFE_ADDR";
+	public static final String OBSTACLE_DATA = "OBSTACLE_DATA";
 
 	private BroadcastReceiver _amarinoReceiver;
 	private UtmPose _homePosition = new UtmPose();
@@ -271,6 +272,14 @@ public class AirboatActivity extends Activity {
 			public void onClick(View v) {
 				// Start up the debug control activity
 				startActivity(new Intent(AirboatActivity.this, AirboatControlActivity.class));
+				/* Broadcast Receive Test
+				Intent i = new Intent(AirboatImpl.OBSTACLE);
+				i.putExtra(OBSTACLE_DATA, true);
+				
+				Log.e("Osman", "Sent intent when click debug button");
+				sendBroadcast(i);
+				*/
+				// start controller
 			}
 		});
         
@@ -397,7 +406,6 @@ public class AirboatActivity extends Activity {
         final Button homeButton = (Button)findViewById(R.id.HomeButton);
         homeButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				
 				// Turn on GPS, get location, set as the home position
 				final LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 				if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {

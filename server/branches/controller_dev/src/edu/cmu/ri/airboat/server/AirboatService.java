@@ -143,7 +143,6 @@ public class AirboatService extends Service {
 			// TODO Auto-generated method stub
 			SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values);
 			double yaw = Math.atan2(-rotationMatrix[5], -rotationMatrix[2]);
-			// Log.e("this app", "YAWWWWWW: " + Math.toDegrees(yaw));
 			
 			if (_airboatImpl != null) {
 				_airboatImpl.filter.compassUpdate(yaw, System.currentTimeMillis());
@@ -312,11 +311,18 @@ public class AirboatService extends Service {
         amarinoFilter.addAction(AmarinoIntent.ACTION_CONNECTED);
         amarinoFilter.addAction(AmarinoIntent.ACTION_DISCONNECTED);
         sendBroadcast(new Intent(AmarinoIntent.ACTION_GET_CONNECTED_DEVICES));
+        
+        // Create a filter to listen for obstacle avoidance instructions
+        IntentFilter obstacleFilter = new IntentFilter();
+        obstacleFilter.addAction(AirboatImpl.OBSTACLE);
 		
 		// Create the data object
 		_airboatImpl = new AirboatImpl(this, _arduinoAddr);
 		registerReceiver(_airboatImpl.dataCallback, new IntentFilter(AmarinoIntent.ACTION_RECEIVED));
 		registerReceiver(_airboatImpl.connectionCallback, amarinoFilter);
+		registerReceiver(_airboatImpl.avoidObstacle, obstacleFilter);
+		//Log.e("Osman", "Registered the Listener");
+		
 		
 		// Start up UDP vehicle service in the background
 		new Thread(new Runnable() {
@@ -435,7 +441,6 @@ public class AirboatService extends Service {
 		// Disconnect from the Android sensors
         SensorManager sm; 
         sm = (SensorManager)getSystemService(SENSOR_SERVICE);
-        //sm.unregisterListener(magneticListener);
         sm.unregisterListener(gyroListener);
         sm.unregisterListener(rotationVectorListener);
 		
@@ -448,6 +453,7 @@ public class AirboatService extends Service {
 		if (_airboatImpl != null) {
 			unregisterReceiver(_airboatImpl.dataCallback);
 			unregisterReceiver(_airboatImpl.connectionCallback);
+			unregisterReceiver(_airboatImpl.avoidObstacle);
 			_airboatImpl.setConnected(false);
 			_airboatImpl.shutdown();
 			_airboatImpl = null;

@@ -38,6 +38,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 
 	private static final com.google.code.microlog4android.Logger logger = LoggerFactory
 			.getLogger();
+	public static final String OBSTACLE = "avoidObstacle";
 
 	private final boolean usePhoneGyro = true;
 	private static final String logTag = AirboatImpl.class.getName();
@@ -109,7 +110,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * Inertial velocity vector, containing a 6D angular velocity estimate: [rx,
 	 * ry, rz, rPhi, rPsi, rOmega]
 	 */
-	//UPDATE: instantiate with expected resting servo commands
 	Twist _velocities = new Twist(DEFAULT_TWIST);
 
 	/**
@@ -128,6 +128,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	double[] r_PID = {600, 0, 500}; // Kp, Ki, Kd
 	final double[] R_CONSTANTS = {-300, 300, 150, 30};
 	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
+	public static final double CONST_THRUST = 1325;
 	
 
 	/**
@@ -359,15 +360,12 @@ public class AirboatImpl extends AbstractVehicleServer {
 					filter.gyroUpdate(_gyroPhone[2], System.currentTimeMillis());
 				else
 					filter.gyroUpdate(_gyroReadings[2], System.currentTimeMillis());
-				logger.info("GYRO: " + cmd);
-				Log.w("this app", "Android GYRO: " + _gyroPhone[0] + " " + _gyroPhone[1] + " " + _gyroPhone[2]);
-				Log.w("this app", "HW GYRO: " + _gyroReadings[0] + " " + _gyroReadings[1]+ " " + _gyroReadings[2]);
+				logger.info("GYRO: " + cmd);	
 			} catch (NumberFormatException e) {
 				for (int i = 0; i < 3; i++)
 					_gyroReadings[i] = Double.NaN;
 				Log.w(logTag, "Received corrupt gyro reading: " + cmd);
 			}
-
 			break;
 		case GET_RUDDER_FN:
 			logger.info("RUDDER: " + cmd);
@@ -466,6 +464,26 @@ public class AirboatImpl extends AbstractVehicleServer {
 			break;
 		}
 	}
+	
+	/**
+	 * Receiver to hear incoming commands to avoid an obstacle. Manipulates data into a list to pass to
+	 * the appropriate controller
+	 */
+	public BroadcastReceiver avoidObstacle = new BroadcastReceiver()
+	{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+				Log.e("Osman","Broadcast Receiver successfully getting intent of the specific action");
+				boolean value = intent.getBooleanExtra(AirboatActivity.OBSTACLE_DATA, false);
+				if (value)
+					Log.e("Osman","Successfully pulled true from the intent");
+				else
+					Log.e("Osman","Failed to pull true from the intent");
+		}
+		
+	};
 
 	/**
 	 * Waits for incoming Amarino data from our device, assembles it into a list
@@ -661,7 +679,6 @@ public class AirboatImpl extends AbstractVehicleServer {
 	public UtmPose getPose() {
 		return _utmPose;
 	}
-
 	/**
 	 * Takes a 6D vehicle pose, does appropriate internal computation to change
 	 * the current estimate of vehicle state to match the specified pose. Used
@@ -689,62 +706,73 @@ public class AirboatImpl extends AbstractVehicleServer {
 		Log.i(logTag,
 				"Starting waypoints with " + controller + ": "
 						+ Arrays.toString(waypoints));
-
-		// Create a waypoint navigation task
-		TimerTask newNavigationTask = new TimerTask() {
-			final double dt = (double) UPDATE_INTERVAL_MS / 1000.0;
-
-			// Retrieve the appropriate controller in initializer
-			VehicleController vc = AirboatController.STOP.controller;
-			{
-				try {
-					vc = (controller == null) ? vc : AirboatController.valueOf(controller).controller;
-				} catch (IllegalArgumentException e) {
-					Log.w(logTag, "Unknown controller specified (using " + vc
-							+ " instead): " + controller);
-				}
-			}
-
-			@Override
-			public void run() {
-				synchronized (_navigationLock) {
-					if (!_isAutonomous.get()) {
-						// If we are not autonomous, do nothing
-						sendWaypointUpdate(WaypointState.PAUSED);
-						return;
-					} else if (_waypoints.length == 0) {
-						// If we are finished with waypoints, stop in place
-						sendWaypointUpdate(WaypointState.DONE);
-						setVelocity(new Twist(DEFAULT_TWIST));
-						this.cancel();
-						_navigationTask = null;
-					} else {
-						// If we are still executing waypoints, use a
-						// controller to figure out how to get to waypoint
-						// TODO: measure dt directly instead of approximating
-						vc.update(AirboatImpl.this, dt);
-						sendWaypointUpdate(WaypointState.GOING);
-					}
-				}
-			}
-		};
-
-		synchronized (_navigationLock) {
-			// Change waypoints to new set of waypoints
+		if (controller.equalsIgnoreCase("PRIMITIVES"))
+		{
 			_waypoints = new UtmPose[waypoints.length];
 			System.arraycopy(waypoints, 0, _waypoints, 0, _waypoints.length);
-
-			// Cancel any previous navigation tasks
-			if (_navigationTask != null)
-				_navigationTask.cancel();
-
-			// Schedule this task for execution
-			_navigationTask = newNavigationTask;
-			_navigationTimer.scheduleAtFixedRate(_navigationTask, 0, UPDATE_INTERVAL_MS);
+			VehicleController vc = AirboatController.valueOf(controller).controller;
+			vc.update(AirboatImpl.this, (double) UPDATE_INTERVAL_MS / 1000.0);
 		}
+		else
+		{
 
-		// Report the new waypoint in the log file
-		logger.info("NAV: " + controller + " " + Arrays.toString(waypoints));
+
+			// Create a waypoint navigation task
+			TimerTask newNavigationTask = new TimerTask() {
+				final double dt = (double) UPDATE_INTERVAL_MS / 1000.0;
+
+				// Retrieve the appropriate controller in initializer
+				VehicleController vc = AirboatController.STOP.controller;
+				{
+					try {
+						vc = (controller == null) ? vc : AirboatController.valueOf(controller).controller;
+					} catch (IllegalArgumentException e) {
+						Log.w(logTag, "Unknown controller specified (using " + vc
+								+ " instead): " + controller);
+					}
+				}
+
+				@Override
+				public void run() {
+					synchronized (_navigationLock) {
+						if (!_isAutonomous.get()) {
+							// If we are not autonomous, do nothing
+							sendWaypointUpdate(WaypointState.PAUSED);
+							return;
+						} else if (_waypoints.length == 0) {
+							// If we are finished with waypoints, stop in place
+							sendWaypointUpdate(WaypointState.DONE);
+							setVelocity(new Twist(DEFAULT_TWIST));
+							this.cancel();
+							_navigationTask = null;
+						} else {
+							// If we are still executing waypoints, use a
+							// controller to figure out how to get to waypoint
+							// TODO: measure dt directly instead of approximating
+							vc.update(AirboatImpl.this, dt);
+							sendWaypointUpdate(WaypointState.GOING);
+						}
+					}
+				}
+			};
+
+			synchronized (_navigationLock) {
+				// Change waypoints to new set of waypoints
+				_waypoints = new UtmPose[waypoints.length];
+				System.arraycopy(waypoints, 0, _waypoints, 0, _waypoints.length);
+
+				// Cancel any previous navigation tasks
+				if (_navigationTask != null)
+					_navigationTask.cancel();
+
+				// Schedule this task for execution
+				_navigationTask = newNavigationTask;
+				_navigationTimer.scheduleAtFixedRate(_navigationTask, 0, UPDATE_INTERVAL_MS);
+			}
+
+			// Report the new waypoint in the log file
+			logger.info("NAV: " + controller + " " + Arrays.toString(waypoints));
+		}
 	}
 
 	@Override
