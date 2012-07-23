@@ -111,7 +111,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * Hard-coded constants used in Yunde's controller and for new implementation of Arduino code.
 	 * CONSTANTS FORMAT: range_min, range_max, servo_min, servo_max
 	 */
-	double[] r_PID = {600, 0, 500}; // Kp, Ki, Kd
+	double[] r_PID = {400, 0, 600}; // Kp, Ki, Kd
 	double [] t_PID = {5, 5, 5};
 	final double[] R_CONSTANTS = {-300, 300, 150, 30};
 	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
