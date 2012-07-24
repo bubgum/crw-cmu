@@ -274,6 +274,14 @@ public class AirboatActivity extends Activity {
 			}
 		});
         
+        final Button obstAvoidanceButton = (Button)findViewById(R.id.obstAvoidanceButton);
+        obstAvoidanceButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				// Start up the debug control activity
+				startActivity(new Intent(AirboatActivity.this, AirboatObstAvoidanceActivity.class));
+			}
+		});
+        
         // Register handler for failsafe address that changes color 
 		// if a valid hostname seems to be reached.
 		// TODO: Move this to its own class!

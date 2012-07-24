@@ -3,9 +3,10 @@
       android:versionCode="1"
       android:versionName="1.0" package="edu.cmu.ri.airboat.server">
 
-<uses-sdk android:targetSdkVersion="15" android:minSdkVersion="15"/>
+<uses-sdk android:targetSdkVersion="15" android:minSdkVersion="8"/>
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.WRITE_SETTINGS" />
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -21,6 +22,8 @@
 </activity>
 <activity android:label="Airboat Control" android:icon="@drawable/icon" android:name="AirboatControlActivity"></activity>
 <activity android:label="Airboat Camera" android:icon="@drawable/icon" android:name="AirboatCameraActivity" android:screenOrientation="nosensor" android:configChanges="keyboardHidden|orientation"></activity>
+
+<activity android:label="Airboat Obstacle Avoidance" android:icon="@drawable/icon" android:name="AirboatObstAvoidanceActivity" android:screenOrientation="user" android:configChanges="keyboardHidden|orientation"></activity>
 </application>
 
 
