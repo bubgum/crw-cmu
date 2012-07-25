@@ -2,6 +2,14 @@ package edu.cmu.ri.airboat.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.measure.unit.NonSI;
+import javax.measure.unit.SI;
+
+import org.jscience.geography.coordinates.LatLong;
+import org.jscience.geography.coordinates.UTM;
+import org.jscience.geography.coordinates.crs.ReferenceEllipsoid;
 
 import robotutils.Pose3D;
 import android.app.Notification;
@@ -11,11 +19,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.Toast;
 import edu.cmu.ri.crw.VehicleServer;
 import edu.cmu.ri.crw.data.Utm;
 import edu.cmu.ri.crw.data.UtmPose;
@@ -67,6 +80,10 @@ public class AirboatFailsafeService extends Service {
 	// Public field that indicates if service is started
 	public static volatile boolean isRunning = false;
 	
+	
+	// Flag for checking the click of the SetHome button
+	public static int checkSetHome = 0;
+	
 	/**
 	 * Helper class that contains intent tag names.
 	 */
@@ -104,6 +121,18 @@ public class AirboatFailsafeService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
     	super.onStartCommand(intent, flags, startId);
+    	
+    	Context toastContext = getApplicationContext();
+    	CharSequence text = "You have not set the home yet! \n Setting current location as Home position.";
+    	int duration = Toast.LENGTH_SHORT;
+
+    	Toast toast = Toast.makeText(toastContext, text, duration);
+    	// Remind the user about setting home if already not set
+    	if(checkSetHome == 0)
+    	{
+    		toast.show();
+    		changeCoordinate();
+    	}
     	
 		// Ignore startup requests that don't include an intent
 		if (intent == null) {
@@ -158,8 +187,77 @@ public class AirboatFailsafeService extends Service {
         // stopped, so return sticky.
         return START_STICKY;
     }
-
+    
+	private static final String logTag2 = AirboatActivity.class.getName();
+    
+    // Method to change coordinate position if the user does not click the setHome button
+    public void changeCoordinate() {
+    	
+    	// Turn on GPS, get location, set as the home position
+		final LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			Toast.makeText(getApplicationContext(),
+					"GPS must be turned on to set home location.",
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		final AtomicBoolean gotHome = new AtomicBoolean(false); 
+		final LocationListener ll = new LocationListener() {
+			
+			public void onStatusChanged(String provider, int status, Bundle extras) {}
+			public void onProviderEnabled(String provider) {}
+			public void onProviderDisabled(String provider) {}
+			
+			@Override
+			public void onLocationChanged(Location location) {
+				
+				// Convert from lat/long to UTM coordinates
+	        	UTM utmLoc = UTM.latLongToUtm(
+	        				LatLong.valueOf(location.getLatitude(), location.getLongitude(), NonSI.DEGREE_ANGLE), 
+	        				ReferenceEllipsoid.WGS84
+	        			);
+	        	_homePosition.pose = new Pose3D(
+	        			utmLoc.eastingValue(SI.METER),
+	        			utmLoc.northingValue(SI.METER),
+	        			location.getAltitude(),
+	        			0.0, 0.0, 0.0);
+	        	_homePosition.origin = new Utm(utmLoc.longitudeZone(), utmLoc.latitudeZone() > 'o');
+	        	setHome(_homePosition);
+				
+	        	// Now that we have the GPS location, stop listening
+	        	Toast.makeText(getApplicationContext(),
+						"Home location set to: " + utmLoc,
+						Toast.LENGTH_SHORT).show();
+	        	Log.i(logTag2, "Set home to " + utmLoc);
+				locationManager.removeUpdates(this);
+				gotHome.set(true);
+			}
+		};
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+		
+		// Cancel GPS fix after a while
+		final Handler _handler = new Handler();
+		_handler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (!gotHome.get()) {
+					// Cancel GPS lookup after 5 seconds
+					locationManager.removeUpdates(ll);
+					
+					// Report failure to set home
+		        	Toast.makeText(getApplicationContext(),
+							"Home location not set: no GPS fix.",
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		}, 5000);
+    	
+    }
+    
 	public static void setHome(UtmPose pose) {
+		checkSetHome = 1;
 		synchronized (_homeLock) {
 			_homePosition = pose.clone();
 		}
@@ -262,3 +360,4 @@ public class AirboatFailsafeService extends Service {
     }
 
 }
+	

@@ -151,16 +151,30 @@ public enum AirboatController {
 		public void update(final VehicleServer server, double dt) {
 			server.setVelocity(new Twist(AirboatImpl.DEFAULT_TWIST));
 			
-			final double first_angle = server.getWaypoints()[0].pose.getX();
-			double first_time = server.getWaypoints()[0].pose.getY() * 1000; // convert to ms
-			final double second_angle = server.getWaypoints()[1].pose.getX();
-			double second_time = server.getWaypoints()[1].pose.getY() * 1000; // convert to ms
-			final double thrust = server.getWaypoints()[0].pose.getZ();
+			final double[] first = new double[3]; // angle, time, thrust
+			first[0] = server.getWaypoints()[0].pose.getX();
+			first[1] = server.getWaypoints()[0].pose.getY() * 1000; // convert to ms
+			first[2] = server.getWaypoints()[0].pose.getZ();
 			
-			if (first_time < 0 || second_time < 0)
+			final double[] second = new double[3];
+			second[0] = server.getWaypoints()[1].pose.getX();
+			second[1] = server.getWaypoints()[1].pose.getY() * 1000; // convert to ms
+			second[2] = server.getWaypoints()[1].pose.getZ();
+			
+			final double[] third = new double[3]; // angle, time, thrust
+			third[0] = server.getWaypoints()[2].pose.getX();
+			third[1] = server.getWaypoints()[2].pose.getY() * 1000; // convert to ms
+			third[2] = server.getWaypoints()[2].pose.getZ();
+			
+			final double[] fourth = new double[3];
+			fourth[0] = server.getWaypoints()[3].pose.getX();
+			fourth[1] = server.getWaypoints()[3].pose.getY() * 1000; // convert to ms
+			fourth[2] = server.getWaypoints()[3].pose.getZ();
+			
+			if (first[1] < 0 || second[1] < 0 || third[1] < 0 || fourth[1] < 0)
 			{
-				logger.info("INVALID INPUT: DEFAULT BOTH TO 5 SEC AND 1125 THRUST");
-				first_time = 5000; second_time = 5000;
+				logger.info("INVALID INPUT: DEFAULT ALL TO 5 SEC");
+				first[1] = 5000; second[1] = 5000; third[1] = 5000; fourth[1] = 5000;
 			}
 			
 			final Timer t = new Timer();
@@ -171,7 +185,7 @@ public enum AirboatController {
 				public void run() {
 					// TODO Auto-generated method stub
 					if (log_boolean) { logger.info("START"); log_boolean = false;}
-					((AirboatImpl) server).setVelocity(new Twist(thrust, 0, 0, 0, 0, first_angle));
+					((AirboatImpl) server).setVelocity(new Twist(first[2], 0, 0, 0, 0, first[0]));
 					// when go testing, use AirboatImpl.CONST_THRUST
 				}
 			};
@@ -179,7 +193,23 @@ public enum AirboatController {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					((AirboatImpl) server).setVelocity(new Twist(thrust, 0, 0, 0, 0, second_angle));
+					((AirboatImpl) server).setVelocity(new Twist(second[2], 0, 0, 0, 0, second[0]));
+					
+				}
+			};
+			TimerTask third_step = new TimerTask() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					((AirboatImpl) server).setVelocity(new Twist(third[2], 0, 0, 0, 0, third[0]));
+					
+				}
+			};
+			TimerTask fourth_step = new TimerTask() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					((AirboatImpl) server).setVelocity(new Twist(fourth[2], 0, 0, 0, 0, fourth[0]));
 					
 				}
 			};
@@ -210,6 +240,7 @@ public enum AirboatController {
 					double yPos = pose.getY();
 					double heading = pose.getRotation().toYaw();
 					double rudder = server_impl.getVelocity().drz();
+					double thrust = server_impl.getVelocity().dx();
 					
 					logger.info("PROCESS: " + " " + rudder + " " + heading + " " + yawVel
 							+ " " + xPos + " " + yPos + " " + thrust);
@@ -217,8 +248,10 @@ public enum AirboatController {
 			};
 			
 			t.schedule(first_step, 0);
-			t.schedule(second_step, (long) first_time);
-			t.schedule(close, (long) (first_time + second_time));
+			t.schedule(second_step, (long) first[1]);
+			t.schedule(third_step, (long) (first[1] + second[1]));
+			t.schedule(fourth_step, (long) (first[1] + second[1] + third[1]));
+			t.schedule(close, (long) (first[1] + second[1] + third[1] + fourth[1]));
 			log.scheduleAtFixedRate(logging, 0, 200); // 200 ms logging rate
 		}
 	}),
