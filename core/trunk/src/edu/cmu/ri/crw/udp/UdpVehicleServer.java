@@ -1012,6 +1012,7 @@ public class UdpVehicleServer implements AsyncVehicleServer, UdpServer.RequestHa
         try {
             Response response = new Response(ticket, _vehicleServer);
             response.stream.writeUTF(UdpConstants.COMMAND.CMD_GET_GAINS.str);
+            response.stream.writeInt(axis);
             if (obs != null) _ticketMap.put(ticket, obs);
             _udpServer.respond(response);
         } catch (IOException e) {
