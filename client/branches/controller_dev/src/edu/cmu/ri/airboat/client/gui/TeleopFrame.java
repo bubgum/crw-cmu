@@ -24,7 +24,7 @@ public class TeleopFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Create components for controlling the boat
-        final DrivePanel drivePanel = new DrivePanel();
+        final DrivePanel drivePanel = new OsmanDrivePanel();
         final PidPanel thrustPanel = new PidPanel(0);
         final PidPanel rudderPanel = new PidPanel(5);
         

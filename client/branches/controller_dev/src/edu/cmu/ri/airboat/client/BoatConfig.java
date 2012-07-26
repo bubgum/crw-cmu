@@ -7,6 +7,7 @@ package edu.cmu.ri.airboat.client;
 
 import edu.cmu.ri.airboat.client.gui.PidPanel;
 import edu.cmu.ri.airboat.client.gui.DrivePanel;
+import edu.cmu.ri.airboat.client.gui.OsmanDrivePanel;
 import edu.cmu.ri.crw.AsyncVehicleServer;
 import edu.cmu.ri.crw.CrwNetworkUtils;
 import edu.cmu.ri.crw.CrwSecurityManager;
@@ -47,7 +48,7 @@ public class BoatConfig {
         System.out.println("Local dummy server started: " + testServer.getSocketAddress());
         
         // Create components for controlling the boat
-        final DrivePanel drivePanel = new DrivePanel();
+        final DrivePanel drivePanel = new OsmanDrivePanel();
         final PidPanel thrustPanel = new PidPanel(0);
         final PidPanel rudderPanel = new PidPanel(5);
         final AtomicBoolean isConnected = new AtomicBoolean();

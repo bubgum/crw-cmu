@@ -5,13 +5,7 @@
 
 package edu.cmu.ri.airboat.client;
 
-import edu.cmu.ri.airboat.client.gui.AirboatComponent;
-import edu.cmu.ri.airboat.client.gui.CameraPanel;
-import edu.cmu.ri.airboat.client.gui.PidPanel;
-import edu.cmu.ri.airboat.client.gui.DrivePanel;
-import edu.cmu.ri.airboat.client.gui.PosePanel;
-import edu.cmu.ri.airboat.client.gui.SimpleWorldPanel;
-import edu.cmu.ri.airboat.client.gui.WaypointPanel;
+import edu.cmu.ri.airboat.client.gui.*;
 import edu.cmu.ri.crw.AsyncVehicleServer;
 import edu.cmu.ri.crw.SimpleBoatSimulator;
 import java.awt.BorderLayout;
@@ -133,7 +127,7 @@ public class BoatDebugPanel extends javax.swing.JPanel {
         private void initComponents() {
             pidThrustPanel = new PidPanel(0);
             pidRudderPanel = new PidPanel(5);
-            drivePanel = new DrivePanel();
+            drivePanel = new OsmanDrivePanel();
 
             //Put everything together, using a vertical BoxLayout
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));

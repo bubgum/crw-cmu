@@ -11,6 +11,9 @@
 
 package edu.cmu.ri.airboat.client.gui;
 
+import edu.cmu.ri.crw.AsyncVehicleServer;
+import edu.cmu.ri.crw.FunctionObserver;
+import java.awt.Color;
 import java.text.DecimalFormat;
 
 /**
@@ -31,10 +34,10 @@ public class PidPanel extends AbstractAirboatPanel {
         setUpdateRate(DEFAULT_UPDATE_MS);
         
         // TODO: Fix this once delays are resolved
-        pSpinner.setEnabled(false);
-        iSpinner.setEnabled(false);
-        dSpinner.setEnabled(false);
-        setButton.setEnabled(false);
+        pSpinner.setEnabled(true);
+        iSpinner.setEnabled(true);
+        dSpinner.setEnabled(true);
+        setButton.setEnabled(true);
     }
 
     /** This method is called from within the constructor to
@@ -167,13 +170,15 @@ public class PidPanel extends AbstractAirboatPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setButtonActionPerformed
-        if (_vehicle != null) {
-            _vehicle.setGains(_axis, new double[]{
-                (Double)pSpinner.getValue(),
-                (Double)iSpinner.getValue(),
+
+        if (_vehicle != null)
+        {
+            double[] newGains = {
+                (Double)pSpinner.getValue(), 
+                (Double)iSpinner.getValue(), 
                 (Double)dSpinner.getValue()
-            }, null);
-            update();
+            };
+            _vehicle.setGains(_axis, newGains, null);
         }
     }//GEN-LAST:event_setButtonActionPerformed
 
@@ -204,20 +209,37 @@ public class PidPanel extends AbstractAirboatPanel {
      * Performs periodic updates of the GUI elements
      */
     public void update() {
+        
         if (_vehicle != null) {
+            _vehicle.getGains(_axis, new FunctionObserver<double[]>() {
+                public void completed(double[] v) {
+                    double[] pids = v.clone();
+                    
+                    if (pids[0] == Double.NaN || pids[1] == Double.NaN || pids[2] == Double.NaN)
+                        pids = new double[3];
+                    
+                    
+                    resetButton.setBackground(Color.GREEN);
+                    resetButton.setOpaque(true);
+                    
+                    pLabel.setText(PID_FORMAT.format(pids[0]));
+                    iLabel.setText(PID_FORMAT.format(pids[1]));
+                    dLabel.setText(PID_FORMAT.format(pids[2]));
+                    
+                }
 
-            double[] pids = null; //_vehicle.getGains(_axis);
-            // TODO: what the hell? System.out.println("" + _axis);
-            if (pids == null || pids.length < 3) {
-                return;
-            }
-
-            pLabel.setText(PID_FORMAT.format(pids[0]));
-            iLabel.setText(PID_FORMAT.format(pids[1]));
-            dLabel.setText(PID_FORMAT.format(pids[2]));
-
+                public void failed(FunctionError fe) {
+                    
+                    resetButton.setBackground(Color.RED);
+                    resetButton.setOpaque(true);
+                }
+                
+            });
+            
             PidPanel.this.repaint();
+
         }
+
     }
     
 }

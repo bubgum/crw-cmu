@@ -5,14 +5,7 @@
 
 package edu.cmu.ri.airboat.client;
 
-import edu.cmu.ri.airboat.client.gui.AirboatComponent;
-import edu.cmu.ri.airboat.client.gui.CameraPanel;
-import edu.cmu.ri.airboat.client.gui.ConnectionPanel;
-import edu.cmu.ri.airboat.client.gui.PidPanel;
-import edu.cmu.ri.airboat.client.gui.DrivePanel;
-import edu.cmu.ri.airboat.client.gui.PosePanel;
-import edu.cmu.ri.airboat.client.gui.SimpleWorldPanel;
-import edu.cmu.ri.airboat.client.gui.WaypointPanel;
+import edu.cmu.ri.airboat.client.gui.*;
 import edu.cmu.ri.crw.AsyncVehicleServer;
 import edu.cmu.ri.crw.SimpleBoatSimulator;
 import edu.cmu.ri.crw.VehicleServer;
@@ -39,6 +32,7 @@ public class BoatDebugger extends javax.swing.JFrame {
     private ConnectionPanel _connectPanel;
     private CommandPanel _cmdPanel;
     private ControlPanel _ctrlPanel;
+    private PrimitivesPanel _primitivesPanel;
 
     public BoatDebugger() {
         initComponents();
@@ -52,6 +46,7 @@ public class BoatDebugger extends javax.swing.JFrame {
         _connectPanel = new ConnectionPanel();
         _ctrlPanel = new ControlPanel();
         _cmdPanel = new CommandPanel();
+        _primitivesPanel = new PrimitivesPanel();
 
         // Lay out the command and control panes
         JScrollPane cmdScrollPane = new JScrollPane(_cmdPanel);
@@ -63,10 +58,16 @@ public class BoatDebugger extends javax.swing.JFrame {
         ctrlScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         ctrlScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         ctrlScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        
+        JScrollPane primScrollPane = new JScrollPane(_primitivesPanel);
+        ctrlScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        ctrlScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        ctrlScrollPane.setBorder(BorderFactory.createEmptyBorder());
 
         JTabbedPane configPane = new JTabbedPane();
         configPane.addTab("Command", cmdScrollPane);
         configPane.addTab("Control", ctrlScrollPane);
+        configPane.addTab("Primitives", primScrollPane);
 
         // Set up the connection panel
         _connectPanel.setBorder(BorderFactory.createTitledBorder("Connection"));
@@ -133,10 +134,10 @@ public class BoatDebugger extends javax.swing.JFrame {
     }
 
     private static class ControlPanel extends javax.swing.JPanel implements AirboatComponent {
-
+        
         private PidPanel pidThrustPanel;
         private PidPanel pidRudderPanel;
-        private DrivePanel drivePanel;
+        private DrivePanel drivePanel; 
 
         public ControlPanel() {
             initComponents();
@@ -145,7 +146,7 @@ public class BoatDebugger extends javax.swing.JFrame {
         private void initComponents() {
             pidThrustPanel = new PidPanel(0);
             pidRudderPanel = new PidPanel(5);
-            drivePanel = new DrivePanel();
+            drivePanel = new OsmanDrivePanel();
 
             //Put everything together, using a vertical BoxLayout
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -185,6 +186,7 @@ public class BoatDebugger extends javax.swing.JFrame {
             // When the connection is changed, update all subcomponents
             _cmdPanel.setVehicle(vehicle);
             _ctrlPanel.setVehicle(vehicle);
+            _primitivesPanel.setVehicle(vehicle);
         }
     };
 

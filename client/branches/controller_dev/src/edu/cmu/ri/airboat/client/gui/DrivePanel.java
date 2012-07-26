@@ -59,6 +59,7 @@ public class DrivePanel extends AbstractAirboatPanel {
         jThrustBar = new javax.swing.JProgressBar();
         jAutonomyBox = new ReadOnlyCheckBox();
         jConnectedBox = new ReadOnlyCheckBox();
+        label1 = new java.awt.Label();
 
         jRudder.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -88,6 +89,8 @@ public class DrivePanel extends AbstractAirboatPanel {
         jConnectedBox.setForeground(new java.awt.Color(51, 51, 51));
         jConnectedBox.setText("Connected");
 
+        label1.setText("label1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,6 +109,11 @@ public class DrivePanel extends AbstractAirboatPanel {
                     .addComponent(jRudder, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                     .addComponent(jRudderBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 117, Short.MAX_VALUE)
+                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 117, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,6 +131,11 @@ public class DrivePanel extends AbstractAirboatPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRudderBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 102, Short.MAX_VALUE)
+                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 102, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -151,12 +164,17 @@ public class DrivePanel extends AbstractAirboatPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jAutonomyBox;
     private javax.swing.JCheckBox jConnectedBox;
-    private javax.swing.JSlider jRudder;
-    private javax.swing.JProgressBar jRudderBar;
-    private javax.swing.JSlider jThrust;
-    private javax.swing.JProgressBar jThrustBar;
+    protected javax.swing.JSlider jRudder;
+    protected javax.swing.JProgressBar jRudderBar;
+    protected javax.swing.JSlider jThrust;
+    protected javax.swing.JProgressBar jThrustBar;
+    protected java.awt.Label label1;
     // End of variables declaration//GEN-END:variables
+   
+    
 
+    
+    
     // Callback that handles GUI events that change velocity
     protected void updateVelocity() {
         // Check if there is already a command queued up, if not, queue one up
@@ -196,12 +214,12 @@ public class DrivePanel extends AbstractAirboatPanel {
     }
 
     // Converts from progress bar value to linear scaling between min and max
-    private double fromProgressToRange(int progress, double min, double max) {
+    protected double fromProgressToRange(int progress, double min, double max) {
             return (min + (max - min) * ((double)progress)/100.0);
     }
 
     // Converts from progress bar value to linear scaling between min and max
-    private int fromRangeToProgress(double value, double min, double max) {
+    protected int fromRangeToProgress(double value, double min, double max) {
             return (int)(100.0 * (value - min)/(max - min));
     }
 
