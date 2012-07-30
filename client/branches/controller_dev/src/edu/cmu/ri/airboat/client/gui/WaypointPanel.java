@@ -54,6 +54,7 @@ public class WaypointPanel extends AbstractAirboatPanel {
             public void waypointUpdate(WaypointState ws) {
                 if (ws == WaypointState.DONE) {
                     completedBox.setSelected(true);
+                    
                 }
             }
         }, null);
@@ -194,6 +195,11 @@ public class WaypointPanel extends AbstractAirboatPanel {
                 
                 cancelButton.setEnabled(true);
                 cancelButton.setSelected(false);
+                // if cancel, hide the waypoint and just show the click
+                _worldPanel.waypoint.getAttributes().setOpacity(0.0);
+                _worldPanel.click.getAttributes().setOpacity(1.0);
+                
+                
             }
 
             public void failed(FunctionError fe) {

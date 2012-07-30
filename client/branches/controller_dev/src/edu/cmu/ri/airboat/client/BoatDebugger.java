@@ -13,12 +13,7 @@ import edu.cmu.ri.crw.udp.UdpVehicleService;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 
 /**
  * Provides a comprehensive interface for directly connecting to and interacting

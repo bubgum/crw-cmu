@@ -16,6 +16,9 @@ import edu.cmu.ri.crw.FunctionObserver;
 import edu.cmu.ri.crw.FunctionObserver.FunctionError;
 import edu.cmu.ri.crw.VelocityListener;
 import edu.cmu.ri.crw.data.Twist;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -33,6 +36,9 @@ public class DrivePanel extends AbstractAirboatPanel {
     public static final double THRUST_MAX = 2.0;
     public static final double RUDDER_MIN = 2.5;
     public static final double RUDDER_MAX = -2.5;
+    
+    // Resolution for keyboard controls
+    public static final double RESOLUTION = 50;
 
     // Sets up a flag limiting the rate of velocity command transmission
     public AtomicBoolean _sentVelCommand = new AtomicBoolean(false);
@@ -59,7 +65,8 @@ public class DrivePanel extends AbstractAirboatPanel {
         jThrustBar = new javax.swing.JProgressBar();
         jAutonomyBox = new ReadOnlyCheckBox();
         jConnectedBox = new ReadOnlyCheckBox();
-        label1 = new java.awt.Label();
+        jControlBox = new javax.swing.JCheckBox();
+        messageBox = new javax.swing.JTextField();
 
         jRudder.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -89,7 +96,21 @@ public class DrivePanel extends AbstractAirboatPanel {
         jConnectedBox.setForeground(new java.awt.Color(51, 51, 51));
         jConnectedBox.setText("Connected");
 
-        label1.setText("label1");
+        jControlBox.setText("Controls");
+        jControlBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jControlBoxActionPerformed(evt);
+            }
+        });
+        jControlBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jControlBoxFocusLost(evt);
+            }
+        });
+
+        messageBox.setBackground(javax.swing.UIManager.getDefaults().getColor("InternalFrame.paletteBackground"));
+        messageBox.setEditable(false);
+        messageBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -102,18 +123,21 @@ public class DrivePanel extends AbstractAirboatPanel {
                         .addComponent(jThrust, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jThrustBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jAutonomyBox)
-                            .addComponent(jConnectedBox)))
-                    .addComponent(jRudder, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-                    .addComponent(jRudderBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jAutonomyBox)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jConnectedBox)
+                                            .addComponent(jControlBox))
+                                        .addGap(13, 13, 13))))
+                            .addComponent(messageBox)))
+                    .addComponent(jRudder, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+                    .addComponent(jRudderBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 117, Short.MAX_VALUE)
-                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 117, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,17 +149,17 @@ public class DrivePanel extends AbstractAirboatPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jAutonomyBox)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jConnectedBox)))
+                        .addComponent(jConnectedBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jControlBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(messageBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRudder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRudderBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 102, Short.MAX_VALUE)
-                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 102, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -161,14 +185,74 @@ public class DrivePanel extends AbstractAirboatPanel {
         }
     }//GEN-LAST:event_jAutonomyBoxActionPerformed
 
+    private void jControlBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jControlBoxActionPerformed
+        //first, ensure that vehicle is connected
+        KeyListener kl = new KeyListener() {
+            public void keyTyped(KeyEvent ke) {}
+            public void keyPressed(KeyEvent ke) {
+                if (ke.getKeyCode() == KeyEvent.VK_UP) {
+                    messageBox.setBackground(Color.YELLOW);
+                    messageBox.setText("Faster");
+                    int new_thrust = (int) (jThrust.getValue() + (jThrust.getMaximum() - jThrust.getMinimum())/RESOLUTION);
+                    jThrust.setValue(new_thrust);
+                }
+                else if (ke.getKeyCode() == KeyEvent.VK_DOWN) {
+                    messageBox.setBackground(Color.BLUE);
+                    messageBox.setText("Slower");
+                    int new_thrust = (int) (jThrust.getValue() - (jThrust.getMaximum() - jThrust.getMinimum())/RESOLUTION);
+                    jThrust.setValue(new_thrust);
+                }
+                else if (ke.getKeyCode() == KeyEvent.VK_LEFT) {
+                    messageBox.setBackground(Color.GREEN);
+                    messageBox.setText("Turn Left");
+                    int new_rudder = (int) (jRudder.getValue() - (jRudder.getMaximum() - jRudder.getMinimum())/RESOLUTION);
+                    jRudder.setValue(new_rudder);
+                }
+                else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    messageBox.setBackground(Color.RED);
+                    messageBox.setText("Turn Right");
+                    int new_rudder = (int) (jRudder.getValue() + (jRudder.getMaximum() - jRudder.getMinimum())/RESOLUTION);
+                    jRudder.setValue(new_rudder);
+                }
+            }
+            public void keyReleased(KeyEvent ke) {}
+        };
+        if (jControlBox.isSelected()) {
+            if (_vehicle != null) {
+                // if autonomous, change it
+                if (jAutonomyBox.isSelected()) {
+                    jAutonomyBoxActionPerformed(evt);
+                }
+                if (jControlBox.isFocusOwner()) {
+                    messageBox.setBackground(Color.green);
+                }
+                messageBox.setText("Keep Focus on Control Box to Allow Keyboard Controls");
+                jControlBox.addKeyListener(kl);
+            }
+        }
+        else {
+            jControlBox.removeKeyListener(kl);
+        }
+    }//GEN-LAST:event_jControlBoxActionPerformed
+
+    private void jControlBoxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jControlBoxFocusLost
+        // TODO add your handling code here:
+        if (jControlBox.isSelected()) {
+            messageBox.setText("Reselect focus on Control Box to Allow Keyboard Controls");   
+            jControlBox.doClick();
+        }
+        
+    }//GEN-LAST:event_jControlBoxFocusLost
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jAutonomyBox;
     private javax.swing.JCheckBox jConnectedBox;
+    private javax.swing.JCheckBox jControlBox;
     protected javax.swing.JSlider jRudder;
     protected javax.swing.JProgressBar jRudderBar;
     protected javax.swing.JSlider jThrust;
     protected javax.swing.JProgressBar jThrustBar;
-    protected java.awt.Label label1;
+    private javax.swing.JTextField messageBox;
     // End of variables declaration//GEN-END:variables
    
     
