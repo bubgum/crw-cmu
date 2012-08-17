@@ -140,10 +140,10 @@
 		/* Initializing UI elements */
 		$(function() {
 			$("#slider").slider({
-				value: 10,
-				min: 5,
-				max: 30,
-   				slide: function(event, ui) {heatmap.setOptions({radius:ui.value}) }
+				value: 3,
+				min: 0.25,
+				max: 10,
+		slide: function(event, ui) {circleRadius = ui.value; redrawCircles(circleRadius); }
 			});
 			$("#controls").accordion({ autoHeight: false});
 			$("#datepickerStart").datetimepicker({ dateFormat: "yy-mm-dd", showSecond: true, timeFormat: 'hh:mm:ss', showButtonPanel: false });
@@ -160,340 +160,498 @@
   </script>
   
 
-    <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization"></script>
-    <script type="text/javascript">
-      var map, pointarray, heatmap;
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization"></script>
+	<script type="text/javascript">
+		 
+		var hardCoded = false, useFakeTime = false;
+		var map, circleRadius = 3;
+		var circles = [], allData = [], allLat = [], allLon = [];
 
-      var heatMapData = [];
-      
-	  /* Initializing HeatMap */
-      function initialize() {
-        var myOptions = {
-          zoom: 19,
-          center: new google.maps.LatLng(39.49082204234965, -75.78827556766221), //Panther Hollow Coordinates : (40.436847,-79.948551)
-          mapTypeId: google.maps.MapTypeId.SATELLITE
-        };
-
-        map = new google.maps.Map(document.getElementById("map_canvas"),
-            myOptions);
-
-        pointArray = new google.maps.MVCArray(heatMapData);
-
-        heatmap = new google.maps.visualization.HeatmapLayer({
-          data: pointArray,
-          
-        });
-
-        heatmap.setMap(map);
-        heatmap.setOptions({radius:6});
-        
-   		//alert(ToLL(4371542.482658964,432215.51757169154,18).lat + "   " + ToLL(4371542.482658964,432215.51757169154,18).lon);
-      }
-      
-      /* Function to get a list of feeds from cosm
-       * This function gets all the feeds of a certain user on cosm, in this case 'crwcmu'	
-       */
-      function getAllFeeds() {
-      	// Requesting list of feeds in json format
-      	var request = new XMLHttpRequest();
+		/* Initializing map */
+		function initialize() {
+			var myOptions = {
+				zoom: 19,
+				center: new google.maps.LatLng(39.49082204234965, -75.78827556766221), //Panther Hollow Coordinates : (40.436847,-79.948551)
+				mapTypeId: google.maps.MapTypeId.SATELLITE
+			};
+			map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		}
+		
+		/* Function to get a list of feeds from cosm
+		*  This function gets all the feeds of a certain user on cosm, in this case 'crwcmu'	
+		*/
+		function getAllFeeds() {
+			// Requesting list of feeds in json format
+			var request = new XMLHttpRequest();
 			request.open("GET", "http://api.cosm.com/v2/feeds?per_page=1000&user=crwcmu&content=summary", false);
 			request.setRequestHeader("X-ApiKey", "R5USeoIXogxwJxP3L9wZjJo6imySAKw0VGtpZExrNHJyQT0g");
 			request.send(null);
-		
-		//Parsing the json result string
-		var feeds = eval('(' + request.responseText + ')');
-		var sources = [];
-		for(i=0; i<feeds.results.length; i++)
-			sources.push({key:feeds.results[i].title, value:feeds.results[i].id});
-		return sources;
 			
-      }
-      
-      /*Function to check if a given year is a leap year*/
-      function isLeap(year) {
-      	if(year%400 == 0)
-      		return true;
-      	else if( year%100 == 0)
-      		return false;
-      	else if( year%4 == 0)
-      		return true;
-      	else
-      		return false;
-      }
-      
-      /* Function to add 6 hours to the timeStamp passed in.
-       * This function is required as one cannot make API requests on cosm which are longer than 6 hours(If the granuality of the data requested is highest). Thus this function enables us to request data in chunks of 6 hours
-       */
-      function addHours(timeStamp) {
-      	var y, m, d, time;
-      	
-      	// Extract Year, Month, Day and Hour
-      	y = parseInt(timeStamp.substr(0,4), 10);
-      	m = parseInt(timeStamp.substr(5,2), 10);
-      	d = parseInt(timeStamp.substr(8,2), 10);
-      	h = parseInt(timeStamp.substr(11,2), 10);
-      	time = timeStamp.substr(13);
-      	
-      	// Add 6 Hours and check if the day, month and year have changed as a result of this.
-      	h += 6;
-      	if( h >=24 )
-      	{
-      		h -= 24;
-      		d += 1;
-      		
-      		if(d == 32)
-      		{
-      			d = 1;
-      			m++;
-      		}
-      		else if(d == 31 && (m == 2 || m == 4 || m == 6 || m == 9 || m == 11))
-      		{
-      			d = 1;
-      			m++;
-      		}
-      		else if(d == 29 && m == 2 && !isLeap(y))
-      		{
-      			d = 1;
-      			m++;
-      		}
-      		
-      		if( m > 12)
-      		{
-      			m = 1;
-      			y++;
-      		}
-      	}
-      	
-      	// Format the new timestamp
-      	var result = y + "-";
-      	if( m < 10)
-      		result += "0";
-      	result += m + "-";
-      	if( d < 10)
-      		result += "0";
-      	result += d + "T";
-      	if( h < 10)
-      		result += "0";
-      	result += h + time;
-      	
-      	return result;
-      }
-      
-      /* Function to compare two timeStamps.
-       * This will enable us to keep fetching data until we have reached at the end of the requested time period
-       */
-      function compareDates(date1, date2) {
-      		var y1, m1, d1, h1, mi1, s1;
-      		
-      		// Extract individual elements for comparison
-      		y1 = date1.substr(0,4);
-      		m1 = date1.substr(5,2);
-      		d1 = date1.substr(8,2);
-      		h1 = date1.substr(11,2);
-      		mi1 = date1.substr(14,2);
-      		s1 = date1.substr(17,2);
-      		
-      		var y2, m2, d2, h2, mi2, s2;
-      		y2 = date2.substr(0,4);
-      		m2 = date2.substr(5,2);
-      		d2 = date2.substr(8,2);
-      		h2 = date2.substr(11,2);
-      		mi2 = date2.substr(14,2);
-      		s2 = date2.substr(17,2);
-      		
-      		// Compare element by element
-      		if(parseInt(y1, 10) < parseInt(y2, 10))
-      			return -1;
-      		else if(parseInt(y1, 10) > parseInt(y2, 10))
-      			return 1;
-      		else
-      		{
-      			if(parseInt(m1, 10) < parseInt(m2, 10))
-      				return -1;
-      			else if(parseInt(m1, 10) > parseInt(m2, 10))
-      				return 1;
-      			else
-      			{
-      				if(parseInt(d1, 10) < parseInt(d2, 10))
-      					return -1;
-      				else if(parseInt(d1, 10) > parseInt(d2, 10))
-      					return 1;
-      				else
-      				{
-      					if(parseInt(h1, 10) < parseInt(h2, 10))
-      						return -1;
-      					else if(parseInt(h1, 10) > parseInt(h2, 10))
-      						return 1;
-      					else
-      					{
-      						if(parseInt(mi1, 10) < parseInt(mi2, 10))
-      							return -1;
-      						else if(parseInt(mi1, 10) > parseInt(mi2, 10))
-      							return 1;
-      						else
-      						{
-      							if(parseInt(s1, 10) < parseInt(s2, 10))
-      								return -1;
-      							else if(parseInt(s1, 10) > parseInt(s2, 10))
-      								return 1;
-      							else
-      								return 0;
-      						}
-      					}
-      				}
-      			}
-      		}
-      }
-      
-      /* Function to make the actual API requests and create the heat map
-      */
-      function getData() {
-      	
-      	// Get all the request parameters(date, type, source etc)
-      	var feed = $("#sourceSelector").val();
-        var debugBox = document.getElementById("debugInfo");
-        
-        var intervalStart = $.datepicker.formatDate('yy-mm-dd', $("#datepickerStart").datetimepicker("getDate"));
-        var intervalEnd = $.datepicker.formatDate('yy-mm-dd', $("#datepickerEnd").datetimepicker("getDate"));
-        
-        var startTime = $('#datepickerStart').datetimepicker('getDate') + "";
-        var endTime = $('#datepickerEnd').datetimepicker('getDate') + "";
-        intervalStart += "T" + startTime.substr(16,8);
-        intervalEnd += "T" + endTime.substr(16,8);
-                             
-        intervalStart += ".000000Z";
-        intervalEnd   += ".000000Z";
-        
-        debugBox.value = "Start Time: " + intervalStart + "\nEnd Time: " + intervalEnd; 
-        		
-		var x, y, temp, lastValue=500, lastTime = intervalStart;
+			//Parsing the json result string
+			var feeds = eval('(' + request.responseText + ')');
+			var sources = [];
+			for(i=0; i<feeds.results.length; i++)
+				sources.push({key:feeds.results[i].title, value:feeds.results[i].id});
+			return sources;
+		}
 		
-		debugBox.value += "\n\nRequested timeStamp: " + lastTime;
+		/* Function to check if a given year is a leap year */
+		function isLeap(year) {
+			if(year%400 == 0)
+				return true;
+			else if( year%100 == 0)
+				return false;
+			else if( year%4 == 0)
+				return true;
+			else
+				return false;
+		}
 		
-		var allData = [];
-		var allLat = [];
-		var allLon = [];
-		var min = 100000;
-		var max = -100000;
-	
-		var dataType = $("input:checked[name=dataType]").val();
-		while(compareDates(lastTime, intervalEnd) < 0)
-		{
+		/* Function to add 6 hours to the timeStamp passed in.
+		*  This function is required as one cannot make API requests on cosm which are longer than 6 hours(If the granuality of the data requested is highest). Thus this function enables us to request data in chunks of 6 hours
+		*/
+		function incrementTimestamp(timestamp, hInc, miInc, sInc) {
+			var y, m, d, h, mi, s, time;
+			y = parseInt(timestamp.substr(0,4), 10);
+			m = parseInt(timestamp.substr(5,2), 10);
+			d = parseInt(timestamp.substr(8,2), 10);
+			h = parseInt(timestamp.substr(11,2), 10);
+			mi = parseInt(timestamp.substr(14,2), 10);
+			s = parseInt(timestamp.substr(17,2), 10);
+			
+			// Add request hours, miutes, and sonds while checking if the miute, hour, day, month and year change as a result
+			s += Math.max(sInc, 0);
+			while(s >= 60) {
+				mi++;
+				s -= 60;
+			}
+			mi += Math.max(miInc, 0);
+			while(mi >= 60) {
+				h++;
+				mi -= 60;
+			}
+			h += Math.max(hInc, 0);
+			if( h >=24 ) {
+				h -= 24;
+				d += 1;		
+				if(d == 32) {
+					d = 1;
+					m++;
+				} else if(d == 31 && (m == 2 || m == 4 || m == 6 || m == 9 || m == 11)) {
+					d = 1;
+					m++;
+				} else if(d == 29 && m == 2 && !isLeap(y)) {
+					d = 1;
+					m++;
+				}
+				if(m > 12) {
+					m = 1;
+					y++;
+				}
+			}
+			return formatTimestamp(y, m, d, h, mi, s);
+		}
+		
+		function formatTimestamp(y, m, d, h, mi, s) {
+			// Format the new timestamp
+			var timestamp = y + "-";
+			if(m < 10)
+				timestamp += "0";
+			timestamp += m + "-";
+			if(d < 10)
+				timestamp += "0";
+			timestamp += d + "T";
+			if(h < 10)
+				timestamp += "0";
+			timestamp += h + ":";
+			if(mi < 10)
+				timestamp += "0";
+			timestamp += mi + ":";
+			if(s < 10)
+				timestamp += "0";
+			timestamp += s + ".000000Z";
+
+			return timestamp;
+		}
+		
+		/* Converts a timestamp received from the GUI to a Date object */
+		function timestampToDate(timestamp) {
+			// Example timestamp: 2012-07-08T23:00:00.000000Z
+			var y, m, d, h, mi, s, date;
+			y = timestamp.substr(0,4);
+			m = timestamp.substr(5,2) - 1; // January is 0, not 1, in Date format
+			d = timestamp.substr(8,2);
+			h = timestamp.substr(11,2);
+			mi = timestamp.substr(14,2);
+			s = timestamp.substr(17,2);
+			date = new Date(parseInt(y, 10), parseInt(m, 10), parseInt(d, 10), parseInt(h, 10), parseInt(mi, 10), parseInt(s));
+			
+			return date;
+		}
+		
+		/* Converts a timestamp received from the GUI to a Date object */
+		function dateToTimestamp(date) {
+			// Example timestamp: 2012-07-08T23:00:00.000000Z
+			var y, m, d, h, mi, s, timestamp;
+			y = date.getFullYear();
+			m = date.getMonth() + 1;
+			d = date.getDate();
+			h = date.getHours();
+			mi = date.getMinutes();
+			s = date.getSeconds();
+			
+			return formatTimestamp(y, m, d, h, mi, s);
+		}
+		
+		/* Function to grab the time period data from the gui and make the actual API requests to draw sensor data on the map */ 
+		function startDataRetreival() {
+			var feed, dataType, intervalStartTimestamp, intervalEndTimestamp, startTime, endTime;
+			if(!hardCoded) {
+				// Get all the request parameters(date, type, source etc)
+				feed = $("#sourceSelector").val();
+				dataType = $("input:checked[name=dataType]").val();
+				intervalStartTimestamp = $.datepicker.formatDate('yy-mm-dd', $("#datepickerStart").datetimepicker("getDate"));
+				intervalEndTimestamp = $.datepicker.formatDate('yy-mm-dd', $("#datepickerEnd").datetimepicker("getDate"));
+				startTime = $('#datepickerStart').datetimepicker('getDate') + "";
+				endTime = $('#datepickerEnd').datetimepicker('getDate') + "";
+			} else {
+				// Hard coded values for testing dataset without entering GUI values each time
+				feed = "68677";
+				//feed = "66719";
+				dataType = $("input:checked[name=dataType]").val();
+				intervalStartTimestamp = "2012-07-08";
+				intervalEndTimestamp = "2012-07-09";
+				startTime = "Sun Jul 08 2012 00:00:00 GMT-0400 (Eastern Daylight Time)";
+				endTime = "Sun Jul 09 2012 00:00:00 GMT-0400 (Eastern Daylight Time)";
+			}
+
+			var debugBox = document.getElementById("debugInfo");			
+			debugBox.value = "Box values: " + feed + "," + intervalStartTimestamp+","+intervalEndTimestamp+","+startTime+","+endTime;
+			intervalStartTimestamp += "T" + startTime.substr(16,8) + ".000000Z";
+			intervalEndTimestamp += "T" + endTime.substr(16,8) + ".000000Z";
+			debugBox.value += "\nStart Time: " + intervalStartTimestamp + "\nEnd Time: " + intervalEndTimestamp; 
+			console.log("Start Time: " + intervalStartTimestamp + ", End Time: " + intervalEndTimestamp);
+					
+			var intervalStartDate = timestampToDate(intervalStartTimestamp);	// Beginning Date of the requested time period
+			var intervalEndDate = timestampToDate(intervalEndTimestamp);	// Ending Date of the requested time period
+			var latestTimestamp = intervalStartTimestamp;
+			var latestDate = timestampToDate(latestTimestamp);	// Latest Date we have requested data for	
+			
+			clearCircles();	// Remove any data points that have been previously drawn
+			allData = [], allLat = [], allLon = [];	// Data storage objects
+			var startIndex = 0;	// Reset drawing start index
+			var minVal = 100000;	// Reset min value
+			var maxVal = -100000;	// Reset max value
+			
+			var currentDate;
+			if(!useFakeTime) {
+				currentDate = new Date();
+			} else {
+				// Hard coded timestamps for testing real-time polling from an old data set
+				var fakeTimestamp = "2012-07-08";			
+				var fakeTime = "Sun Jul 08 2012 17:00:00 GMT-0400 (Eastern Daylight Time)";
+				fakeTimestamp += "T" + fakeTime.substr(16,8) + ".000000Z";
+				currentDate = timestampToDate(fakeTimestamp);
+			}
+			
+			if(intervalEndDate.getTime() > currentDate.getTime()) {
+				// First we want to grab all the data that is currently available in large request(s)
+				// Then we will make small, frequent requests to get real-time data
+				lastDate = currentDate;
+				console.log("Real-time polling");
+			} else {
+				lastDate = intervalEndDate;
+				console.log("No real-time-data polling needed");
+			}
+		
+			// Get number of seconds between the starting date and the ending date
+			var diff = parseInt((lastDate.getTime() - intervalStartDate.getTime()) / 1000, 10);
+			console.log("diff is " + diff);
+			while(diff > 0) {
+				// Request data segments of up to 6 hours at a time
+				results = getData(feed, dataType, latestTimestamp, Math.min(diff, 60*60*6), minVal, maxVal);
+				latestTimestamp = results[0];
+				minVal = results[1];
+				maxVal = results[2];
+				redraw = results[3];
+				if(redraw) {
+					// Min/max value changed, so erase the circles and reset the drawing index
+					clearCircles();
+					startIndex = 0;
+				}
+				debugBox.value += "\nRequested timeStamp: " + latestTimestamp;
+				latestDate = timestampToDate(latestTimestamp);
+				diff = parseInt((lastDate.getTime() - latestDate.getTime()) / 1000, 10);
+			}
+			debugBox.value += "\nTotal Number of elements fetched: " + allData.length;
+			// Done retrieving data taken in the past, go ahead and draw
+			drawCircles(minVal, maxVal, startIndex);
+			
+			if(lastDate.getTime() != intervalEndDate.getTime()) {
+				// Need to continue polling to get real time data, wait 10 seconds (this is an arbitrary number) between poll requests
+				setTimeout(function(){continuePolling(latestDate, intervalEndDate, feed, dataType, minVal, maxVal, allData.length)}, 10000);
+			}
+		}
+		
+		/* After timeout triggers, grab the data received between current time and lastest time and draw it */
+		function continuePolling(latestDate, intervalEndDate, feed, dataType, minVal, maxVal, startIndex) {
+			var diff ;
+			if(!useFakeTime) {
+				var currentDate = new Date();			
+				diff = parseInt((currentDate.getTime() - latestDate.getTime()) / 1000, 10);
+			} else {
+				// Hard coded diff for testing real-time polling from an old data set
+				diff = 60 * 60;
+			}
+
+			var debugBox = document.getElementById("debugInfo");
+			if(diff > 0) {
+				var latestTimestamp = dateToTimestamp(latestDate);
+				// Request data segments of up to 6 hours at a time
+				results = getData(feed, dataType, latestTimestamp, Math.min(diff, 60*60*6), minVal, maxVal);
+				latestTimestamp = results[0];
+				minVal = results[1];
+				maxVal = results[2];
+				redraw = results[3];
+				if(redraw) {
+					// Min/max value changed, so erase the circles and reset the drawing index
+					clearCircles();
+					startIndex = 0;
+				}
+				latestDate = timestampToDate(latestTimestamp);
+			}
+			debugBox.value += "\nTotal Number of elements fetched: " + allData.length;
+			drawCircles(minVal, maxVal, startIndex);
+			
+			if(latestDate.getTime() != intervalEndDate.getTime()) {
+				// Still need to continue polling to get real time data, wait 10 seconds (this is an arbitrary number) between poll requests
+				setTimeout(function(){continuePolling(latestDate, intervalEndDate, feed, dataType, minVal, maxVal, allData.length)}, 10000);
+			}
+		}
+
+		/* Appends the data received during the specified time period to our data storage lists */
+		function getData(feed, dataType, startTimestamp, elapsedSeconds, minVal, maxVal) {
+			var x, y, temp;
+			var debugBox = document.getElementById("debugInfo");
+			var redraw = false;
+			var h = Math.floor(elapsedSeconds / 3600);
+			var mi = Math.floor((elapsedSeconds % 3600) / 60);
+			var s = Math.floor((elapsedSeconds % 3600) % 60);
+			
 			// Request Cosm for the data
 			var request = new XMLHttpRequest();
-			request.open("GET", "https://api.cosm.com/v2/feeds/" + feed + ".csv?datastreams=x,y," + dataType + "&start="+ lastTime +"&duration=6hours&interval=30&per_page=1000", false);
+			var requestString = "https://api.cosm.com/v2/feeds/" + feed + ".csv?datastreams=x,y," + dataType + "&start="+ startTimestamp +"&duration=";
+			if(h != 0) {
+				requestString += h + "hours";
+			}
+			if(mi != 0) {
+				requestString += mi + "minutes";
+			}
+			if(s != 0) {
+				requestString += s + "seconds";
+			}
+			requestString += "&interval=30&per_page=1000";
+			
+			console.log("Making request: " + requestString);
+			
+			request.open("GET", requestString, false);
 			request.setRequestHeader("X-ApiKey", "R5USeoIXogxwJxP3L9wZjJo6imySAKw0VGtpZExrNHJyQT0g");
 			request.send(null);
-			
-			// Last time is set to 6 hours further(in case their was no data in the time period request above
-			lastTime = addHours(lastTime);
-			
+						
 			// Parse the data received
 			boatData = $.csv2Array(request.responseText);
 			
 			for(i=0; i<boatData.length; i++) {
 				// Every line of data can correspond to either (i) actual data (ii) X position or (iii) Y position
-				if(boatData[i][0] == dataType)
-				{
+				if(boatData[i][0] == dataType) {
 					temp = boatData[i][2];
 				}
-				else if(boatData[i][0] == "x")
-				{
+				else if(boatData[i][0] == "x") {
 					x = boatData[i][2];
 				}
-				else if(boatData[i][0] == "y")
-				{
+				else if(boatData[i][0] == "y") {
 					debugBox.value += "\n" + temp;
 					y = boatData[i][2];
 					
 					// Convert UTM to Lat/Lon
 					var res = ToLL(y,x,18);
 					
-					// Store all data in an array and set min/max so that data can be normalized later
+					// Store all data in an array and set minVal/maxVal so that data can be normalized later
+					//console.log("Data point: " + temp + ",\t" + res.lat + "\t" + res.lon);
 					allData.push(temp);
 					allLat.push(res.lat);
 					allLon.push(res.lon);
-					if(temp < min)
-						min = temp;
-					if(temp > max)
-						max = temp;
-					
-					lastValue = boatData[i][2];
-					lastTime = boatData[i][1];
+					if(temp < minVal) {
+						minVal = temp;
+						redraw = true;
+					}
+					if(temp > maxVal) {
+						maxVal = temp;
+						redraw = true;
+					}
 				}
 			}
-			debugBox.value += "\nRequested timeStamp: " + lastTime;
+			// We need to return the last time that was requested
+			endTimestamp = incrementTimestamp(startTimestamp, h, mi, s);
+
+			return new Array(endTimestamp, minVal, maxVal, redraw);
 		}
-		debugBox.value += "\nTotal Number of elements fetched: " + allData.length;
-		
-		debugBox.value += "\n\nActual data values that are plotted(after normalization):";
-		/*Normalizing the Data(Because generally the data points are very close to each other)*/
-		var diff = max - min;
-		for(var i=0; i<allData.length; i++) {
-			var value = ((allData[i]-min)/diff*100);
-			debugBox.value += "\n" + value;
-			heatMapData.push({location: new google.maps.LatLng(allLat[i], allLon[i]), weight: value});
+			
+		function drawCircles(minVal, maxVal, startIndex) {
+			var debugBox = document.getElementById("debugInfo");
+			var dataCircle;
+			for(var i=startIndex; i<allData.length; i++) {
+				var circleOptions = {
+					strokeOpacity: 0,
+					fillColor: numToRgb(allData[i], minVal, maxVal),
+					fillOpacity: 0.35,
+					map: map,
+					center: new google.maps.LatLng(allLat[i], allLon[i]),
+					radius: circleRadius
+				};
+				dataCircle = new google.maps.Circle(circleOptions);
+				circles.push(dataCircle);
+			}
 		}
 		
-		heatmap.setMap(map);
-      }
-      
+		function clearCircles() {
+			console.log("clearCircles()");
+			while(circles.length != 0) {
+				circle = circles.pop();
+				circle.setMap(null);
+			}	
+		}
+		
+		function redrawCircles(radius) {
+			console.log("redrawCircles()");
+			for(i=0; i<circles.length; i++) {
+				circles[i].setRadius(radius);
+			}	
+		}
+		
+		/* Function to convert a number value to a heatmap color value based on the value's minVal/maxVal range
+		*  http://stackoverflow.com/questions/2374959/algorithm-to-convert-any-positive-integer-to-an-rgb-value
+		*/
+		function numToRgb(val, minVal, maxVal) {
+			var minWv = 380.0, maxWv = 780.0;
+			var wv = (val - minVal) / (maxVal - minVal) * (maxWv - minWv) + minWv;
+			var r = 0, g = 0, b = 0, factor = 0;
+			
+			if(wv < 440) {
+				r = -(1.0 * wv - 440) / (440 - 380);
+				g = 0;
+				b = 1.0;
+			} else if(wv >= 440 && wv < 490) {
+				r = 0;
+				g = (1.0 * wv - 440) / (490 - 440);
+				b = 1.0;
+			} else if(wv >= 490 && wv < 510) {
+				r = 0;
+				g = 1.0;
+				b = -(1.0 * wv - 510) / (510 - 490);
+			} else if(wv >= 510 && wv < 580) {
+				r = (1.0 * wv - 510) / (580 - 510);
+				g = 1.0;
+				b = 0;
+			} else if(wv >= 580 && wv < 645) {
+				r = 1.0;
+				g = -(1.0 * wv - 645) / (645 - 580);
+				b = 0;
+			} else if(wv >= 645) {
+				r = 1.0;
+				g = 0;
+				b = 0;
+			}
+			// Let the intensity fall off near the vision limits
+			if(wv < 420) {
+				factor = 0.3 + 0.7 * (wv - 380) / (420 - 380);
+			} else if(wv >= 420 && wv < 701) { 
+				factor = 1;
+			}else if(wv >= 701) {
+				factor = 0.3 + 0.7 * (780 - wv) / (780 - 700)
+			}
+			r = adjust(r, factor);
+			g = adjust(g, factor);
+			b = adjust(b, factor);
+			color = rgbToHex(r*255, g*255, b*255);
+			
+			return color;
+		}
 
-    </script>
-  </head>
+		function adjust(color, factor) {
+			// Maybe implement this later...
+			return color;
+		}
+
+		/* http://www.javascripter.net/faq/rgbtohex.htm */
+		function rgbToHex(r, g, b) {
+			return numToHex(r) + numToHex(g) + numToHex(b);
+		}
+
+		/* http://www.javascripter.net/faq/rgbtohex.htm */
+		function numToHex(n) {
+			n = parseInt(n,10);
+			if (isNaN(n)) 
+				return "00";
+			n = Math.max(0,Math.min(n,255));
+			return "0123456789ABCDEF".charAt((n-n%16)/16) + "0123456789ABCDEF".charAt(n%16);
+		}
 
 
-  
-  <body onload="initialize()" style="font-size:65.5%;" bgcolor="gray">
-	<style type="text/css">
-	#content {
+	</script>
+	</head>
+
+
+		
+		<body onload="initialize()" style="font-size:65.5%;" bgcolor="gray">
+		  <style type="text/css">
+		#content {
 		width:1100px;
 		margin:0 auto;
-	}
-	#map_canvas {
+		}
+		#map_canvas {
 		float:left;
 		margin-left:10px;
-	}
-	#controls {
+		}
+		#controls {
 		float:right;
 		margin-right:10px;
 		width:270px;
-	}
-	</style>
-	<div id="content">
-    	<div id="map_canvas" style="height: 600px; width: 800px;"></div>
-    	<div id="controls" style="width: 270px;">
-    		<h3><a href="#">Select Source</a></h3>
-    		<div>
-	    		<select id="sourceSelector">
-	    			<option value="">Select one...</option>
-					<option value="ActionScript">ActionScript</option>
-	    		</select>
-	    	</div>
-    		<h3><a href="#">Start Date and Time</a></h3>
-    		<div id="datepickerStart"></div>
-    		<h3><a href="#">End Date and Time</a></h3>
-    		<div id="datepickerEnd"></div>
-    		<h3><a href="#">Get the Data!</a></h3>
-			<div>
-				<form>
-					<p><b>Type of Data:</b></p>
-					<input type="radio" name="dataType" value="temperature" checked>Temperature<br>
-					<input type="radio" name="dataType" value="conductivity">Conductivity<br>
-				</form>
+		}
+		  </style>
+		  <div id="content">
+		<div id="map_canvas" style="height: 600px; width: 800px;"></div>
+		<div id="controls" style="width: 270px;">
+		  <h3><a href="#">Select Source</a></h3>
+		  <div>
+			<select id="sourceSelector">
+			  <option value="">Select one...</option>
+			  <option value="ActionScript">ActionScript</option>
+			</select>
+		  </div>
+		  <h3><a href="#">Start Date and Time</a></h3>
+		  <div id="datepickerStart"></div>
+		  <h3><a href="#">End Date and Time</a></h3>
+		  <div id="datepickerEnd"></div>
+		  <h3><a href="#">Get the Data!</a></h3>
+		  <div>
+			<form>
+			  <p><b>Type of Data:</b></p>
+			  <input type="radio" name="dataType" value="temperature" checked>Temperature<br>
+			  <input type="radio" name="dataType" value="conductivity">Conductivity<br>
+			</form>
 
-				<button onclick="getData()">Retrieve Data</button>
-				<p><b>Adjust results: </b></p>
-				<div id="slider"></div>
-			</div>
-			<h3><a href="#">Debug Information</a></h3>
-			<textarea id="debugInfo" rows="25" style="width: 218px;"></textarea>
-      </div>
-     </div>
-	
--	
+			<button onclick="startDataRetreival()">Retrieve Data</button>
+			<p><b>Adjust results: </b></p>
+			<div id="slider"></div>
+		  </div>
+		  <h3><a href="#">Debug Information</a></h3>
+		  <textarea id="debugInfo" rows="25" style="width: 218px;"></textarea>
+		</div>
+		  </div>
+		  
+		  -	
 
-  </body>
-</html>
+		</body>
+	  </html>
 
