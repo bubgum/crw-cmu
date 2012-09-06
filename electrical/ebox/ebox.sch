@@ -11845,6 +11845,8 @@ Source:  FDD4141.pdf</description>
 <part name="D1" library="diode" deviceset="ZENER-DIODE" device="SOT23"/>
 <part name="SUPPLY8" library="supply2" deviceset="GND" device=""/>
 <part name="Q1" library="transistor-fet" deviceset="FDD4141" device="TO252"/>
+<part name="PTC1" library="rcl" deviceset="R-US_" device="R1206" value="50mA"/>
+<part name="PTC2" library="rcl" deviceset="R-US_" device="R1206" value="50mA"/>
 </parts>
 <sheets>
 <sheet>
@@ -11855,11 +11857,9 @@ Source:  FDD4141.pdf</description>
 <text x="355.6" y="243.84" size="1.778" layer="94">TODO: Replace with mini-con-x</text>
 <text x="236.22" y="48.26" size="1.778" layer="94">Use the: SN74LVC1T45?</text>
 <text x="236.22" y="40.64" size="1.778" layer="94">Use the: SOT23 Dual Zener (5.1V, UC3 is 5V tolerant)</text>
-<text x="236.22" y="38.1" size="1.778" layer="94">Use the: 50mA PTC on all signal lines (R1206)</text>
-<text x="236.22" y="58.42" size="1.778" layer="94">Use the: Zetex FET for +12V</text>
+<text x="236.22" y="58.42" size="1.778" layer="94">Use the: LT1161 for +12V</text>
 <text x="236.22" y="55.88" size="1.778" layer="94">Use the: 1.5A PTC on +12V (R1812)</text>
 <text x="236.22" y="50.8" size="1.778" layer="94">Use Mike's LED Strips?</text>
-<text x="236.22" y="33.02" size="1.778" layer="94">Remember to use magnetic buttons</text>
 </plain>
 <instances>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
@@ -11981,6 +11981,8 @@ Source:  FDD4141.pdf</description>
 <attribute name="VALUE" x="85.09" y="46.99" size="1.778" layer="96"/>
 <attribute name="NAME" x="85.09" y="49.53" size="1.778" layer="95"/>
 </instance>
+<instance part="PTC1" gate="G$1" x="261.62" y="152.4"/>
+<instance part="PTC2" gate="G$1" x="261.62" y="142.24"/>
 </instances>
 <busses>
 </busses>
@@ -12226,12 +12228,22 @@ Source:  FDD4141.pdf</description>
 <wire x1="365.76" y1="193.04" x2="350.52" y2="193.04" width="0.1524" layer="91"/>
 <label x="353.06" y="193.04" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="PTC1" gate="G$1" pin="2"/>
+<wire x1="266.7" y1="152.4" x2="281.94" y2="152.4" width="0.1524" layer="91"/>
+<label x="269.24" y="152.4" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="S1_AN_B" class="0">
 <segment>
 <pinref part="X3" gate="-6" pin="S"/>
 <wire x1="365.76" y1="190.5" x2="350.52" y2="190.5" width="0.1524" layer="91"/>
 <label x="353.06" y="190.5" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="PTC2" gate="G$1" pin="2"/>
+<wire x1="266.7" y1="142.24" x2="281.94" y2="142.24" width="0.1524" layer="91"/>
+<label x="269.24" y="142.24" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="S2_RX" class="0">
