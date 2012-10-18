@@ -4,7 +4,7 @@
  */
 package edu.cmu.ri.airboat.general;
 
-import edu.cmu.ri.airboat.fishfarm.ImagePanel;
+import com.sun.xml.internal.rngom.digested.DXMLPrinter;
 import edu.cmu.ri.crw.FunctionObserver;
 import edu.cmu.ri.crw.FunctionObserver.FunctionError;
 import edu.cmu.ri.crw.ImageListener;
@@ -14,30 +14,27 @@ import edu.cmu.ri.crw.VehicleServer.SensorType;
 import edu.cmu.ri.crw.VehicleServer.WaypointState;
 import edu.cmu.ri.crw.WaypointListener;
 import edu.cmu.ri.crw.data.SensorData;
+import edu.cmu.ri.crw.data.Twist;
 import edu.cmu.ri.crw.data.Utm;
 import edu.cmu.ri.crw.data.UtmPose;
 import edu.cmu.ri.crw.udp.UdpVehicleServer;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.coords.UTMCoord;
-import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.Polygon;
 import gov.nasa.worldwind.render.Polyline;
 import gov.nasa.worldwind.render.markers.Marker;
 import java.awt.Color;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.imageio.ImageIO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import robotutils.Pose3D;
 
 /**
@@ -157,6 +154,9 @@ public class BoatProxy extends Thread {
         _stateListener = new PoseListener() {
 
             public void receivedPose(UtmPose upwcs) {
+                
+                // Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Boat pose update", this);
+                
                 _pose = upwcs.clone();
 
                 if (home == null && USE_SOFTWARE_FAIL_SAFE) {
@@ -372,6 +372,19 @@ public class BoatProxy extends Thread {
         // startCamera();
     }
 
+    public void setExternalVelocity(Twist t) {
+        _server.setVelocity(t, new FunctionObserver<Void>() {
+
+            public void completed(Void v) {
+                System.out.println("Set velocity succeeded");
+            }
+
+            public void failed(FunctionError fe) {
+                System.out.println("Set velocity failed");
+            }
+        });
+    }
+    
     public void setWaypoints(Polyline pLine) {
         currentPath = pLine;
         pLine.setColor(color);
@@ -407,6 +420,7 @@ public class BoatProxy extends Thread {
                 System.out.println("START WAYPOINTS FAILED");
             }
         });
+                
     }
 
     public void setWaypoint(Position p) {

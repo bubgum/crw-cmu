@@ -12,6 +12,7 @@ import edu.cmu.ri.crw.SensorListener;
 import edu.cmu.ri.crw.VehicleServer.WaypointState;
 import edu.cmu.ri.crw.WaypointListener;
 import edu.cmu.ri.crw.data.SensorData;
+import edu.cmu.ri.crw.data.Twist;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.coords.UTMCoord;
@@ -34,13 +35,12 @@ public class FishFarmBoatProxy {
     private final BoatProxy proxy;
     private final DataManager dm;
     private DataRepository repo = null;
-    private boolean isAutonomous = false;
+    private boolean isAutonomous = false, isSwarming = false;
 
     public FishFarmBoatProxy(final BoatProxy proxy, final DataManager dm) {
         this.proxy = proxy;
 
         proxy.addImageListener(new ImageListener() {
-
             public void receivedImage(byte[] ci) {
                 // Take a picture, and put the resulting image into the panel
                 try {
@@ -57,7 +57,7 @@ public class FishFarmBoatProxy {
                         if (image == null) {
                             System.err.println("Failed to decode image.");
                         }
-                        
+
                         ImagePanel.addImage(image, proxy.getPose());
                     } else {
                         System.out.println("Image was null in receivedImage");
@@ -70,10 +70,9 @@ public class FishFarmBoatProxy {
         });
 
         // for (int i = 0; i < 3; i++) {
-            
-            
-        proxy.addSensorListener(0, new SensorListener() {
 
+
+        proxy.addSensorListener(0, new SensorListener() {
             HashMap<String, Object> seen = new HashMap<String, Object>();
 
             public void receivedSensor(SensorData sd) {
@@ -83,18 +82,19 @@ public class FishFarmBoatProxy {
 
 
         proxy.addWaypointListener(new WaypointListener() {
-
             public void waypointUpdate(WaypointState ws) {
 
 
                 if (ws.equals(WaypointState.DONE)) {
-                    
+
                     waypointWatchdog.lastWaypointTime = System.currentTimeMillis();
 
                     System.out.println("Waypoint done");
 
                     if (isAutonomous) {
                         actAutonomous();
+                    } else if (isSwarming) {
+                        swarm();
                     }
                 }
             }
@@ -146,9 +146,8 @@ public class FishFarmBoatProxy {
     }
     // Watchdog thread stuff
     WaypointWatchDog waypointWatchdog = new WaypointWatchDog();
-
     long timeoutTime = 60000L;
-    
+
     class WaypointWatchDog extends Thread {
 
         Boolean running = false;
@@ -159,31 +158,37 @@ public class FishFarmBoatProxy {
                 try {
                     sleep(5000);
                 } catch (InterruptedException e) {
-                }               
-                if (running && isAutonomous) {
-                    
-                    edu.cmu.ri.crw.FunctionObserver<WaypointState> fo = new edu.cmu.ri.crw.FunctionObserver<WaypointState>() {
+                }
+                if (running && (isAutonomous || isSwarming)) {
 
+                    edu.cmu.ri.crw.FunctionObserver<WaypointState> fo = new edu.cmu.ri.crw.FunctionObserver<WaypointState>() {
                         public void completed(WaypointState v) {
-                            if (v == WaypointState.DONE)
-                                actAutonomous();
+
+                            System.out.println("Waypoint is complete!");
+
+                            if (v == WaypointState.DONE) {
+                                if (isAutonomous) {
+                                    actAutonomous();
+                                } else {
+                                    swarm();
+                                }
+                            }
                         }
 
                         public void failed(FunctionError fe) {
                             System.out.println("WHAT TO DO WHEN WAYPOINT STATUS FAILS? (FishFarmBoatProxy)");
                         }
-                        
                     };
-                    
+
                     /*
-                    long currTime = System.currentTimeMillis();
-                    // Abhinav, you might want to play with this number which is how long between waypoints before it panics and replans
-                    if (currTime - lastWaypointTime > timeoutTime) {
-                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TIMED OUT");
-                        actAutonomous();
-                    } 
-                    */
-                    
+                     long currTime = System.currentTimeMillis();
+                     // Abhinav, you might want to play with this number which is how long between waypoints before it panics and replans
+                     if (currTime - lastWaypointTime > timeoutTime) {
+                     System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TIMED OUT");
+                     actAutonomous();
+                     } 
+                     */
+
                 } else {
                     synchronized (running) {
                         try {
@@ -192,7 +197,7 @@ public class FishFarmBoatProxy {
                             System.out.println("Watchdog woken");
                         }
                     }
-                }                    
+                }
             }
         }
 
@@ -203,7 +208,7 @@ public class FishFarmBoatProxy {
             running = true;
             synchronized (running) {
                 running.notify();
-            } 
+            }
         }
 
         public void safeStop() {
@@ -226,6 +231,52 @@ public class FishFarmBoatProxy {
         }
 
     }
+    FishFarmBoatProxy leader = null;
+
+    public void setSwarmFollower(FishFarmBoatProxy leader) {
+        isSwarming = true;
+        this.leader = leader;
+        swarm();
+    }
+
+    public static  double swarmDist = 0.001;
+    public static double swarmSpeed = 1.0;
+    private void swarm() {
+
+        Position leaderPos = new Position(leader.getLatLon(), 0.0);
+
+        if (distTo(leader.getLatLon()) > 0.001) {
+            // Go to the leader
+            ArrayList<Position> leaderPosPath = new ArrayList<Position>();
+            leaderPosPath.add(leaderPos);
+            currPlan = leaderPosPath;
+            proxy.setWaypoints(leaderPosPath);
+            waypointWatchdog.lastWaypointTime = System.currentTimeMillis();
+        } else {
+            (new Thread() {
+                public void run() {
+                    while (distTo(leader.getLatLon()) < swarmDist) {
+                        // @todo Make this real numbers
+                        proxy.setExternalVelocity(new Twist(swarmSpeed * Math.cos(leader.getHeading()), swarmSpeed * Math.sin(leader.getHeading())));
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+                    swarm();
+                }
+            }).start();
+        }
+
+    }
+
+    private double distTo(LatLon ll) {
+        double dlat = ll.latitude.degrees - getLatLon().latitude.degrees;
+        double dlon = ll.longitude.degrees - getLatLon().longitude.degrees;
+        double d = Math.sqrt((dlat * dlat) + (dlon * dlon));
+        System.out.println("Dist is " + d);
+        return d;
+    }
 
     public boolean isIsAutonomous() {
         return isAutonomous;
@@ -235,7 +286,7 @@ public class FishFarmBoatProxy {
     public ArrayList<Position> getCurrPlan() {
         return currPlan;
     }
-    
+
     public void actAutonomous() {
         System.out.println("GETTING PLAN");
         ArrayList<Position> p = repo.getAutonomyPath(this);

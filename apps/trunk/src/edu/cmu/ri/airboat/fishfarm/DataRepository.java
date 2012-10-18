@@ -4,6 +4,8 @@
  */
 package edu.cmu.ri.airboat.fishfarm;
 
+import edu.cmu.ri.airboat.fishfarm.FishFarmBoatProxy;
+import edu.cmu.ri.airboat.fishfarm.FishFarmF;
 import edu.cmu.ri.airboat.general.BoatProxy;
 import edu.cmu.ri.airboat.general.LocationInfo;
 import edu.cmu.ri.airboat.general.Observation;
@@ -99,7 +101,7 @@ public class DataRepository {
         setds();
     }
 
-    Position getPositionFor(double dx, double dy) {
+    public Position getPositionFor(double dx, double dy) {
 
         double lat = mins.latitude.degrees + (dy * (maxs.latitude.degrees - mins.latitude.degrees));
         double lon = mins.longitude.degrees + (dx * (maxs.longitude.degrees - mins.longitude.degrees));
@@ -111,7 +113,7 @@ public class DataRepository {
         return p;
     }
 
-    void changeValues(double dx, double dy, boolean up) {
+    public void changeValues(double dx, double dy, boolean up) {
         if (locInfo.size() > indexOfInterest) {
             LocationInfo[][] model = locInfo.get(indexOfInterest);
             if (model == null) {
@@ -148,7 +150,7 @@ public class DataRepository {
         return setContourPercentOfMax(contourPercentile);
     }
     
-    double setContourPercentOfMax(double d) {
+    public double setContourPercentOfMax(double d) {
         contourPercentile = d;
         try {
             LocationInfo[][] model = locInfo.get(indexOfInterest);
@@ -294,7 +296,7 @@ public class DataRepository {
                 }
                 // System.out.println("");
             }
-            System.out.println("Correct: " + correct + " of " + (divisions * divisions));
+            // System.out.println("Correct: " + correct + " of " + (divisions * divisions));
 
         } else {
             // System.out.println("Count now: " + count);

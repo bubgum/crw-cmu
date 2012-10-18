@@ -26,27 +26,26 @@ public class FastSimpleBoatSimulator extends SimpleBoatSimulator {
     protected long LOCAL_UPDATE_INTERVAL = 1000L;
     private static final Logger logger = Logger.getLogger(SimpleBoatSimulator.class.getName());
     
-     @Override
+    @Override
     public void startWaypoints(final UtmPose[] waypoints, final String controller) {
         logger.log(Level.INFO, "Starting waypoints: {0}", Arrays.toString(waypoints));
-        
+
         // Create a waypoint navigation task
         TimerTask newNavigationTask = new TimerTask() {
             final double dt = (double) UPDATE_INTERVAL_MS / 1000.0;
 
             /*
-            // Retrieve the appropriate controller in initializer
-            VehicleController vc = SimpleBoatController.POINT_AND_SHOOT.controller;
-            {
-                try {
-                    vc = SimpleBoatController.valueOf(controller).controller;
-                } catch (IllegalArgumentException e) {
-                    logger.log(Level.WARNING, "Unknown controller specified (using {0} instead): {1}", new Object[]{vc, controller});
-                    // System.out.println("Unknown controller specified (using {0} instead): {1}");
-                }
-            }
-             */                        
-            
+             // Retrieve the appropriate controller in initializer
+             VehicleController vc = SimpleBoatController.POINT_AND_SHOOT.controller;
+             {
+             try {
+             vc = SimpleBoatController.valueOf(controller).controller;
+             } catch (IllegalArgumentException e) {
+             logger.log(Level.WARNING, "Unknown controller specified (using {0} instead): {1}", new Object[]{vc, controller});
+             // System.out.println("Unknown controller specified (using {0} instead): {1}");
+             }
+             }
+             */
             @Override
             public void run() {
                 synchronized (_navigationLock) {
@@ -70,26 +69,25 @@ public class FastSimpleBoatSimulator extends SimpleBoatSimulator {
                 }
             }
         };
-        
+
         synchronized (_navigationLock) {
             // Change waypoints to new set of waypoints
             _waypoints = Arrays.copyOf(waypoints, waypoints.length);
 
             // Cancel any previous navigation tasks
-            if (_navigationTask != null)
-                _navigationTask.cancel();            
-            
+            if (_navigationTask != null) {
+                _navigationTask.cancel();
+            }
+
             // Schedule this task for execution
             _navigationTask = newNavigationTask;
             _timer.scheduleAtFixedRate(_navigationTask, 0, UPDATE_INTERVAL_MS);
         }
     }
-     
-     VehicleController fvc = new VehicleController() {
-
+    VehicleController fvc = new VehicleController() {
         @Override
         public void update(VehicleServer server, double dt) {
-            Twist twist = new Twist();
+            Twist twist = new Twist();            
 
             // Get the position of the vehicle 
             UtmPose state = server.getPose();
@@ -98,6 +96,7 @@ public class FastSimpleBoatSimulator extends SimpleBoatSimulator {
             // Get the current waypoint, or return if there are none
             UtmPose[] waypoints = server.getWaypoints();
             if (waypoints == null || waypoints.length <= 0) {
+                // This is zero
                 server.setVelocity(twist);
                 return;
             }
@@ -122,23 +121,23 @@ public class FastSimpleBoatSimulator extends SimpleBoatSimulator {
                 twist.dx(Math.min(distanceSq / 10.0, 10.0));
                 twist.drz(Math.max(Math.min(angle / 3.0, 5.0), -5.0));
             } else {
-                
+
                 // If we are "at" the destination, de-queue a waypoint
-                server.startWaypoints(Arrays.copyOfRange(waypoints, 1, waypoints.length), 
+                server.startWaypoints(Arrays.copyOfRange(waypoints, 1, waypoints.length),
                         SimpleBoatController.POINT_AND_SHOOT.toString());
             }
 
             // Set the desired velocity
             server.setVelocity(twist);
         }
-        
+
         @Override
         public String toString() {
             return SimpleBoatController.POINT_AND_SHOOT.toString();
         }
     };
-     
-     public static double normalizeAngle(double angle) {
+
+    public static double normalizeAngle(double angle) {
         while (angle > Math.PI) {
             angle -= 2 * Math.PI;
         }
@@ -147,13 +146,13 @@ public class FastSimpleBoatSimulator extends SimpleBoatSimulator {
         }
         return angle;
     }
-    
+
     public static double planarDistanceSq(Pose3D a, Pose3D b) {
         double dx = a.getX() - b.getX();
         double dy = a.getY() - b.getY();
-        return dx*dx + dy*dy;
+        return dx * dx + dy * dy;
     }
-    
+
     public static double angleBetween(Pose3D src, Pose3D dest) {
         return Math.atan2((dest.getY() - src.getY()), (dest.getX() - src.getX()));
     }
@@ -162,6 +161,4 @@ public class FastSimpleBoatSimulator extends SimpleBoatSimulator {
     public void addSensorListener(int channel, SensorListener l) {
         System.out.println("IGNORING SENSOR LISTENER ADD");
     }
-    
-    
 }

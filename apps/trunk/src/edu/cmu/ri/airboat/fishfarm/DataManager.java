@@ -5,6 +5,7 @@
 package edu.cmu.ri.airboat.fishfarm;
 
 import edu.cmu.ri.airboat.fishfarm.DataRepository.ImageType;
+import edu.cmu.ri.airboat.fishfarm.FishFarmBoatProxy;
 import edu.cmu.ri.airboat.general.BoatProxy;
 import edu.cmu.ri.crw.data.SensorData;
 import edu.cmu.ri.crw.data.UtmPose;
@@ -25,7 +26,7 @@ public class DataManager extends JPanel {
     private final ArrayList<FishFarmBoatProxy> proxies;
     LatLon min = LatLon.ZERO, max = LatLon.ZERO;
     private long refreshRate = 1000;
-    DataRepository repo = new DataRepository(min, max);
+    public DataRepository repo = new DataRepository(min, max);
 
     public DataManager(ArrayList<FishFarmBoatProxy> proxies) {
         this.proxies = proxies;
@@ -129,16 +130,16 @@ public class DataManager extends JPanel {
         return (int) (dx * fromMin);
     }
 
-    void addData(BoatProxy proxy, SensorData sd, UtmPose pose) {
+    public void addData(BoatProxy proxy, SensorData sd, UtmPose pose) {
         // System.out.println("Data manager got it");
         repo.addData(proxy, sd, pose);
     }
 
-    double setUpperBound (double u) {
+    public double setUpperBound (double u) {
         return repo.setUpperFilterBound(u);
     }
     
-    double setLowerBound (double l) {
+    public double setLowerBound (double l) {
         return repo.setLowerFilterBound(l);
     }
     

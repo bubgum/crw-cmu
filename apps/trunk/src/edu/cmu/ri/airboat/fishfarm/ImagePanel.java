@@ -62,7 +62,7 @@ public class ImagePanel extends javax.swing.JPanel {
                 System.out.println("Failed to write image to file: " + e);
             }
         } else {
-            System.out.println("Do not know where to save images");
+            // System.out.println("Do not know where to save images");
         }
 
         if (queue.size() > 100) {
