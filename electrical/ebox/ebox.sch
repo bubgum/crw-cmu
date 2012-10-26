@@ -12114,6 +12114,24 @@ We've spent an enormous amount of time creating and checking these footprints an
 <smd name="34" x="9.4" y="1.9" dx="0.8" dy="1.6" layer="1" rot="R90"/>
 <smd name="35" x="9.4" y="4.1222" dx="0.8" dy="1.6" layer="1" rot="R90"/>
 </package>
+<package name="EM406">
+<wire x1="0" y1="-2.921" x2="5.08" y2="-2.921" width="0.254" layer="21"/>
+<wire x1="-1.778" y1="-0.762" x2="-1.778" y2="0.635" width="0.254" layer="21"/>
+<wire x1="5.842" y1="0.635" x2="6.858" y2="0.635" width="0.254" layer="21"/>
+<wire x1="6.858" y1="0.635" x2="6.858" y2="-0.762" width="0.254" layer="21"/>
+<wire x1="-1.778" y1="0.635" x2="-0.762" y2="0.635" width="0.254" layer="21"/>
+<circle x="0" y="1.27" radius="0.1047" width="0.4064" layer="21"/>
+<smd name="P$1" x="-1.3" y="-2.225" dx="1.2" dy="1.8" layer="1"/>
+<smd name="P$2" x="6.3" y="-2.225" dx="1.2" dy="1.8" layer="1"/>
+<smd name="1" x="0" y="0" dx="0.6" dy="1.55" layer="1"/>
+<smd name="2" x="1" y="0" dx="0.6" dy="1.55" layer="1"/>
+<smd name="3" x="2" y="0" dx="0.6" dy="1.55" layer="1"/>
+<smd name="4" x="3" y="0" dx="0.6" dy="1.55" layer="1"/>
+<smd name="5" x="4" y="0" dx="0.6" dy="1.55" layer="1"/>
+<smd name="6" x="5" y="0" dx="0.6" dy="1.55" layer="1"/>
+<text x="1.27" y="1.27" size="0.4064" layer="25">&gt;Name</text>
+<text x="1.27" y="-3.81" size="0.4064" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="RN41">
@@ -12158,6 +12176,20 @@ We've spent an enormous amount of time creating and checking these footprints an
 <pin name="AIO1" x="20.32" y="22.86" length="middle" rot="R180"/>
 <pin name="AIO2" x="20.32" y="20.32" length="middle" rot="R180"/>
 <pin name="GND5" x="20.32" y="-27.94" length="middle" rot="R180"/>
+</symbol>
+<symbol name="D2523T">
+<wire x1="-5.08" y1="-7.62" x2="5.08" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="5.08" y1="-7.62" x2="5.08" y2="10.16" width="0.254" layer="94"/>
+<wire x1="5.08" y1="10.16" x2="-5.08" y2="10.16" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="10.16" x2="-5.08" y2="-7.62" width="0.254" layer="94"/>
+<text x="-5.08" y="10.16" size="1.778" layer="95">&gt;NAME</text>
+<text x="-5.08" y="-10.16" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="RX" x="-10.16" y="7.62" length="middle"/>
+<pin name="TX" x="-10.16" y="5.08" length="middle"/>
+<pin name="GND" x="-10.16" y="2.54" length="middle"/>
+<pin name="VIN" x="-10.16" y="0" length="middle"/>
+<pin name="VBAT" x="-10.16" y="-2.54" length="middle"/>
+<pin name="LED" x="-10.16" y="-5.08" length="middle"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -12204,6 +12236,27 @@ We've spent an enormous amount of time creating and checking these footprints an
 <connect gate="G$1" pin="USBD+" pad="17"/>
 <connect gate="G$1" pin="USBD-" pad="18"/>
 <connect gate="G$1" pin="VDD" pad="11"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="D2523T" prefix="U">
+<description>D2523T GPS Module</description>
+<gates>
+<gate name="G$1" symbol="D2523T" x="0" y="0"/>
+</gates>
+<devices>
+<device name="_" package="EM406">
+<connects>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="LED" pad="1"/>
+<connect gate="G$1" pin="RX" pad="6"/>
+<connect gate="G$1" pin="TX" pad="5"/>
+<connect gate="G$1" pin="VBAT" pad="2"/>
+<connect gate="G$1" pin="VIN" pad="3"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -12944,7 +12997,7 @@ Based on the following sources:
 <part name="SUPPLY5" library="supply2" deviceset="GND" device=""/>
 <part name="R2" library="rcl" deviceset="R-US_" device="R0805" value="10k"/>
 <part name="+3V4" library="supply1" deviceset="+3V3" device=""/>
-<part name="LED1" library="led" deviceset="LED" device="CHIPLED_1206"/>
+<part name="LED1" library="led" deviceset="LED" device="CHIPLED_1206" value="YEL"/>
 <part name="R3" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
 <part name="+3V5" library="supply1" deviceset="+3V3" device=""/>
 <part name="S1" library="switch-reed" deviceset="REED-SWITCH-" device="CT10-1530-G1"/>
@@ -12970,7 +13023,7 @@ Based on the following sources:
 <part name="SUPPLY10" library="supply2" deviceset="GND" device=""/>
 <part name="+3V6" library="supply1" deviceset="+3V3" device=""/>
 <part name="SUPPLY11" library="supply2" deviceset="GND" device=""/>
-<part name="LED2" library="led" deviceset="LED" device="CHIPLED_1206"/>
+<part name="LED2" library="led" deviceset="LED" device="CHIPLED_1206" value="RED"/>
 <part name="R7" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
 <part name="+3V7" library="supply1" deviceset="+3V3" device=""/>
 <part name="X10" library="con-molex" deviceset="22-23-2041" device=""/>
@@ -13129,6 +13182,12 @@ Based on the following sources:
 <part name="C46" library="rcl" deviceset="C-US" device="C0805" value="10pF"/>
 <part name="+3V19" library="supply1" deviceset="+3V3" device=""/>
 <part name="+3V20" library="supply1" deviceset="+3V3" device=""/>
+<part name="U2" library="SparkFun-RF" deviceset="D2523T" device="_"/>
+<part name="R28" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
+<part name="LED3" library="led" deviceset="LED" device="CHIPLED_1206" value="GRN"/>
+<part name="C47" library="rcl" deviceset="C-US" device="C0805" value="10uF"/>
+<part name="+3V22" library="supply1" deviceset="+3V3" device=""/>
+<part name="SUPPLY46" library="supply2" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -13438,6 +13497,12 @@ Based on the following sources:
 <instance part="C46" gate="G$1" x="297.18" y="124.46"/>
 <instance part="+3V19" gate="G$1" x="147.32" y="132.08"/>
 <instance part="+3V20" gate="G$1" x="233.68" y="132.08"/>
+<instance part="U2" gate="G$1" x="490.22" y="195.58" rot="R180"/>
+<instance part="R28" gate="G$1" x="518.16" y="203.2"/>
+<instance part="LED3" gate="G$1" x="508" y="203.2" rot="R270"/>
+<instance part="C47" gate="G$1" x="525.78" y="195.58"/>
+<instance part="+3V22" gate="G$1" x="525.78" y="210.82"/>
+<instance part="SUPPLY46" gate="GND" x="525.78" y="185.42"/>
 </instances>
 <busses>
 </busses>
@@ -13941,6 +14006,16 @@ Based on the following sources:
 <pinref part="SUPPLY45" gate="GND" pin="GND"/>
 <pinref part="C44" gate="G$1" pin="2"/>
 <wire x1="279.4" y1="142.24" x2="279.4" y2="139.7" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="C47" gate="G$1" pin="2"/>
+<pinref part="SUPPLY46" gate="GND" pin="GND"/>
+<wire x1="525.78" y1="187.96" x2="525.78" y2="190.5" width="0.1524" layer="91"/>
+<pinref part="U2" gate="G$1" pin="GND"/>
+<wire x1="500.38" y1="193.04" x2="520.7" y2="193.04" width="0.1524" layer="91"/>
+<wire x1="520.7" y1="193.04" x2="520.7" y2="190.5" width="0.1524" layer="91"/>
+<wire x1="520.7" y1="190.5" x2="525.78" y2="190.5" width="0.1524" layer="91"/>
+<junction x="525.78" y="190.5"/>
 </segment>
 </net>
 <net name="S1_12V" class="0">
@@ -14494,6 +14569,20 @@ Based on the following sources:
 <pinref part="IC22" gate="G$1" pin="VREF"/>
 <wire x1="233.68" y1="129.54" x2="238.76" y2="129.54" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="C47" gate="G$1" pin="1"/>
+<pinref part="+3V22" gate="G$1" pin="+3V3"/>
+<wire x1="525.78" y1="208.28" x2="525.78" y2="203.2" width="0.1524" layer="91"/>
+<pinref part="R28" gate="G$1" pin="2"/>
+<wire x1="525.78" y1="203.2" x2="525.78" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="523.24" y1="203.2" x2="525.78" y2="203.2" width="0.1524" layer="91"/>
+<junction x="525.78" y="203.2"/>
+<pinref part="U2" gate="G$1" pin="VIN"/>
+<wire x1="500.38" y1="195.58" x2="520.7" y2="195.58" width="0.1524" layer="91"/>
+<wire x1="520.7" y1="195.58" x2="520.7" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="520.7" y1="198.12" x2="525.78" y2="198.12" width="0.1524" layer="91"/>
+<junction x="525.78" y="198.12"/>
+</segment>
 </net>
 <net name="+12V" class="0">
 <segment>
@@ -14649,18 +14738,28 @@ Based on the following sources:
 <wire x1="43.18" y1="401.32" x2="58.42" y2="401.32" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="DEBUG_RXD" class="0">
+<net name="GPS_RXD" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="PC2"/>
 <wire x1="111.76" y1="347.98" x2="132.08" y2="347.98" width="0.1524" layer="91"/>
 <label x="114.3" y="347.98" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="U2" gate="G$1" pin="TX"/>
+<wire x1="500.38" y1="190.5" x2="515.62" y2="190.5" width="0.1524" layer="91"/>
+<label x="502.92" y="190.5" size="1.778" layer="95"/>
+</segment>
 </net>
-<net name="DEBUG_TXD" class="0">
+<net name="GPS_TXD" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="PC3"/>
 <wire x1="111.76" y1="350.52" x2="132.08" y2="350.52" width="0.1524" layer="91"/>
 <label x="114.3" y="350.52" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U2" gate="G$1" pin="RX"/>
+<wire x1="500.38" y1="187.96" x2="515.62" y2="187.96" width="0.1524" layer="91"/>
+<label x="502.92" y="187.96" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="BT_RXD" class="0">
@@ -15925,6 +16024,21 @@ Based on the following sources:
 <pinref part="R27" gate="G$1" pin="2"/>
 <pinref part="IC22" gate="G$1" pin="R_OS"/>
 <wire x1="236.22" y1="124.46" x2="238.76" y2="124.46" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$50" class="0">
+<segment>
+<pinref part="LED3" gate="G$1" pin="A"/>
+<pinref part="R28" gate="G$1" pin="1"/>
+<wire x1="513.08" y1="203.2" x2="510.54" y2="203.2" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$43" class="0">
+<segment>
+<pinref part="LED3" gate="G$1" pin="C"/>
+<pinref part="U2" gate="G$1" pin="LED"/>
+<wire x1="502.92" y1="203.2" x2="500.38" y2="203.2" width="0.1524" layer="91"/>
+<wire x1="500.38" y1="203.2" x2="500.38" y2="200.66" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
