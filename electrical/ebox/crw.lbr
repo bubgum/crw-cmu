@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.2">
+<eagle version="6.3">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -740,6 +740,25 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <rectangle x1="-1.7753" y1="1.5" x2="-1.4753" y2="2.45" layer="51"/>
 <smd name="13" x="0" y="0" dx="2.845" dy="1.651" layer="1"/>
 </package>
+<package name="7381-3PG-300">
+<pad name="1" x="2" y="1.2" drill="1.27" diameter="2.54"/>
+<pad name="2" x="-2" y="1.2" drill="1.27" diameter="2.54"/>
+<pad name="3" x="0" y="-2.4" drill="1.27" diameter="2.54"/>
+<circle x="0" y="0" radius="7.75" width="0.127" layer="21"/>
+<text x="-3" y="5" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3" y="-6" size="1.27" layer="27">&gt;VALUE</text>
+<circle x="0" y="0" radius="4" width="2.54" layer="39"/>
+</package>
+<package name="17984-7PG-300">
+<circle x="0" y="0" radius="5.5" width="0.127" layer="21"/>
+<text x="-3" y="3" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3" y="-4" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="BULLET">
+<pad name="P$1" x="0" y="0" drill="4.25" diameter="6"/>
+<text x="-2.54" y="3.81" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.54" y="-5.08" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="MV">
@@ -882,7 +901,12 @@ Mini-Con-X 3-position Panel Mount connector; #16 gold plated P/C tail .187 style
 <gate name="-3" symbol="M" x="0" y="-2.54" addlevel="always" swaplevel="1"/>
 </gates>
 <devices>
-<device name="">
+<device name="" package="7381-3PG-300">
+<connects>
+<connect gate="-1" pin="S" pad="1"/>
+<connect gate="-2" pin="S" pad="2"/>
+<connect gate="-3" pin="S" pad="3"/>
+</connects>
 <technologies>
 <technology name=""/>
 </technologies>
@@ -894,10 +918,13 @@ Mini-Con-X 3-position Panel Mount connector; #16 gold plated P/C tail .187 style
 &lt;p&gt;
 Gold-plated 3.5mm bullet connector</description>
 <gates>
-<gate name="-1" symbol="MV" x="0" y="2.54" addlevel="always" swaplevel="1"/>
+<gate name="-1" symbol="MV" x="0" y="0" addlevel="always" swaplevel="1"/>
 </gates>
 <devices>
-<device name="">
+<device name="" package="BULLET">
+<connects>
+<connect gate="-1" pin="S" pad="P$1"/>
+</connects>
 <technologies>
 <technology name=""/>
 </technologies>
