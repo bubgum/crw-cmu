@@ -18614,6 +18614,30 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <rectangle x1="-0.4751" y1="1.5" x2="-0.1751" y2="2.45" layer="51"/>
 <rectangle x1="-1.1253" y1="1.5" x2="-0.8253" y2="2.45" layer="51"/>
 </package>
+<package name="IHLP-2020CZ-11">
+<smd name="1" x="-2.03835" y="0" dx="2.794" dy="1.9177" layer="1" rot="R90"/>
+<smd name="2" x="2.03835" y="0" dx="2.794" dy="1.9177" layer="1" rot="R90"/>
+<wire x1="-2.7432" y1="-2.5908" x2="2.7432" y2="-2.5908" width="0.127" layer="21"/>
+<wire x1="2.7432" y1="2.5908" x2="-2.7432" y2="2.5908" width="0.127" layer="21"/>
+<wire x1="-2.7432" y1="2.5908" x2="-2.7432" y2="2.03835" width="0.127" layer="21"/>
+<wire x1="2.7432" y1="2.5908" x2="2.7432" y2="2.03835" width="0.127" layer="21"/>
+<wire x1="-2.7432" y1="-2.5908" x2="-2.7432" y2="-2.03835" width="0.127" layer="21"/>
+<wire x1="2.7432" y1="-2.5908" x2="2.7432" y2="-2.03835" width="0.127" layer="21"/>
+<text x="-2.794" y="3.048" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.794" y="-4.318" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="SRR1280">
+<smd name="1" x="-4.8514" y="0" dx="5.4102" dy="2.8956" layer="1" rot="R90"/>
+<smd name="2" x="4.8514" y="0" dx="5.4102" dy="2.8956" layer="1" rot="R90"/>
+<wire x1="-6.2484" y1="3.81" x2="-6.2484" y2="6.2484" width="0.127" layer="21"/>
+<wire x1="-6.2484" y1="6.2484" x2="6.2484" y2="6.2484" width="0.127" layer="21"/>
+<wire x1="6.2484" y1="6.2484" x2="6.2484" y2="3.81" width="0.127" layer="21"/>
+<wire x1="6.2484" y1="-3.81" x2="6.2484" y2="-6.2484" width="0.127" layer="21"/>
+<wire x1="6.2484" y1="-6.2484" x2="-6.2484" y2="-6.2484" width="0.127" layer="21"/>
+<wire x1="-6.2484" y1="-6.2484" x2="-6.2484" y2="-3.81" width="0.127" layer="21"/>
+<text x="-6.35" y="7.62" size="1.27" layer="25">&gt;NAME</text>
+<text x="-6.35" y="-8.89" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="LT1161">
@@ -18720,6 +18744,20 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <pin name="OUT" x="12.7" y="-2.54" length="short" direction="pas" rot="R180"/>
 <pin name="NC" x="12.7" y="0" length="short" direction="pas" rot="R180"/>
 <pin name="R_OS" x="-12.7" y="-7.62" length="short" direction="in"/>
+</symbol>
+<symbol name="INDUCTOR">
+<wire x1="0" y1="5.08" x2="1.27" y2="3.81" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="2.54" x2="1.27" y2="3.81" width="0.254" layer="94" curve="90"/>
+<wire x1="0" y1="2.54" x2="1.27" y2="1.27" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="0" x2="1.27" y2="1.27" width="0.254" layer="94" curve="90"/>
+<wire x1="0" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="-2.54" x2="1.27" y2="-1.27" width="0.254" layer="94" curve="90"/>
+<wire x1="0" y1="-2.54" x2="1.27" y2="-3.81" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="-5.08" x2="1.27" y2="-3.81" width="0.254" layer="94" curve="90"/>
+<text x="-1.27" y="-5.08" size="1.778" layer="95" rot="R90">&gt;NAME</text>
+<text x="3.81" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="2" x="0" y="-7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R90"/>
+<pin name="1" x="0" y="7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R270"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -18966,6 +19004,47 @@ CURRENT SHUNT MONITOR&lt;/b&gt;</description>
 <connect gate="G$1" pin="VIN+" pad="2"/>
 <connect gate="G$1" pin="VIN-" pad="1"/>
 <connect gate="G$1" pin="VREF" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="IHLP-2020CZ-11" prefix="L" uservalue="yes">
+<gates>
+<gate name="G$1" symbol="INDUCTOR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="IHLP-2020CZ-11">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="L" prefix="L" uservalue="yes">
+<gates>
+<gate name="G$1" symbol="INDUCTOR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-IHLP-2020CZ-11" package="IHLP-2020CZ-11">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-SRR1280" package="SRR1280">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -19490,7 +19569,6 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <part name="FRAME3" library="frames" deviceset="FRAME_C_L" device=""/>
 <part name="IC20" library="crw" deviceset="AP1509" device="" value="AP1509-33"/>
 <part name="P+8" library="supply1" deviceset="+12V" device=""/>
-<part name="L4" library="rcl" deviceset="L-US" device="L2012C" value="47uH"/>
 <part name="D5" library="diode" deviceset="MBRA340T3" device=""/>
 <part name="+3V16" library="supply1" deviceset="+3V3" device=""/>
 <part name="SUPPLY37" library="supply2" deviceset="GND" device=""/>
@@ -19498,7 +19576,6 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <part name="C41" library="rcl" deviceset="C-US" device="C0805" value="10uF"/>
 <part name="SUPPLY39" library="supply2" deviceset="GND" device=""/>
 <part name="C42" library="rcl" deviceset="C-US" device="C0805" value="1uF"/>
-<part name="L5" library="rcl" deviceset="L-US" device="L2012C" value="5.6uH"/>
 <part name="R20" library="rcl" deviceset="R-US_" device="R6332" value="0.050"/>
 <part name="P+9" library="supply1" deviceset="V+" device=""/>
 <part name="R21" library="rcl" deviceset="R-US_" device="R6332" value="0.010"/>
@@ -19550,7 +19627,6 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <part name="C48" library="rcl" deviceset="C-US" device="C0805" value="10pF"/>
 <part name="IC24" library="crw" deviceset="AP1509" device="" value="AP1509-5"/>
 <part name="P+10" library="supply1" deviceset="+12V" device=""/>
-<part name="L6" library="rcl" deviceset="L-US" device="L2012C" value="47uH"/>
 <part name="D11" library="diode" deviceset="MBRA340T3" device=""/>
 <part name="SUPPLY49" library="supply2" deviceset="GND" device=""/>
 <part name="PTC9" library="rcl" deviceset="R-US_" device="R1206" value="1A"/>
@@ -19589,6 +19665,9 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <part name="IC2" library="crw" deviceset="LT3652" device=""/>
 <part name="IC8" library="crw" deviceset="INA170" device=""/>
 <part name="IC12" library="crw" deviceset="INA170" device=""/>
+<part name="L1" library="crw" deviceset="IHLP-2020CZ-11" device="" value="5.6uH"/>
+<part name="L5" library="crw" deviceset="L" device="-SRR1280" value="47uH"/>
+<part name="L7" library="crw" deviceset="L" device="-SRR1280" value="47uH"/>
 </parts>
 <sheets>
 <sheet>
@@ -19768,7 +19847,6 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <instance part="FRAME3" gate="G$2" x="452.12" y="0"/>
 <instance part="IC20" gate="G$1" x="73.66" y="58.42"/>
 <instance part="P+8" gate="1" x="45.72" y="68.58"/>
-<instance part="L4" gate="G$1" x="99.06" y="60.96" rot="R90"/>
 <instance part="D5" gate="G$1" x="88.9" y="48.26" rot="R90"/>
 <instance part="+3V16" gate="G$1" x="116.84" y="68.58"/>
 <instance part="SUPPLY37" gate="GND" x="50.8" y="38.1"/>
@@ -19776,7 +19854,6 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <instance part="C41" gate="G$1" x="266.7" y="40.64"/>
 <instance part="SUPPLY39" gate="GND" x="266.7" y="30.48"/>
 <instance part="C42" gate="G$1" x="304.8" y="76.2"/>
-<instance part="L5" gate="G$1" x="332.74" y="73.66"/>
 <instance part="R20" gate="G$1" x="342.9" y="63.5"/>
 <instance part="P+9" gate="1" x="365.76" y="71.12"/>
 <instance part="R21" gate="G$1" x="358.14" y="63.5"/>
@@ -19784,8 +19861,8 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <instance part="R24" gate="G$1" x="320.04" y="43.18" rot="R90"/>
 <instance part="SUPPLY41" gate="GND" x="320.04" y="33.02"/>
 <instance part="D9" gate="G$1" x="322.58" y="68.58" rot="R180"/>
-<instance part="D10" gate="G$1" x="337.82" y="81.28" rot="R180"/>
-<instance part="SUPPLY42" gate="GND" x="342.9" y="73.66"/>
+<instance part="D10" gate="G$1" x="347.98" y="81.28" rot="R180"/>
+<instance part="SUPPLY42" gate="GND" x="353.06" y="73.66"/>
 <instance part="R23" gate="G$1" x="289.56" y="124.46" rot="R90"/>
 <instance part="R25" gate="G$1" x="203.2" y="124.46" rot="R90"/>
 <instance part="SUPPLY40" gate="GND" x="177.8" y="111.76"/>
@@ -19863,7 +19940,6 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <instance part="C48" gate="G$1" x="360.68" y="38.1"/>
 <instance part="IC24" gate="G$1" x="165.1" y="58.42"/>
 <instance part="P+10" gate="1" x="137.16" y="68.58"/>
-<instance part="L6" gate="G$1" x="190.5" y="60.96" rot="R90"/>
 <instance part="D11" gate="G$1" x="180.34" y="48.26" rot="R90"/>
 <instance part="SUPPLY49" gate="GND" x="142.24" y="38.1"/>
 <instance part="PTC9" gate="G$1" x="317.5" y="411.48"/>
@@ -19929,6 +20005,9 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <instance part="IC2" gate="G$1" x="284.48" y="60.96"/>
 <instance part="IC8" gate="G$1" x="165.1" y="132.08"/>
 <instance part="IC12" gate="G$1" x="251.46" y="132.08"/>
+<instance part="L1" gate="G$1" x="332.74" y="73.66"/>
+<instance part="L5" gate="G$1" x="190.5" y="60.96" rot="R90"/>
+<instance part="L7" gate="G$1" x="99.06" y="60.96" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -20354,8 +20433,8 @@ Source: http://www.jst.com .. eZH.pdf</description>
 </segment>
 <segment>
 <pinref part="D10" gate="G$1" pin="A"/>
-<wire x1="340.36" y1="81.28" x2="342.9" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="342.9" y1="81.28" x2="342.9" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="350.52" y1="81.28" x2="353.06" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="353.06" y1="81.28" x2="353.06" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="SUPPLY42" gate="GND" pin="GND"/>
 </segment>
 <segment>
@@ -20960,7 +21039,6 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <wire x1="246.38" y1="347.98" x2="248.92" y2="347.98" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="L4" gate="G$1" pin="2"/>
 <wire x1="106.68" y1="60.96" x2="109.22" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="109.22" y1="60.96" x2="116.84" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="116.84" y1="60.96" x2="116.84" y2="66.04" width="0.1524" layer="91"/>
@@ -20975,6 +21053,7 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <pinref part="R1" gate="G$1" pin="2"/>
 <wire x1="116.84" y1="60.96" x2="121.92" y2="60.96" width="0.1524" layer="91"/>
 <junction x="116.84" y="60.96"/>
+<pinref part="L7" gate="G$1" pin="2"/>
 </segment>
 <segment>
 <pinref part="+3V18" gate="G$1" pin="+3V3"/>
@@ -22289,9 +22368,9 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <pinref part="D5" gate="G$1" pin="C"/>
 <wire x1="86.36" y1="60.96" x2="88.9" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="88.9" y1="60.96" x2="88.9" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="L4" gate="G$1" pin="1"/>
 <wire x1="88.9" y1="60.96" x2="91.44" y2="60.96" width="0.1524" layer="91"/>
 <junction x="88.9" y="60.96"/>
+<pinref part="L7" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="N$39" class="0">
@@ -22341,22 +22420,21 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <segment>
 <wire x1="299.72" y1="81.28" x2="304.8" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="304.8" y1="81.28" x2="332.74" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="332.74" y1="81.28" x2="345.44" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="297.18" y1="73.66" x2="299.72" y2="73.66" width="0.1524" layer="91"/>
 <wire x1="299.72" y1="81.28" x2="299.72" y2="73.66" width="0.1524" layer="91"/>
-<pinref part="L5" gate="G$1" pin="1"/>
 <pinref part="C42" gate="G$1" pin="1"/>
 <wire x1="304.8" y1="78.74" x2="304.8" y2="81.28" width="0.1524" layer="91"/>
 <junction x="304.8" y="81.28"/>
 <pinref part="D10" gate="G$1" pin="C"/>
-<wire x1="332.74" y1="81.28" x2="335.28" y2="81.28" width="0.1524" layer="91"/>
-<junction x="332.74" y="81.28"/>
 <pinref part="IC2" gate="G$1" pin="SW"/>
+<pinref part="L1" gate="G$1" pin="1"/>
+<junction x="332.74" y="81.28"/>
 </segment>
 </net>
 <net name="CHRG+" class="0">
 <segment>
 <wire x1="297.18" y1="63.5" x2="327.66" y2="63.5" width="0.1524" layer="91"/>
-<pinref part="L5" gate="G$1" pin="2"/>
 <wire x1="327.66" y1="63.5" x2="332.74" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="332.74" y1="63.5" x2="332.74" y2="66.04" width="0.1524" layer="91"/>
 <wire x1="332.74" y1="63.5" x2="337.82" y2="63.5" width="0.1524" layer="91"/>
@@ -22368,6 +22446,7 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <junction x="332.74" y="63.5"/>
 <label x="299.72" y="63.5" size="1.778" layer="95"/>
 <pinref part="IC2" gate="G$1" pin="SENSE"/>
+<pinref part="L1" gate="G$1" pin="2"/>
 </segment>
 <segment>
 <wire x1="152.4" y1="134.62" x2="132.08" y2="134.62" width="0.1524" layer="91"/>
@@ -22489,14 +22568,13 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <pinref part="D11" gate="G$1" pin="C"/>
 <wire x1="177.8" y1="60.96" x2="180.34" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="180.34" y1="60.96" x2="180.34" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="L6" gate="G$1" pin="1"/>
 <wire x1="180.34" y1="60.96" x2="182.88" y2="60.96" width="0.1524" layer="91"/>
 <junction x="180.34" y="60.96"/>
+<pinref part="L5" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="+5V" class="0">
 <segment>
-<pinref part="L6" gate="G$1" pin="2"/>
 <wire x1="198.12" y1="60.96" x2="200.66" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="200.66" y1="60.96" x2="208.28" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="208.28" y1="60.96" x2="208.28" y2="66.04" width="0.1524" layer="91"/>
@@ -22508,6 +22586,7 @@ Source: http://www.jst.com .. eZH.pdf</description>
 <junction x="200.66" y="60.96"/>
 <pinref part="P+1" gate="1" pin="+5V"/>
 <pinref part="C28" gate="G$1" pin="+"/>
+<pinref part="L5" gate="G$1" pin="2"/>
 </segment>
 <segment>
 <pinref part="PTC9" gate="G$1" pin="1"/>

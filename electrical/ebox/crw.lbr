@@ -794,6 +794,30 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <text x="-3" y="-6" size="1.27" layer="27">&gt;VALUE</text>
 <circle x="0" y="0" radius="4" width="2.54" layer="39"/>
 </package>
+<package name="IHLP-2020CZ-11">
+<smd name="1" x="-2.03835" y="0" dx="2.794" dy="1.9177" layer="1" rot="R90"/>
+<smd name="2" x="2.03835" y="0" dx="2.794" dy="1.9177" layer="1" rot="R90"/>
+<wire x1="-2.7432" y1="-2.5908" x2="2.7432" y2="-2.5908" width="0.127" layer="21"/>
+<wire x1="2.7432" y1="2.5908" x2="-2.7432" y2="2.5908" width="0.127" layer="21"/>
+<wire x1="-2.7432" y1="2.5908" x2="-2.7432" y2="2.03835" width="0.127" layer="21"/>
+<wire x1="2.7432" y1="2.5908" x2="2.7432" y2="2.03835" width="0.127" layer="21"/>
+<wire x1="-2.7432" y1="-2.5908" x2="-2.7432" y2="-2.03835" width="0.127" layer="21"/>
+<wire x1="2.7432" y1="-2.5908" x2="2.7432" y2="-2.03835" width="0.127" layer="21"/>
+<text x="-2.794" y="3.048" size="1.27" layer="25">&gt;NAME</text>
+<text x="-2.794" y="-4.318" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="SRR1280">
+<smd name="1" x="-4.8514" y="0" dx="5.4102" dy="2.8956" layer="1" rot="R90"/>
+<smd name="2" x="4.8514" y="0" dx="5.4102" dy="2.8956" layer="1" rot="R90"/>
+<wire x1="-6.2484" y1="3.81" x2="-6.2484" y2="6.2484" width="0.127" layer="21"/>
+<wire x1="-6.2484" y1="6.2484" x2="6.2484" y2="6.2484" width="0.127" layer="21"/>
+<wire x1="6.2484" y1="6.2484" x2="6.2484" y2="3.81" width="0.127" layer="21"/>
+<wire x1="6.2484" y1="-3.81" x2="6.2484" y2="-6.2484" width="0.127" layer="21"/>
+<wire x1="6.2484" y1="-6.2484" x2="-6.2484" y2="-6.2484" width="0.127" layer="21"/>
+<wire x1="-6.2484" y1="-6.2484" x2="-6.2484" y2="-3.81" width="0.127" layer="21"/>
+<text x="-6.35" y="7.62" size="1.27" layer="25">&gt;NAME</text>
+<text x="-6.35" y="-8.89" size="1.27" layer="27">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="MV">
@@ -900,6 +924,20 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <pin name="VFB" x="12.7" y="-12.7" length="short" rot="R180"/>
 <pin name="TIMER" x="-12.7" y="-7.62" length="short"/>
 <pin name="GND" x="-12.7" y="-12.7" length="short" direction="pwr"/>
+</symbol>
+<symbol name="INDUCTOR">
+<wire x1="0" y1="5.08" x2="1.27" y2="3.81" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="2.54" x2="1.27" y2="3.81" width="0.254" layer="94" curve="90"/>
+<wire x1="0" y1="2.54" x2="1.27" y2="1.27" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="0" x2="1.27" y2="1.27" width="0.254" layer="94" curve="90"/>
+<wire x1="0" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="-2.54" x2="1.27" y2="-1.27" width="0.254" layer="94" curve="90"/>
+<wire x1="0" y1="-2.54" x2="1.27" y2="-3.81" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="-5.08" x2="1.27" y2="-3.81" width="0.254" layer="94" curve="90"/>
+<text x="-1.27" y="-5.08" size="1.778" layer="95" rot="R90">&gt;NAME</text>
+<text x="3.81" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="2" x="0" y="-7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R90"/>
+<pin name="1" x="0" y="7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R270"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -1146,6 +1184,31 @@ Source: http://www.analog.com/UploadedFiles/Data_Sheets/224965274AD7992_0.pdf</d
 <connects>
 <connect gate="-1" pin="S" pad="1"/>
 <connect gate="-2" pin="S" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="L" prefix="L" uservalue="yes">
+<gates>
+<gate name="G$1" symbol="INDUCTOR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-IHLP-2020CZ-11" package="IHLP-2020CZ-11">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-SRR1280" package="SRR1280">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>
