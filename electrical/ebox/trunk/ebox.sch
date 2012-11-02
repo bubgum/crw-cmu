@@ -18478,9 +18478,9 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <text x="-2.54" y="3.81" size="1.27" layer="25">&gt;NAME</text>
 <text x="-2.54" y="-5.08" size="1.27" layer="27">&gt;VALUE</text>
 </package>
-<package name="DEANS">
-<pad name="NEG" x="0.762" y="2.54" drill="4.445" diameter="4.826" shape="long"/>
-<pad name="POS" x="0" y="-2.54" drill="4.445" diameter="4.826" shape="long" rot="R180"/>
+<package name="DEANS_FEMALE">
+<pad name="NEG" x="-0.762" y="2.54" drill="4.445" diameter="4.826" shape="long"/>
+<pad name="POS" x="0" y="-4.572" drill="4.445" diameter="4.826" shape="long" rot="R180"/>
 <wire x1="-3.175" y1="0" x2="-3.175" y2="5.969" width="0.127" layer="21"/>
 <wire x1="-3.175" y1="5.969" x2="-2.54" y2="6.604" width="0.127" layer="21"/>
 <wire x1="-2.54" y1="6.604" x2="2.54" y2="6.604" width="0.127" layer="21"/>
@@ -18493,8 +18493,8 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <wire x1="-3.175" y1="-6.604" x2="-3.81" y2="-5.969" width="0.127" layer="21"/>
 <wire x1="-3.81" y1="-5.969" x2="-3.81" y2="-0.635" width="0.127" layer="21"/>
 <wire x1="-3.81" y1="-0.635" x2="-3.175" y2="0" width="0.127" layer="21"/>
-<wire x1="5.08" y1="-5.08" x2="5.08" y2="-6.35" width="0.127" layer="21"/>
-<wire x1="4.445" y1="-5.715" x2="5.715" y2="-5.715" width="0.127" layer="21"/>
+<wire x1="5.08" y1="-1.27" x2="5.08" y2="-2.54" width="0.127" layer="21"/>
+<wire x1="4.445" y1="-1.905" x2="5.715" y2="-1.905" width="0.127" layer="21"/>
 <wire x1="3.81" y1="6.985" x2="3.81" y2="5.715" width="0.127" layer="21"/>
 </package>
 <package name="7381-2PG-300">
@@ -18595,6 +18595,25 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <wire x1="2.7432" y1="-2.5908" x2="2.7432" y2="-2.03835" width="0.127" layer="21"/>
 <text x="-2.794" y="3.048" size="1.27" layer="25">&gt;NAME</text>
 <text x="-2.794" y="-4.318" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="DEANS_MALE">
+<pad name="NEG" x="-0.762" y="2.54" drill="4.445" diameter="4.826" shape="long"/>
+<pad name="POS" x="0" y="-3.048" drill="4.445" diameter="4.826" shape="long" rot="R180"/>
+<wire x1="-3.175" y1="0" x2="-3.175" y2="5.969" width="0.127" layer="21"/>
+<wire x1="-3.175" y1="5.969" x2="-2.54" y2="6.604" width="0.127" layer="21"/>
+<wire x1="-2.54" y1="6.604" x2="2.54" y2="6.604" width="0.127" layer="21"/>
+<wire x1="2.54" y1="6.604" x2="3.175" y2="5.969" width="0.127" layer="21"/>
+<wire x1="3.175" y1="5.969" x2="3.175" y2="0" width="0.127" layer="21"/>
+<wire x1="3.175" y1="0" x2="3.81" y2="-0.635" width="0.127" layer="21"/>
+<wire x1="3.81" y1="-0.635" x2="3.81" y2="-5.969" width="0.127" layer="21"/>
+<wire x1="3.81" y1="-5.969" x2="3.175" y2="-6.604" width="0.127" layer="21"/>
+<wire x1="3.175" y1="-6.604" x2="-3.175" y2="-6.604" width="0.127" layer="21"/>
+<wire x1="-3.175" y1="-6.604" x2="-3.81" y2="-5.969" width="0.127" layer="21"/>
+<wire x1="-3.81" y1="-5.969" x2="-3.81" y2="-0.635" width="0.127" layer="21"/>
+<wire x1="-3.81" y1="-0.635" x2="-3.175" y2="0" width="0.127" layer="21"/>
+<wire x1="5.08" y1="-5.08" x2="5.08" y2="-6.35" width="0.127" layer="21"/>
+<wire x1="4.445" y1="-5.715" x2="5.715" y2="-5.715" width="0.127" layer="21"/>
+<wire x1="3.81" y1="6.985" x2="3.81" y2="5.715" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -18807,7 +18826,16 @@ Gold-plated 3.5mm bullet connector</description>
 <gate name="-NEG" symbol="M" x="2.54" y="-2.54"/>
 </gates>
 <devices>
-<device name="" package="DEANS">
+<device name="-MALE" package="DEANS_MALE">
+<connects>
+<connect gate="-NEG" pin="S" pad="NEG"/>
+<connect gate="-POS" pin="S" pad="POS"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-FEMALE" package="DEANS_FEMALE">
 <connects>
 <connect gate="-NEG" pin="S" pad="NEG"/>
 <connect gate="-POS" pin="S" pad="POS"/>
@@ -19699,8 +19727,6 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <part name="R31" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
 <part name="R32" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
 <part name="R33" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
-<part name="X10" library="crw" deviceset="DEANS" device=""/>
-<part name="X11" library="crw" deviceset="DEANS" device=""/>
 <part name="X12" library="crw" deviceset="7381-2PG-300" device=""/>
 <part name="X3" library="crw" deviceset="17984-7PG-300" device=""/>
 <part name="X5" library="crw" deviceset="17984-7PG-300" device=""/>
@@ -19719,6 +19745,14 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <part name="SUPPLY30" library="supply2" deviceset="GND" device=""/>
 <part name="+3V23" library="supply1" deviceset="+3V3" device=""/>
 <part name="IC16" library="linear" deviceset="MCP1703*" device="MB" technology="33"/>
+<part name="X15" library="crw" deviceset="DEANS" device="-FEMALE"/>
+<part name="X16" library="crw" deviceset="DEANS" device="-FEMALE"/>
+<part name="P+1" library="supply1" deviceset="+12V" device=""/>
+<part name="P+8" library="supply1" deviceset="+12V" device=""/>
+<part name="SUPPLY37" library="supply2" deviceset="GND" device=""/>
+<part name="SUPPLY49" library="supply2" deviceset="GND" device=""/>
+<part name="X10" library="crw" deviceset="DEANS" device="-MALE"/>
+<part name="X11" library="crw" deviceset="DEANS" device="-MALE"/>
 </parts>
 <sheets>
 <sheet>
@@ -20003,10 +20037,6 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="R31" gate="G$1" x="337.82" y="134.62" rot="R90"/>
 <instance part="R32" gate="G$1" x="345.44" y="134.62" rot="R90"/>
 <instance part="R33" gate="G$1" x="353.06" y="134.62" rot="R90"/>
-<instance part="X10" gate="-POS" x="518.16" y="238.76"/>
-<instance part="X10" gate="-NEG" x="518.16" y="231.14"/>
-<instance part="X11" gate="-POS" x="518.16" y="223.52"/>
-<instance part="X11" gate="-NEG" x="518.16" y="215.9"/>
 <instance part="X12" gate="-1" x="518.16" y="370.84"/>
 <instance part="X12" gate="-2" x="518.16" y="368.3"/>
 <instance part="X3" gate="-1" x="518.16" y="358.14"/>
@@ -20050,6 +20080,18 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="SUPPLY30" gate="GND" x="71.12" y="48.26"/>
 <instance part="+3V23" gate="G$1" x="86.36" y="68.58"/>
 <instance part="IC16" gate="G$1" x="71.12" y="63.5"/>
+<instance part="X15" gate="-POS" x="518.16" y="154.94"/>
+<instance part="X15" gate="-NEG" x="518.16" y="152.4"/>
+<instance part="X16" gate="-POS" x="518.16" y="137.16"/>
+<instance part="X16" gate="-NEG" x="518.16" y="134.62"/>
+<instance part="P+1" gate="1" x="508" y="160.02"/>
+<instance part="P+8" gate="1" x="508" y="142.24"/>
+<instance part="SUPPLY37" gate="GND" x="508" y="149.86"/>
+<instance part="SUPPLY49" gate="GND" x="508" y="132.08"/>
+<instance part="X10" gate="-POS" x="518.16" y="238.76"/>
+<instance part="X10" gate="-NEG" x="518.16" y="231.14"/>
+<instance part="X11" gate="-POS" x="518.16" y="223.52"/>
+<instance part="X11" gate="-NEG" x="518.16" y="215.9"/>
 </instances>
 <busses>
 </busses>
@@ -20541,6 +20583,16 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="SUPPLY30" gate="GND" pin="GND"/>
 <junction x="71.12" y="50.8"/>
 <pinref part="IC16" gate="G$1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="SUPPLY37" gate="GND" pin="GND"/>
+<pinref part="X15" gate="-NEG" pin="S"/>
+<wire x1="508" y1="152.4" x2="515.62" y2="152.4" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="SUPPLY49" gate="GND" pin="GND"/>
+<pinref part="X16" gate="-NEG" pin="S"/>
+<wire x1="508" y1="134.62" x2="515.62" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="S1_12V" class="0">
@@ -21130,6 +21182,18 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <junction x="431.8" y="406.4"/>
 <junction x="439.42" y="406.4"/>
 <junction x="447.04" y="406.4"/>
+</segment>
+<segment>
+<pinref part="P+1" gate="1" pin="+12V"/>
+<wire x1="508" y1="157.48" x2="508" y2="154.94" width="0.1524" layer="91"/>
+<pinref part="X15" gate="-POS" pin="S"/>
+<wire x1="508" y1="154.94" x2="515.62" y2="154.94" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="P+8" gate="1" pin="+12V"/>
+<wire x1="508" y1="139.7" x2="508" y2="137.16" width="0.1524" layer="91"/>
+<pinref part="X16" gate="-POS" pin="S"/>
+<wire x1="508" y1="137.16" x2="515.62" y2="137.16" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="AVR_VCC" class="0">
