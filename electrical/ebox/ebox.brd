@@ -2187,10 +2187,11 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <pad name="1" x="2" y="1.2" drill="1.3208" diameter="2.54"/>
 <pad name="2" x="-2" y="1.2" drill="1.3208" diameter="2.54"/>
 <pad name="3" x="0" y="-2.4" drill="1.3208" diameter="2.54"/>
-<circle x="0" y="0" radius="7.75" width="0.127" layer="21"/>
+<circle x="0" y="0" radius="9.0805" width="0.127" layer="21"/>
 <text x="-3" y="5" size="1.27" layer="25">&gt;NAME</text>
 <text x="-3" y="-6" size="1.27" layer="27">&gt;VALUE</text>
 <circle x="0" y="0" radius="4" width="2.54" layer="39"/>
+<circle x="0" y="0" radius="11.6205" width="0.127" layer="21"/>
 </package>
 <package name="BULLET">
 <pad name="P$1" x="0" y="0" drill="4.25" diameter="6"/>
@@ -2219,23 +2220,25 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <package name="7381-2PG-300">
 <pad name="1" x="2.6" y="0" drill="1.3208" diameter="2.54"/>
 <pad name="2" x="-2.6" y="0" drill="1.3208" diameter="2.54"/>
-<circle x="0" y="0" radius="7.75" width="0.127" layer="21"/>
-<text x="-3" y="5" size="1.27" layer="25">&gt;NAME</text>
-<text x="-3" y="-6" size="1.27" layer="27">&gt;VALUE</text>
+<circle x="0" y="0" radius="9.0805" width="0.127" layer="21"/>
+<text x="-3" y="6.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3" y="-7.27" size="1.27" layer="27">&gt;VALUE</text>
 <circle x="0" y="0" radius="4" width="2.54" layer="39"/>
+<circle x="0" y="0" radius="11.6205" width="0.127" layer="21"/>
 </package>
 <package name="17984-7PG-300">
-<circle x="0" y="0" radius="5.5" width="0.127" layer="21"/>
-<text x="-3" y="3" size="1.27" layer="25">&gt;NAME</text>
-<text x="-3" y="-4" size="1.27" layer="27">&gt;VALUE</text>
-<pad name="1" x="2.54" y="0" drill="1.016"/>
-<pad name="2" x="1.27" y="2.199640625" drill="1.016"/>
-<pad name="3" x="-1.27" y="2.199640625" drill="1.016"/>
-<pad name="4" x="-2.54" y="0" drill="1.016"/>
-<pad name="5" x="-1.27" y="-2.199640625" drill="1.016"/>
-<pad name="6" x="1.27" y="-2.199640625" drill="1.016"/>
+<circle x="0" y="0" radius="9.144" width="0.127" layer="21"/>
+<text x="-3" y="4.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3" y="-5.27" size="1.27" layer="27">&gt;VALUE</text>
+<pad name="1" x="-1.0541" y="1.826259375" drill="1.016"/>
+<pad name="2" x="-2.1082" y="0" drill="1.016"/>
+<pad name="3" x="-1.0541" y="-1.826259375" drill="1.016"/>
+<pad name="4" x="1.0541" y="-1.826259375" drill="1.016"/>
+<pad name="5" x="2.1082" y="0" drill="1.016"/>
+<pad name="6" x="1.0541" y="1.826259375" drill="1.016"/>
 <pad name="7" x="0" y="0" drill="1.016"/>
 <circle x="0" y="0" radius="2.54" width="1.27" layer="39"/>
+<circle x="0" y="0" radius="7.874" width="0.127" layer="21"/>
 </package>
 <package name="MSOP12-MSE">
 <description>&lt;b&gt;10-Lead Mini Small Outline Package [MSOP]&lt;/b&gt; (RM-10)&lt;p&gt;
@@ -3148,126 +3151,126 @@ design rules under a new name.</description>
 <signal name="S1_12V">
 <contactref element="X3" pad="1"/>
 <contactref element="T2" pad="3"/>
-<wire x1="35.7886" y1="37.3888" x2="44.45" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="35.7886" y1="37.3888" x2="48.0441" y2="51.356259375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S1_RX">
 <contactref element="X3" pad="2"/>
 <contactref element="IC1" pad="8"/>
 <contactref element="R16" pad="2"/>
-<wire x1="41.0178" y1="26.405" x2="45.72" y2="51.729640625" width="0" layer="19" extent="1-1"/>
-<wire x1="-105.73" y1="105.41" x2="45.72" y2="51.729640625" width="0" layer="19" extent="1-1"/>
+<wire x1="41.0178" y1="26.405" x2="49.0982" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="-105.73" y1="105.41" x2="49.0982" y2="49.53" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S1_TX">
 <contactref element="X3" pad="3"/>
 <contactref element="IC1" pad="13"/>
 <contactref element="IC5" pad="4"/>
-<wire x1="35.1822" y1="23.805" x2="48.26" y2="51.729640625" width="0" layer="19" extent="1-1"/>
+<wire x1="35.1822" y1="23.805" x2="48.0441" y2="47.703740625" width="0" layer="19" extent="1-1"/>
 <wire x1="-95.57" y1="62.26" x2="35.1822" y2="23.805" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S1_5V">
 <contactref element="X3" pad="4"/>
 <contactref element="PTC9" pad="2"/>
 <contactref element="IC5" pad="5"/>
-<wire x1="-15.088" y1="99.06" x2="49.53" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="-15.088" y1="99.06" x2="45.9359" y2="47.703740625" width="0" layer="19" extent="1-1"/>
 <wire x1="-97.47" y1="62.26" x2="-15.088" y2="99.06" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S1_GPIO_A">
 <contactref element="X3" pad="5"/>
 <contactref element="PTC1" pad="2"/>
-<wire x1="-68.428" y1="92.71" x2="48.26" y2="47.330359375" width="0" layer="19" extent="1-1"/>
+<wire x1="-68.428" y1="92.71" x2="44.8818" y2="49.53" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S1_GPIO_B">
 <contactref element="X3" pad="6"/>
 <contactref element="PTC2" pad="2"/>
-<wire x1="-76.048" y1="92.71" x2="45.72" y2="47.330359375" width="0" layer="19" extent="1-1"/>
+<wire x1="-76.048" y1="92.71" x2="45.9359" y2="51.356259375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S2_RX">
 <contactref element="X5" pad="2"/>
 <contactref element="IC7" pad="8"/>
 <contactref element="R17" pad="2"/>
-<wire x1="86.7378" y1="26.405" x2="88.9" y2="51.729640625" width="0" layer="19" extent="1-1"/>
-<wire x1="-112.08" y1="105.41" x2="88.9" y2="51.729640625" width="0" layer="19" extent="1-1"/>
+<wire x1="86.7378" y1="26.405" x2="92.2782" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="-112.08" y1="105.41" x2="92.2782" y2="49.53" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S2_12V">
 <contactref element="X5" pad="1"/>
 <contactref element="T3" pad="3"/>
-<wire x1="86.5886" y1="37.3888" x2="87.63" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="86.5886" y1="37.3888" x2="91.2241" y2="51.356259375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S2_TX">
 <contactref element="X5" pad="3"/>
 <contactref element="IC7" pad="13"/>
 <contactref element="IC9" pad="4"/>
-<wire x1="97.47" y1="43.21" x2="91.44" y2="51.729640625" width="0" layer="19" extent="1-1"/>
+<wire x1="97.47" y1="43.21" x2="91.2241" y2="47.703740625" width="0" layer="19" extent="1-1"/>
 <wire x1="80.9022" y1="23.805" x2="97.47" y2="43.21" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S2_5V">
 <contactref element="X5" pad="4"/>
 <contactref element="PTC10" pad="2"/>
 <contactref element="IC9" pad="5"/>
-<wire x1="95.57" y1="43.21" x2="92.71" y2="49.53" width="0" layer="19" extent="1-1"/>
-<wire x1="-45.568" y1="92.71" x2="92.71" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="95.57" y1="43.21" x2="89.1159" y2="47.703740625" width="0" layer="19" extent="1-1"/>
+<wire x1="-45.568" y1="92.71" x2="89.1159" y2="47.703740625" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S3_12V">
 <contactref element="X6" pad="1"/>
 <contactref element="T4" pad="3"/>
-<wire x1="66.2686" y1="37.3888" x2="73.66" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="66.2686" y1="37.3888" x2="77.2541" y2="51.356259375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S3_RX">
 <contactref element="X6" pad="2"/>
 <contactref element="IC11" pad="8"/>
 <contactref element="R18" pad="2"/>
-<wire x1="62.6078" y1="26.405" x2="74.93" y2="51.729640625" width="0" layer="19" extent="1-1"/>
+<wire x1="62.6078" y1="26.405" x2="78.3082" y2="49.53" width="0" layer="19" extent="1-1"/>
 <wire x1="-118.43" y1="105.41" x2="62.6078" y2="26.405" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S3_TX">
 <contactref element="X6" pad="3"/>
 <contactref element="IC11" pad="13"/>
 <contactref element="IC13" pad="4"/>
-<wire x1="61.91" y1="39.4" x2="77.47" y2="51.729640625" width="0" layer="19" extent="1-1"/>
+<wire x1="61.91" y1="39.4" x2="77.2541" y2="47.703740625" width="0" layer="19" extent="1-1"/>
 <wire x1="56.7722" y1="23.805" x2="61.91" y2="39.4" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S3_5V">
 <contactref element="X6" pad="4"/>
 <contactref element="IC13" pad="5"/>
 <contactref element="PTC11" pad="2"/>
-<wire x1="60.01" y1="39.4" x2="78.74" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="60.01" y1="39.4" x2="75.1459" y2="47.703740625" width="0" layer="19" extent="1-1"/>
 <wire x1="-53.188" y1="92.71" x2="60.01" y2="39.4" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S4_12V">
 <contactref element="X7" pad="1"/>
 <contactref element="T5" pad="3"/>
-<wire x1="51.0286" y1="37.3888" x2="58.42" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="51.0286" y1="37.3888" x2="62.0141" y2="51.356259375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S4_RX">
 <contactref element="X7" pad="2"/>
 <contactref element="IC15" pad="8"/>
 <contactref element="R19" pad="2"/>
-<wire x1="29.5878" y1="40.375" x2="59.69" y2="51.729640625" width="0" layer="19" extent="1-1"/>
+<wire x1="29.5878" y1="40.375" x2="63.0682" y2="49.53" width="0" layer="19" extent="1-1"/>
 <wire x1="-15.56" y1="111.76" x2="29.5878" y2="40.375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S4_TX">
 <contactref element="X7" pad="3"/>
 <contactref element="IC15" pad="13"/>
 <contactref element="IC17" pad="4"/>
-<wire x1="35.24" y1="50.83" x2="62.23" y2="51.729640625" width="0" layer="19" extent="1-1"/>
+<wire x1="35.24" y1="50.83" x2="62.0141" y2="47.703740625" width="0" layer="19" extent="1-1"/>
 <wire x1="23.7522" y1="37.775" x2="35.24" y2="50.83" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S4_5V">
 <contactref element="X7" pad="4"/>
 <contactref element="IC17" pad="5"/>
 <contactref element="PTC12" pad="2"/>
-<wire x1="33.34" y1="50.83" x2="63.5" y2="49.53" width="0" layer="19" extent="1-1"/>
+<wire x1="33.34" y1="50.83" x2="59.9059" y2="47.703740625" width="0" layer="19" extent="1-1"/>
 <wire x1="-60.808" y1="92.71" x2="33.34" y2="50.83" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S4_GPIO_A">
 <contactref element="X7" pad="5"/>
 <contactref element="PTC7" pad="2"/>
-<wire x1="-114.148" y1="92.71" x2="62.23" y2="47.330359375" width="0" layer="19" extent="1-1"/>
+<wire x1="-114.148" y1="92.71" x2="58.8518" y2="49.53" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S4_GPIO_B">
 <contactref element="X7" pad="6"/>
 <contactref element="PTC8" pad="2"/>
-<wire x1="-121.768" y1="92.71" x2="59.69" y2="47.330359375" width="0" layer="19" extent="1-1"/>
+<wire x1="-121.768" y1="92.71" x2="59.9059" y2="51.356259375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$1">
 <contactref element="C2" pad="2"/>
@@ -3967,12 +3970,12 @@ design rules under a new name.</description>
 <signal name="S2_GPIO_A">
 <contactref element="PTC3" pad="2"/>
 <contactref element="X5" pad="5"/>
-<wire x1="-83.668" y1="92.71" x2="91.44" y2="47.330359375" width="0" layer="19" extent="1-1"/>
+<wire x1="-83.668" y1="92.71" x2="88.0618" y2="49.53" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S2_GPIO_B">
 <contactref element="PTC4" pad="2"/>
 <contactref element="X5" pad="6"/>
-<wire x1="-91.288" y1="92.71" x2="88.9" y2="47.330359375" width="0" layer="19" extent="1-1"/>
+<wire x1="-91.288" y1="92.71" x2="89.1159" y2="51.356259375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S1_RX_33V">
 <contactref element="IC6" pad="1"/>
@@ -4005,12 +4008,12 @@ design rules under a new name.</description>
 <signal name="S3_GPIO_A">
 <contactref element="PTC5" pad="2"/>
 <contactref element="X6" pad="5"/>
-<wire x1="-98.908" y1="92.71" x2="77.47" y2="47.330359375" width="0" layer="19" extent="1-1"/>
+<wire x1="-98.908" y1="92.71" x2="74.0918" y2="49.53" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="S3_GPIO_B">
 <contactref element="PTC6" pad="2"/>
 <contactref element="X6" pad="6"/>
-<wire x1="-106.528" y1="92.71" x2="74.93" y2="47.330359375" width="0" layer="19" extent="1-1"/>
+<wire x1="-106.528" y1="92.71" x2="75.1459" y2="51.356259375" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$40">
 <contactref element="IC20" pad="2"/>

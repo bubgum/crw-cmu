@@ -18500,10 +18500,11 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <pad name="1" x="2" y="1.2" drill="1.3208" diameter="2.54"/>
 <pad name="2" x="-2" y="1.2" drill="1.3208" diameter="2.54"/>
 <pad name="3" x="0" y="-2.4" drill="1.3208" diameter="2.54"/>
-<circle x="0" y="0" radius="7.75" width="0.127" layer="21"/>
+<circle x="0" y="0" radius="9.0805" width="0.127" layer="21"/>
 <text x="-3" y="5" size="1.27" layer="25">&gt;NAME</text>
 <text x="-3" y="-6" size="1.27" layer="27">&gt;VALUE</text>
 <circle x="0" y="0" radius="4" width="2.54" layer="39"/>
+<circle x="0" y="0" radius="11.6205" width="0.127" layer="21"/>
 </package>
 <package name="BULLET">
 <pad name="P$1" x="0" y="0" drill="4.25" diameter="6"/>
@@ -18532,23 +18533,25 @@ Source: http://focus.ti.com/lit/ds/symlink/tps77001.pdf</description>
 <package name="7381-2PG-300">
 <pad name="1" x="2.6" y="0" drill="1.3208" diameter="2.54"/>
 <pad name="2" x="-2.6" y="0" drill="1.3208" diameter="2.54"/>
-<circle x="0" y="0" radius="7.75" width="0.127" layer="21"/>
-<text x="-3" y="5" size="1.27" layer="25">&gt;NAME</text>
-<text x="-3" y="-6" size="1.27" layer="27">&gt;VALUE</text>
+<circle x="0" y="0" radius="9.0805" width="0.127" layer="21"/>
+<text x="-3" y="6.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3" y="-7.27" size="1.27" layer="27">&gt;VALUE</text>
 <circle x="0" y="0" radius="4" width="2.54" layer="39"/>
+<circle x="0" y="0" radius="11.6205" width="0.127" layer="21"/>
 </package>
 <package name="17984-7PG-300">
-<circle x="0" y="0" radius="5.5" width="0.127" layer="21"/>
-<text x="-3" y="3" size="1.27" layer="25">&gt;NAME</text>
-<text x="-3" y="-4" size="1.27" layer="27">&gt;VALUE</text>
-<pad name="1" x="2.54" y="0" drill="1.016"/>
-<pad name="2" x="1.27" y="2.199640625" drill="1.016"/>
-<pad name="3" x="-1.27" y="2.199640625" drill="1.016"/>
-<pad name="4" x="-2.54" y="0" drill="1.016"/>
-<pad name="5" x="-1.27" y="-2.199640625" drill="1.016"/>
-<pad name="6" x="1.27" y="-2.199640625" drill="1.016"/>
+<circle x="0" y="0" radius="9.144" width="0.127" layer="21"/>
+<text x="-3" y="4.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3" y="-5.27" size="1.27" layer="27">&gt;VALUE</text>
+<pad name="1" x="-1.0541" y="1.826259375" drill="1.016"/>
+<pad name="2" x="-2.1082" y="0" drill="1.016"/>
+<pad name="3" x="-1.0541" y="-1.826259375" drill="1.016"/>
+<pad name="4" x="1.0541" y="-1.826259375" drill="1.016"/>
+<pad name="5" x="2.1082" y="0" drill="1.016"/>
+<pad name="6" x="1.0541" y="1.826259375" drill="1.016"/>
 <pad name="7" x="0" y="0" drill="1.016"/>
 <circle x="0" y="0" radius="2.54" width="1.27" layer="39"/>
+<circle x="0" y="0" radius="7.874" width="0.127" layer="21"/>
 </package>
 <package name="MSOP12-MSE">
 <description>&lt;b&gt;10-Lead Mini Small Outline Package [MSOP]&lt;/b&gt; (RM-10)&lt;p&gt;
