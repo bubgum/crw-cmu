@@ -38,7 +38,7 @@
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
-<layer number="45" name="Holes" color="7" fill="1" visible="no" active="yes"/>
+<layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
@@ -840,6 +840,21 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <wire x1="4.445" y1="-1.905" x2="5.715" y2="-1.905" width="0.127" layer="21"/>
 <wire x1="3.81" y1="6.985" x2="3.81" y2="5.715" width="0.127" layer="21"/>
 </package>
+<package name="1001-002-01100">
+<hole x="-6.57" y="-3.71" drill="2.3"/>
+<hole x="6.57" y="-3.71" drill="2.3"/>
+<smd name="2" x="-1" y="0" dx="0.8" dy="2.82" layer="1"/>
+<smd name="3" x="1" y="0" dx="0.8" dy="2.82" layer="1"/>
+<smd name="1" x="-3.5" y="0" dx="0.8" dy="2.82" layer="1"/>
+<smd name="4" x="3.5" y="0" dx="0.8" dy="2.82" layer="1"/>
+<wire x1="-5" y1="0" x2="-6.95" y2="0" width="0.127" layer="21"/>
+<wire x1="-6.95" y1="0" x2="-6.95" y2="-14.15" width="0.127" layer="21"/>
+<wire x1="5" y1="0" x2="6.95" y2="0" width="0.127" layer="21"/>
+<wire x1="6.95" y1="0" x2="6.95" y2="-14.15" width="0.127" layer="21"/>
+<wire x1="6.95" y1="-14.15" x2="-6.95" y2="-14.15" width="0.127" layer="21"/>
+<text x="-8" y="-12" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="9" y="-12" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="MV">
@@ -1240,6 +1255,28 @@ Source: http://www.analog.com/UploadedFiles/Data_Sheets/224965274AD7992_0.pdf</d
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="USB_A" prefix="X">
+<description>&lt;b&gt;USB A-type connector&lt;/b&gt;</description>
+<gates>
+<gate name="-[+]" symbol="MV" x="2.54" y="0"/>
+<gate name="-D-" symbol="M" x="2.54" y="-2.54"/>
+<gate name="-D+" symbol="M" x="2.54" y="-5.08"/>
+<gate name="-[-]" symbol="M" x="2.54" y="-7.62"/>
+</gates>
+<devices>
+<device name="" package="1001-002-01100">
+<connects>
+<connect gate="-D+" pin="S" pad="3"/>
+<connect gate="-D-" pin="S" pad="2"/>
+<connect gate="-[+]" pin="S" pad="1"/>
+<connect gate="-[-]" pin="S" pad="4"/>
 </connects>
 <technologies>
 <technology name=""/>
