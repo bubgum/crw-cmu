@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -19724,20 +19724,20 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <part name="C47" library="rcl" deviceset="C-US" device="C0805" value="10uF"/>
 <part name="+3V22" library="supply1" deviceset="+3V3" device=""/>
 <part name="SUPPLY46" library="supply2" deviceset="GND" device=""/>
-<part name="X17" library="con-molex" deviceset="22-23-2021" device=""/>
+<part name="X14" library="con-molex" deviceset="22-23-2021" device=""/>
 <part name="SUPPLY47" library="supply2" deviceset="GND" device=""/>
-<part name="X18" library="crw" deviceset="7381-3PG-300" device=""/>
-<part name="X19" library="crw" deviceset="7381-3PG-300" device=""/>
-<part name="X1" library="crw" deviceset="BULLET" device=""/>
-<part name="X2" library="crw" deviceset="BULLET" device=""/>
-<part name="X20" library="crw" deviceset="BULLET" device=""/>
-<part name="X21" library="crw" deviceset="BULLET" device=""/>
-<part name="X22" library="crw" deviceset="BULLET" device=""/>
-<part name="X23" library="crw" deviceset="BULLET" device=""/>
-<part name="X4" library="crw" deviceset="BULLET" device=""/>
-<part name="X14" library="crw" deviceset="BULLET" device=""/>
+<part name="X1" library="crw" deviceset="7381-3PG-300" device=""/>
+<part name="X2" library="crw" deviceset="7381-3PG-300" device=""/>
+<part name="B1" library="crw" deviceset="BULLET" device=""/>
+<part name="B2" library="crw" deviceset="BULLET" device=""/>
+<part name="B3" library="crw" deviceset="BULLET" device=""/>
+<part name="B4" library="crw" deviceset="BULLET" device=""/>
+<part name="B5" library="crw" deviceset="BULLET" device=""/>
+<part name="B6" library="crw" deviceset="BULLET" device=""/>
+<part name="B7" library="crw" deviceset="BULLET" device=""/>
+<part name="B8" library="crw" deviceset="BULLET" device=""/>
+<part name="X11" library="con-jst" deviceset="?4B-ZR" device="B"/>
 <part name="X13" library="con-jst" deviceset="?4B-ZR" device="B"/>
-<part name="X24" library="con-jst" deviceset="?4B-ZR" device="B"/>
 <part name="R29" library="rcl" deviceset="R-US_" device="R0805" value="10k"/>
 <part name="R30" library="rcl" deviceset="R-US_" device="R0805" value="2k"/>
 <part name="SUPPLY48" library="supply2" deviceset="GND" device=""/>
@@ -19761,8 +19761,8 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <part name="R31" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
 <part name="R32" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
 <part name="R33" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
-<part name="X12" library="crw" deviceset="7381-2PG-300" device=""/>
-<part name="X3" library="crw" deviceset="17984-7PG-300" device=""/>
+<part name="X3" library="crw" deviceset="7381-2PG-300" device=""/>
+<part name="X4" library="crw" deviceset="17984-7PG-300" device=""/>
 <part name="X5" library="crw" deviceset="17984-7PG-300" device=""/>
 <part name="X6" library="crw" deviceset="17984-7PG-300" device=""/>
 <part name="X7" library="crw" deviceset="17984-7PG-300" device=""/>
@@ -19786,8 +19786,8 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <part name="SUPPLY37" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY49" library="supply2" deviceset="GND" device=""/>
 <part name="X10" library="crw" deviceset="DEANS" device="-MALE"/>
-<part name="X11" library="crw" deviceset="DEANS" device="-MALE"/>
-<part name="X25" library="crw" deviceset="USB_A" device=""/>
+<part name="X12" library="crw" deviceset="DEANS" device="-MALE"/>
+<part name="X17" library="crw" deviceset="USB_A" device=""/>
 <part name="P+10" library="supply1" deviceset="+5V" device=""/>
 <part name="SUPPLY50" library="supply2" deviceset="GND" device=""/>
 <part name="L4" library="rcl" deviceset="L-US" device="L2012C" value="10uH"/>
@@ -20004,55 +20004,55 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="C47" gate="G$1" x="525.78" y="180.34"/>
 <instance part="+3V22" gate="G$1" x="525.78" y="195.58"/>
 <instance part="SUPPLY46" gate="GND" x="525.78" y="170.18"/>
-<instance part="X17" gate="-1" x="497.84" y="205.74" rot="MR0"/>
-<instance part="X17" gate="-2" x="497.84" y="203.2" rot="MR0"/>
+<instance part="X14" gate="-1" x="497.84" y="205.74" rot="MR0"/>
+<instance part="X14" gate="-2" x="497.84" y="203.2" rot="MR0"/>
 <instance part="SUPPLY47" gate="GND" x="515.62" y="200.66"/>
-<instance part="X18" gate="-1" x="518.16" y="396.24"/>
-<instance part="X18" gate="-2" x="518.16" y="393.7"/>
-<instance part="X18" gate="-3" x="518.16" y="391.16"/>
-<instance part="X19" gate="-1" x="518.16" y="383.54"/>
-<instance part="X19" gate="-2" x="518.16" y="381"/>
-<instance part="X19" gate="-3" x="518.16" y="378.46"/>
-<instance part="X1" gate="-1" x="497.84" y="396.24" smashed="yes" rot="MR0">
+<instance part="X1" gate="-1" x="518.16" y="396.24"/>
+<instance part="X1" gate="-2" x="518.16" y="393.7"/>
+<instance part="X1" gate="-3" x="518.16" y="391.16"/>
+<instance part="X2" gate="-1" x="518.16" y="383.54"/>
+<instance part="X2" gate="-2" x="518.16" y="381"/>
+<instance part="X2" gate="-3" x="518.16" y="378.46"/>
+<instance part="B1" gate="-1" x="497.84" y="396.24" smashed="yes" rot="MR0">
 <attribute name="NAME" x="495.3" y="395.478" size="1.524" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="490.982" y="395.097" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X2" gate="-1" x="497.84" y="393.7" smashed="yes" rot="MR0">
+<instance part="B2" gate="-1" x="497.84" y="393.7" smashed="yes" rot="MR0">
 <attribute name="NAME" x="495.3" y="392.938" size="1.524" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="490.982" y="392.557" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X20" gate="-1" x="497.84" y="391.16" smashed="yes" rot="MR0">
+<instance part="B3" gate="-1" x="497.84" y="391.16" smashed="yes" rot="MR0">
 <attribute name="NAME" x="495.3" y="390.398" size="1.524" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="490.982" y="390.017" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X21" gate="-1" x="497.84" y="383.54" smashed="yes" rot="MR0">
+<instance part="B4" gate="-1" x="497.84" y="383.54" smashed="yes" rot="MR0">
 <attribute name="NAME" x="495.3" y="382.778" size="1.524" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="490.982" y="382.397" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X22" gate="-1" x="497.84" y="381" smashed="yes" rot="MR0">
+<instance part="B5" gate="-1" x="497.84" y="381" smashed="yes" rot="MR0">
 <attribute name="NAME" x="495.3" y="380.238" size="1.524" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="490.982" y="379.857" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X23" gate="-1" x="497.84" y="378.46" smashed="yes" rot="MR0">
+<instance part="B6" gate="-1" x="497.84" y="378.46" smashed="yes" rot="MR0">
 <attribute name="NAME" x="495.3" y="377.698" size="1.524" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="490.982" y="377.317" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X4" gate="-1" x="497.84" y="370.84" smashed="yes" rot="MR0">
+<instance part="B7" gate="-1" x="497.84" y="370.84" smashed="yes" rot="MR0">
 <attribute name="NAME" x="495.3" y="370.078" size="1.524" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="490.982" y="369.697" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X14" gate="-1" x="497.84" y="368.3" smashed="yes" rot="MR0">
+<instance part="B8" gate="-1" x="497.84" y="368.3" smashed="yes" rot="MR0">
 <attribute name="NAME" x="495.3" y="367.538" size="1.524" layer="95" rot="MR0"/>
 <attribute name="VALUE" x="490.982" y="367.157" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="X13" gate="-1" x="495.3" y="231.14" rot="R180"/>
-<instance part="X13" gate="-2" x="495.3" y="233.68" rot="R180"/>
-<instance part="X13" gate="-3" x="495.3" y="236.22" rot="R180"/>
-<instance part="X13" gate="-4" x="495.3" y="238.76" rot="R180"/>
-<instance part="X24" gate="-1" x="495.3" y="215.9" rot="R180"/>
-<instance part="X24" gate="-2" x="495.3" y="218.44" rot="R180"/>
-<instance part="X24" gate="-3" x="495.3" y="220.98" rot="R180"/>
-<instance part="X24" gate="-4" x="495.3" y="223.52" rot="R180"/>
+<instance part="X11" gate="-1" x="495.3" y="231.14" rot="R180"/>
+<instance part="X11" gate="-2" x="495.3" y="233.68" rot="R180"/>
+<instance part="X11" gate="-3" x="495.3" y="236.22" rot="R180"/>
+<instance part="X11" gate="-4" x="495.3" y="238.76" rot="R180"/>
+<instance part="X13" gate="-1" x="495.3" y="215.9" rot="R180"/>
+<instance part="X13" gate="-2" x="495.3" y="218.44" rot="R180"/>
+<instance part="X13" gate="-3" x="495.3" y="220.98" rot="R180"/>
+<instance part="X13" gate="-4" x="495.3" y="223.52" rot="R180"/>
 <instance part="R29" gate="G$1" x="350.52" y="50.8" rot="R90"/>
 <instance part="R30" gate="G$1" x="350.52" y="38.1" rot="R90"/>
 <instance part="SUPPLY48" gate="GND" x="350.52" y="27.94"/>
@@ -20076,15 +20076,15 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="R31" gate="G$1" x="337.82" y="134.62" rot="R90"/>
 <instance part="R32" gate="G$1" x="345.44" y="134.62" rot="R90"/>
 <instance part="R33" gate="G$1" x="353.06" y="134.62" rot="R90"/>
-<instance part="X12" gate="-1" x="518.16" y="370.84"/>
-<instance part="X12" gate="-2" x="518.16" y="368.3"/>
-<instance part="X3" gate="-1" x="518.16" y="358.14"/>
-<instance part="X3" gate="-2" x="518.16" y="355.6"/>
-<instance part="X3" gate="-3" x="518.16" y="353.06"/>
-<instance part="X3" gate="-4" x="518.16" y="350.52"/>
-<instance part="X3" gate="-5" x="518.16" y="347.98"/>
-<instance part="X3" gate="-6" x="518.16" y="345.44"/>
-<instance part="X3" gate="-7" x="518.16" y="342.9"/>
+<instance part="X3" gate="-1" x="518.16" y="370.84"/>
+<instance part="X3" gate="-2" x="518.16" y="368.3"/>
+<instance part="X4" gate="-1" x="518.16" y="358.14"/>
+<instance part="X4" gate="-2" x="518.16" y="355.6"/>
+<instance part="X4" gate="-3" x="518.16" y="353.06"/>
+<instance part="X4" gate="-4" x="518.16" y="350.52"/>
+<instance part="X4" gate="-5" x="518.16" y="347.98"/>
+<instance part="X4" gate="-6" x="518.16" y="345.44"/>
+<instance part="X4" gate="-7" x="518.16" y="342.9"/>
 <instance part="X5" gate="-1" x="518.16" y="335.28"/>
 <instance part="X5" gate="-2" x="518.16" y="332.74"/>
 <instance part="X5" gate="-3" x="518.16" y="330.2"/>
@@ -20129,12 +20129,12 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="SUPPLY49" gate="GND" x="518.16" y="132.08"/>
 <instance part="X10" gate="-POS" x="518.16" y="238.76"/>
 <instance part="X10" gate="-NEG" x="518.16" y="231.14"/>
-<instance part="X11" gate="-POS" x="518.16" y="223.52"/>
-<instance part="X11" gate="-NEG" x="518.16" y="215.9"/>
-<instance part="X25" gate="-[+]" x="497.84" y="116.84" rot="MR0"/>
-<instance part="X25" gate="-D-" x="497.84" y="114.3" rot="MR0"/>
-<instance part="X25" gate="-D+" x="497.84" y="111.76" rot="MR0"/>
-<instance part="X25" gate="-[-]" x="497.84" y="109.22" rot="MR0"/>
+<instance part="X12" gate="-POS" x="518.16" y="223.52"/>
+<instance part="X12" gate="-NEG" x="518.16" y="215.9"/>
+<instance part="X17" gate="-[+]" x="497.84" y="116.84" rot="MR0"/>
+<instance part="X17" gate="-D-" x="497.84" y="114.3" rot="MR0"/>
+<instance part="X17" gate="-D+" x="497.84" y="111.76" rot="MR0"/>
+<instance part="X17" gate="-[-]" x="497.84" y="109.22" rot="MR0"/>
 <instance part="P+10" gate="1" x="530.86" y="124.46"/>
 <instance part="SUPPLY50" gate="GND" x="530.86" y="106.68"/>
 <instance part="L4" gate="G$1" x="518.16" y="116.84" rot="R90"/>
@@ -20163,56 +20163,56 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="515.62" y1="396.24" x2="500.38" y2="396.24" width="0.1524" layer="91"/>
 <label x="502.92" y="396.24" size="1.778" layer="95"/>
-<pinref part="X18" gate="-1" pin="S"/>
 <pinref part="X1" gate="-1" pin="S"/>
+<pinref part="B1" gate="-1" pin="S"/>
 </segment>
 </net>
 <net name="MOT1_B" class="0">
 <segment>
 <wire x1="515.62" y1="393.7" x2="500.38" y2="393.7" width="0.1524" layer="91"/>
 <label x="502.92" y="393.7" size="1.778" layer="95"/>
-<pinref part="X18" gate="-2" pin="S"/>
-<pinref part="X2" gate="-1" pin="S"/>
+<pinref part="X1" gate="-2" pin="S"/>
+<pinref part="B2" gate="-1" pin="S"/>
 </segment>
 </net>
 <net name="MOT1_C" class="0">
 <segment>
 <wire x1="515.62" y1="391.16" x2="500.38" y2="391.16" width="0.1524" layer="91"/>
 <label x="502.92" y="391.16" size="1.778" layer="95"/>
-<pinref part="X18" gate="-3" pin="S"/>
-<pinref part="X20" gate="-1" pin="S"/>
+<pinref part="X1" gate="-3" pin="S"/>
+<pinref part="B3" gate="-1" pin="S"/>
 </segment>
 </net>
 <net name="MOT2_A" class="0">
 <segment>
 <wire x1="515.62" y1="383.54" x2="500.38" y2="383.54" width="0.1524" layer="91"/>
 <label x="502.92" y="383.54" size="1.778" layer="95"/>
-<pinref part="X19" gate="-1" pin="S"/>
-<pinref part="X21" gate="-1" pin="S"/>
+<pinref part="X2" gate="-1" pin="S"/>
+<pinref part="B4" gate="-1" pin="S"/>
 </segment>
 </net>
 <net name="MOT2_B" class="0">
 <segment>
 <wire x1="515.62" y1="381" x2="500.38" y2="381" width="0.1524" layer="91"/>
 <label x="502.92" y="381" size="1.778" layer="95"/>
-<pinref part="X19" gate="-2" pin="S"/>
-<pinref part="X22" gate="-1" pin="S"/>
+<pinref part="X2" gate="-2" pin="S"/>
+<pinref part="B5" gate="-1" pin="S"/>
 </segment>
 </net>
 <net name="MOT2_C" class="0">
 <segment>
 <wire x1="515.62" y1="378.46" x2="500.38" y2="378.46" width="0.1524" layer="91"/>
 <label x="502.92" y="378.46" size="1.778" layer="95"/>
-<pinref part="X19" gate="-3" pin="S"/>
-<pinref part="X23" gate="-1" pin="S"/>
+<pinref part="X2" gate="-3" pin="S"/>
+<pinref part="B6" gate="-1" pin="S"/>
 </segment>
 </net>
 <net name="CHARGE" class="0">
 <segment>
 <wire x1="515.62" y1="370.84" x2="500.38" y2="370.84" width="0.1524" layer="91"/>
 <label x="502.92" y="370.84" size="1.778" layer="95"/>
-<pinref part="X4" gate="-1" pin="S"/>
-<pinref part="X12" gate="-1" pin="S"/>
+<pinref part="B7" gate="-1" pin="S"/>
+<pinref part="X3" gate="-1" pin="S"/>
 </segment>
 <segment>
 <pinref part="D12" gate="G$1" pin="A"/>
@@ -20225,13 +20225,13 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="515.62" y1="368.3" x2="500.38" y2="368.3" width="0.1524" layer="91"/>
 <label x="502.92" y="368.3" size="1.778" layer="95"/>
-<pinref part="X14" gate="-1" pin="S"/>
-<pinref part="X12" gate="-2" pin="S"/>
+<pinref part="B8" gate="-1" pin="S"/>
+<pinref part="X3" gate="-2" pin="S"/>
 </segment>
 <segment>
 <wire x1="515.62" y1="342.9" x2="500.38" y2="342.9" width="0.1524" layer="91"/>
 <label x="502.92" y="342.9" size="1.778" layer="95"/>
-<pinref part="X3" gate="-7" pin="S"/>
+<pinref part="X4" gate="-7" pin="S"/>
 </segment>
 <segment>
 <wire x1="515.62" y1="320.04" x2="500.38" y2="320.04" width="0.1524" layer="91"/>
@@ -20603,7 +20603,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <junction x="525.78" y="175.26"/>
 </segment>
 <segment>
-<pinref part="X17" gate="-2" pin="S"/>
+<pinref part="X14" gate="-2" pin="S"/>
 <wire x1="500.38" y1="203.2" x2="515.62" y2="203.2" width="0.1524" layer="91"/>
 <pinref part="SUPPLY47" gate="GND" pin="GND"/>
 </segment>
@@ -20659,7 +20659,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="518.16" y1="134.62" x2="500.38" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="X25" gate="-[-]" pin="S"/>
+<pinref part="X17" gate="-[-]" pin="S"/>
 <wire x1="500.38" y1="109.22" x2="508" y2="109.22" width="0.1524" layer="91"/>
 <pinref part="C15" gate="G$1" pin="2"/>
 <junction x="508" y="109.22"/>
@@ -20671,7 +20671,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="515.62" y1="358.14" x2="500.38" y2="358.14" width="0.1524" layer="91"/>
 <label x="502.92" y="358.14" size="1.778" layer="95"/>
-<pinref part="X3" gate="-1" pin="S"/>
+<pinref part="X4" gate="-1" pin="S"/>
 </segment>
 <segment>
 <wire x1="431.8" y1="381" x2="431.8" y2="347.98" width="0.1524" layer="91"/>
@@ -20683,7 +20683,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="515.62" y1="355.6" x2="500.38" y2="355.6" width="0.1524" layer="91"/>
 <label x="502.92" y="355.6" size="1.778" layer="95"/>
-<pinref part="X3" gate="-2" pin="S"/>
+<pinref part="X4" gate="-2" pin="S"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="R1IN"/>
@@ -20700,7 +20700,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="515.62" y1="353.06" x2="500.38" y2="353.06" width="0.1524" layer="91"/>
 <label x="502.92" y="353.06" size="1.778" layer="95"/>
-<pinref part="X3" gate="-3" pin="S"/>
+<pinref part="X4" gate="-3" pin="S"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="T1OUT"/>
@@ -20717,7 +20717,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="515.62" y1="350.52" x2="500.38" y2="350.52" width="0.1524" layer="91"/>
 <label x="502.92" y="350.52" size="1.778" layer="95"/>
-<pinref part="X3" gate="-4" pin="S"/>
+<pinref part="X4" gate="-4" pin="S"/>
 </segment>
 <segment>
 <wire x1="322.58" y1="411.48" x2="340.36" y2="411.48" width="0.1524" layer="91"/>
@@ -20734,7 +20734,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="515.62" y1="347.98" x2="500.38" y2="347.98" width="0.1524" layer="91"/>
 <label x="502.92" y="347.98" size="1.778" layer="95"/>
-<pinref part="X3" gate="-5" pin="S"/>
+<pinref part="X4" gate="-5" pin="S"/>
 </segment>
 <segment>
 <pinref part="PTC1" gate="G$1" pin="2"/>
@@ -20746,7 +20746,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="515.62" y1="345.44" x2="500.38" y2="345.44" width="0.1524" layer="91"/>
 <label x="502.92" y="345.44" size="1.778" layer="95"/>
-<pinref part="X3" gate="-6" pin="S"/>
+<pinref part="X4" gate="-6" pin="S"/>
 </segment>
 <segment>
 <pinref part="PTC2" gate="G$1" pin="2"/>
@@ -21832,14 +21832,14 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="500.38" y1="238.76" x2="515.62" y2="238.76" width="0.1524" layer="91"/>
 <label x="502.92" y="238.76" size="1.778" layer="95"/>
-<pinref part="X13" gate="-4" pin="1"/>
+<pinref part="X11" gate="-4" pin="1"/>
 <pinref part="X10" gate="-POS" pin="S"/>
 </segment>
 <segment>
 <wire x1="500.38" y1="223.52" x2="515.62" y2="223.52" width="0.1524" layer="91"/>
 <label x="502.92" y="223.52" size="1.778" layer="95"/>
-<pinref part="X24" gate="-4" pin="1"/>
-<pinref part="X11" gate="-POS" pin="S"/>
+<pinref part="X13" gate="-4" pin="1"/>
+<pinref part="X12" gate="-POS" pin="S"/>
 </segment>
 <segment>
 <pinref part="R20" gate="G$1" pin="2"/>
@@ -21875,38 +21875,38 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <wire x1="500.38" y1="236.22" x2="515.62" y2="236.22" width="0.1524" layer="91"/>
 <label x="502.92" y="236.22" size="1.778" layer="95"/>
-<pinref part="X13" gate="-3" pin="1"/>
+<pinref part="X11" gate="-3" pin="1"/>
 </segment>
 <segment>
 <wire x1="500.38" y1="220.98" x2="515.62" y2="220.98" width="0.1524" layer="91"/>
 <label x="502.92" y="220.98" size="1.778" layer="95"/>
-<pinref part="X24" gate="-3" pin="1"/>
+<pinref part="X13" gate="-3" pin="1"/>
 </segment>
 </net>
 <net name="BATT1" class="0">
 <segment>
 <wire x1="500.38" y1="233.68" x2="515.62" y2="233.68" width="0.1524" layer="91"/>
 <label x="502.92" y="233.68" size="1.778" layer="95"/>
-<pinref part="X13" gate="-2" pin="1"/>
+<pinref part="X11" gate="-2" pin="1"/>
 </segment>
 <segment>
 <wire x1="500.38" y1="218.44" x2="515.62" y2="218.44" width="0.1524" layer="91"/>
 <label x="502.92" y="218.44" size="1.778" layer="95"/>
-<pinref part="X24" gate="-2" pin="1"/>
+<pinref part="X13" gate="-2" pin="1"/>
 </segment>
 </net>
 <net name="BATT-" class="0">
 <segment>
 <wire x1="500.38" y1="231.14" x2="515.62" y2="231.14" width="0.1524" layer="91"/>
 <label x="502.92" y="231.14" size="1.778" layer="95"/>
-<pinref part="X13" gate="-1" pin="1"/>
+<pinref part="X11" gate="-1" pin="1"/>
 <pinref part="X10" gate="-NEG" pin="S"/>
 </segment>
 <segment>
 <wire x1="500.38" y1="215.9" x2="515.62" y2="215.9" width="0.1524" layer="91"/>
 <label x="502.92" y="215.9" size="1.778" layer="95"/>
-<pinref part="X24" gate="-1" pin="1"/>
-<pinref part="X11" gate="-NEG" pin="S"/>
+<pinref part="X13" gate="-1" pin="1"/>
+<pinref part="X12" gate="-NEG" pin="S"/>
 </segment>
 </net>
 <net name="MOT1_SIG" class="0">
@@ -22565,7 +22565,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="IC2" gate="G$1" pin="NTC"/>
 </segment>
 <segment>
-<pinref part="X17" gate="-1" pin="S"/>
+<pinref part="X14" gate="-1" pin="S"/>
 <wire x1="500.38" y1="205.74" x2="518.16" y2="205.74" width="0.1524" layer="91"/>
 <label x="502.92" y="205.74" size="1.778" layer="95"/>
 </segment>
@@ -22878,7 +22878,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="N$40" class="0">
 <segment>
-<pinref part="X25" gate="-[+]" pin="S"/>
+<pinref part="X17" gate="-[+]" pin="S"/>
 <wire x1="500.38" y1="116.84" x2="508" y2="116.84" width="0.1524" layer="91"/>
 <pinref part="C15" gate="G$1" pin="1"/>
 <wire x1="508" y1="116.84" x2="510.54" y2="116.84" width="0.1524" layer="91"/>
@@ -22888,10 +22888,10 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="N$45" class="0">
 <segment>
-<pinref part="X25" gate="-D-" pin="S"/>
+<pinref part="X17" gate="-D-" pin="S"/>
 <wire x1="500.38" y1="114.3" x2="502.92" y2="114.3" width="0.1524" layer="91"/>
 <wire x1="502.92" y1="114.3" x2="502.92" y2="111.76" width="0.1524" layer="91"/>
-<pinref part="X25" gate="-D+" pin="S"/>
+<pinref part="X17" gate="-D+" pin="S"/>
 <wire x1="502.92" y1="111.76" x2="500.38" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 </net>
