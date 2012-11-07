@@ -16128,55 +16128,6 @@ Source: http://www.ledtronics.com/ds/smd-0603/Dstr0092.pdf</description>
 <rectangle x1="-0.4" y1="0.175" x2="0" y2="0.4" layer="51"/>
 <rectangle x1="-0.25" y1="0.175" x2="0" y2="0.4" layer="21"/>
 </package>
-<package name="P-LCC-4-3">
-<description>&lt;b&gt;Hyper TOPLED® &lt;/b&gt;&lt;p&gt;
-Source: http://www.osram.convergy.de/</description>
-<wire x1="-1.4" y1="-1.05" x2="-1.4" y2="-1.6" width="0.2032" layer="51"/>
-<wire x1="-1.4" y1="-1.6" x2="-1" y2="-1.6" width="0.2032" layer="51"/>
-<wire x1="-1" y1="-1.6" x2="-0.85" y2="-1.6" width="0.2032" layer="51"/>
-<wire x1="-0.85" y1="-1.6" x2="1" y2="-1.6" width="0.2032" layer="51"/>
-<wire x1="1" y1="-1.6" x2="1.4" y2="-1.6" width="0.2032" layer="51"/>
-<wire x1="1.4" y1="-1.6" x2="1.4" y2="1.6" width="0.2032" layer="51"/>
-<wire x1="1.4" y1="1.6" x2="1.1" y2="1.6" width="0.2032" layer="51"/>
-<wire x1="1.1" y1="1.6" x2="-1" y2="1.6" width="0.2032" layer="51"/>
-<wire x1="-1" y1="1.6" x2="-1.4" y2="1.6" width="0.2032" layer="51"/>
-<wire x1="-1" y1="1.6" x2="-1" y2="1.8" width="0.1016" layer="51"/>
-<wire x1="-1" y1="1.8" x2="-0.5" y2="1.8" width="0.1016" layer="51"/>
-<wire x1="-0.5" y1="1.8" x2="-0.5" y2="1.65" width="0.1016" layer="51"/>
-<wire x1="0.5" y1="1.65" x2="0.5" y2="1.8" width="0.1016" layer="51"/>
-<wire x1="0.5" y1="1.8" x2="1.1" y2="1.8" width="0.1016" layer="51"/>
-<wire x1="1.1" y1="1.8" x2="1.1" y2="1.6" width="0.1016" layer="51"/>
-<wire x1="-1" y1="-1.6" x2="-1" y2="-1.8" width="0.1016" layer="51"/>
-<wire x1="-1" y1="-1.8" x2="-0.5" y2="-1.8" width="0.1016" layer="51"/>
-<wire x1="-0.5" y1="-1.8" x2="-0.5" y2="-1.65" width="0.1016" layer="51"/>
-<wire x1="0.5" y1="-1.65" x2="0.5" y2="-1.8" width="0.1016" layer="51"/>
-<wire x1="0.5" y1="-1.8" x2="1" y2="-1.8" width="0.1016" layer="51"/>
-<wire x1="1" y1="-1.8" x2="1" y2="-1.6" width="0.1016" layer="51"/>
-<wire x1="-0.85" y1="-1.6" x2="-1.4" y2="-1.05" width="0.2032" layer="51"/>
-<wire x1="-1.4" y1="1.6" x2="-1.4" y2="-1.05" width="0.2032" layer="51"/>
-<circle x="0" y="0" radius="1.1" width="0.2032" layer="51"/>
-<smd name="2" x="-2" y="3.15" dx="3.3" dy="4.8" layer="1" stop="no" cream="no"/>
-<smd name="3" x="2" y="3.15" dx="3.3" dy="4.8" layer="1" stop="no" cream="no"/>
-<smd name="4" x="2" y="-3.15" dx="3.3" dy="4.8" layer="1" stop="no" cream="no"/>
-<smd name="1" x="-2" y="-3.15" dx="3.3" dy="4.8" layer="1" stop="no" cream="no"/>
-<text x="-3.81" y="-2.54" size="1.27" layer="25" rot="R90">&gt;NAME</text>
-<text x="5.08" y="-2.54" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
-<text x="-1.905" y="-3.81" size="1.27" layer="21">1</text>
-<text x="-1.905" y="2.54" size="1.27" layer="21">2</text>
-<text x="1.27" y="2.54" size="1.27" layer="21">3</text>
-<text x="1.27" y="-3.81" size="1.27" layer="21">4</text>
-<rectangle x1="-1.15" y1="0.75" x2="-0.35" y2="1.85" layer="29"/>
-<rectangle x1="0.35" y1="0.75" x2="1.15" y2="1.85" layer="29"/>
-<rectangle x1="0.35" y1="-1.85" x2="1.15" y2="-0.75" layer="29"/>
-<rectangle x1="-1.15" y1="-1.85" x2="-0.35" y2="-0.75" layer="29"/>
-<rectangle x1="-1.1" y1="-1.8" x2="-0.4" y2="-0.8" layer="31"/>
-<rectangle x1="0.4" y1="-1.8" x2="1.1" y2="-0.8" layer="31"/>
-<rectangle x1="0.4" y1="0.8" x2="1.1" y2="1.8" layer="31"/>
-<rectangle x1="-1.1" y1="0.8" x2="-0.4" y2="1.8" layer="31"/>
-<rectangle x1="0.1" y1="0.1" x2="0.5" y2="0.5" layer="21"/>
-<rectangle x1="0.1" y1="-0.5" x2="0.5" y2="-0.1" layer="21"/>
-<rectangle x1="-0.5" y1="-0.5" x2="-0.1" y2="-0.1" layer="21"/>
-</package>
 </packages>
 <symbols>
 <symbol name="LED">
@@ -16202,71 +16153,6 @@ Source: http://www.osram.convergy.de/</description>
 <vertex x="-3.302" y="-3.302"/>
 <vertex x="-2.921" y="-2.413"/>
 <vertex x="-2.413" y="-2.921"/>
-</polygon>
-</symbol>
-<symbol name="LED-RGB">
-<wire x1="6.35" y1="1.778" x2="5.08" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="5.08" y1="-0.254" x2="3.81" y2="1.778" width="0.254" layer="94"/>
-<wire x1="6.35" y1="-0.254" x2="5.08" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="5.08" y1="-0.254" x2="3.81" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="6.35" y1="1.778" x2="3.81" y2="1.778" width="0.254" layer="94"/>
-<wire x1="3.048" y1="1.524" x2="2.159" y2="0.635" width="0.1524" layer="94"/>
-<wire x1="3.81" y1="0.762" x2="2.921" y2="-0.127" width="0.1524" layer="94"/>
-<wire x1="1.27" y1="1.778" x2="0" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="0" y1="-0.254" x2="-1.27" y2="1.778" width="0.254" layer="94"/>
-<wire x1="1.27" y1="-0.254" x2="0" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="0" y1="-0.254" x2="-1.27" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="1.27" y1="1.778" x2="-1.27" y2="1.778" width="0.254" layer="94"/>
-<wire x1="-2.032" y1="1.524" x2="-2.921" y2="0.635" width="0.1524" layer="94"/>
-<wire x1="-1.27" y1="0.762" x2="-2.159" y2="-0.127" width="0.1524" layer="94"/>
-<wire x1="-3.81" y1="1.778" x2="-5.08" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="-5.08" y1="-0.254" x2="-6.35" y2="1.778" width="0.254" layer="94"/>
-<wire x1="-3.81" y1="-0.254" x2="-5.08" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="-5.08" y1="-0.254" x2="-6.35" y2="-0.254" width="0.254" layer="94"/>
-<wire x1="-3.81" y1="1.778" x2="-6.35" y2="1.778" width="0.254" layer="94"/>
-<wire x1="-7.112" y1="1.524" x2="-8.001" y2="0.635" width="0.1524" layer="94"/>
-<wire x1="-6.35" y1="0.762" x2="-7.239" y2="-0.127" width="0.1524" layer="94"/>
-<wire x1="-5.08" y1="2.54" x2="0" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="0" y1="2.54" x2="0" y2="0" width="0.1524" layer="94"/>
-<wire x1="0" y1="2.54" x2="5.08" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="5.08" y1="2.54" x2="5.08" y2="0" width="0.1524" layer="94"/>
-<circle x="-5.08" y="2.54" radius="0.1796" width="0.254" layer="94"/>
-<circle x="0" y="2.54" radius="0.1796" width="0.254" layer="94"/>
-<text x="-2.54" y="3.302" size="1.778" layer="95">&gt;NAME</text>
-<text x="-2.54" y="5.461" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="CGREEN" x="5.08" y="-2.54" visible="pad" length="short" direction="pas" rot="R90"/>
-<pin name="CBLUE" x="0" y="-2.54" visible="pad" length="short" direction="pas" rot="R90"/>
-<pin name="CRED" x="-5.08" y="-2.54" visible="pad" length="short" direction="pas" rot="R90"/>
-<pin name="A2" x="-5.08" y="5.08" visible="pad" length="middle" direction="pas" rot="R270"/>
-<polygon width="0.1524" layer="94">
-<vertex x="2.032" y="1.016"/>
-<vertex x="1.778" y="0.254"/>
-<vertex x="2.54" y="0.508"/>
-</polygon>
-<polygon width="0.1524" layer="94">
-<vertex x="2.794" y="0.254"/>
-<vertex x="2.54" y="-0.508"/>
-<vertex x="3.302" y="-0.254"/>
-</polygon>
-<polygon width="0.1524" layer="94">
-<vertex x="-3.048" y="1.016"/>
-<vertex x="-3.302" y="0.254"/>
-<vertex x="-2.54" y="0.508"/>
-</polygon>
-<polygon width="0.1524" layer="94">
-<vertex x="-2.286" y="0.254"/>
-<vertex x="-2.54" y="-0.508"/>
-<vertex x="-1.778" y="-0.254"/>
-</polygon>
-<polygon width="0.1524" layer="94">
-<vertex x="-8.128" y="1.016"/>
-<vertex x="-8.382" y="0.254"/>
-<vertex x="-7.62" y="0.508"/>
-</polygon>
-<polygon width="0.1524" layer="94">
-<vertex x="-7.366" y="0.254"/>
-<vertex x="-7.62" y="-0.508"/>
-<vertex x="-6.858" y="-0.254"/>
 </polygon>
 </symbol>
 </symbols>
@@ -16679,47 +16565,6 @@ Source: www.kingbright.com</description>
 <connects>
 <connect gate="G$1" pin="A" pad="A"/>
 <connect gate="G$1" pin="C" pad="C"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="TOPLED-3" prefix="LED" uservalue="yes">
-<description>&lt;b&gt;OSRAM&lt;/b&gt;&lt;p&gt;
-- &lt;u&gt;Hyper Multi TOPLED® (RGB)&lt;/u&gt;&lt;br&gt;
-LB E673, LV E673, LT E673&lt;br&gt;
-- &lt;u&gt;Power TOPLED® Enhanced optical Power LED (HOP2000)&lt;/u&gt;&lt;br&gt;
-LS E67B, LA E67B, LO E67B, LY E67B&lt;br&gt;
-- &lt;u&gt;Hyper Multi TOPLED® Enhanced optical Power LED (HOP2000 / ATON®)&lt;/u&gt;&lt;br&gt;
-LATB T66B&lt;br&gt;
-- &lt;u&gt;Hyper Multi TOPLED® Hyper-Bright LED&lt;/u&gt;&lt;br&gt;
-LATB T686&lt;br&gt;
-
-&lt;p&gt;
-Source: http://www.osram.convergy.de/</description>
-<gates>
-<gate name="G$1" symbol="LED-RGB" x="0" y="0"/>
-</gates>
-<devices>
-<device name="P-LCC-4" package="P-LCC-4">
-<connects>
-<connect gate="G$1" pin="A2" pad="A"/>
-<connect gate="G$1" pin="CBLUE" pad="C@3"/>
-<connect gate="G$1" pin="CGREEN" pad="C@4"/>
-<connect gate="G$1" pin="CRED" pad="C@1"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-<device name="" package="P-LCC-4-3">
-<connects>
-<connect gate="G$1" pin="A2" pad="2"/>
-<connect gate="G$1" pin="CBLUE" pad="3"/>
-<connect gate="G$1" pin="CGREEN" pad="4"/>
-<connect gate="G$1" pin="CRED" pad="1"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -19756,11 +19601,6 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <part name="C29" library="rcl" deviceset="CPOL-US" device="D" value="68uF"/>
 <part name="SUPPLY3" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY18" library="supply2" deviceset="GND" device=""/>
-<part name="LED6" library="led" deviceset="TOPLED-3" device="P-LCC-4"/>
-<part name="+3V21" library="supply1" deviceset="+3V3" device=""/>
-<part name="R31" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
-<part name="R32" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
-<part name="R33" library="rcl" deviceset="R-US_" device="R0805" value="330"/>
 <part name="X3" library="crw" deviceset="7381-2PG-300" device=""/>
 <part name="X4" library="crw" deviceset="17984-7PG-300" device=""/>
 <part name="X5" library="crw" deviceset="17984-7PG-300" device=""/>
@@ -20071,11 +19911,6 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="C29" gate="G$1" x="248.92" y="58.42"/>
 <instance part="SUPPLY3" gate="GND" x="393.7" y="261.62"/>
 <instance part="SUPPLY18" gate="GND" x="393.7" y="246.38"/>
-<instance part="LED6" gate="G$1" x="345.44" y="147.32"/>
-<instance part="+3V21" gate="G$1" x="340.36" y="157.48"/>
-<instance part="R31" gate="G$1" x="337.82" y="134.62" rot="R90"/>
-<instance part="R32" gate="G$1" x="345.44" y="134.62" rot="R90"/>
-<instance part="R33" gate="G$1" x="353.06" y="134.62" rot="R90"/>
 <instance part="X3" gate="-1" x="518.16" y="370.84"/>
 <instance part="X3" gate="-2" x="518.16" y="368.3"/>
 <instance part="X4" gate="-1" x="518.16" y="358.14"/>
@@ -21205,11 +21040,6 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <junction x="525.78" y="182.88"/>
 </segment>
 <segment>
-<pinref part="+3V21" gate="G$1" pin="+3V3"/>
-<pinref part="LED6" gate="G$1" pin="A2"/>
-<wire x1="340.36" y1="154.94" x2="340.36" y2="152.4" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <wire x1="81.28" y1="63.5" x2="86.36" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="C28" gate="G$1" pin="1"/>
 <wire x1="86.36" y1="60.96" x2="86.36" y2="63.5" width="0.1524" layer="91"/>
@@ -21657,42 +21487,6 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="114.3" y="355.6" size="1.778" layer="95"/>
 <pinref part="LED1" gate="G$1" pin="C"/>
 <wire x1="139.7" y1="355.6" x2="139.7" y2="358.14" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="LED_BLU" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="PC4"/>
-<wire x1="111.76" y1="353.06" x2="132.08" y2="353.06" width="0.1524" layer="91"/>
-<label x="114.3" y="353.06" size="1.778" layer="95"/>
-</segment>
-<segment>
-<wire x1="345.44" y1="129.54" x2="345.44" y2="111.76" width="0.1524" layer="91"/>
-<label x="345.44" y="114.3" size="1.778" layer="95" rot="R90"/>
-<pinref part="R32" gate="G$1" pin="1"/>
-</segment>
-</net>
-<net name="LED_RED" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="PC0"/>
-<wire x1="111.76" y1="342.9" x2="132.08" y2="342.9" width="0.1524" layer="91"/>
-<label x="114.3" y="342.9" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="R31" gate="G$1" pin="1"/>
-<wire x1="337.82" y1="129.54" x2="337.82" y2="111.76" width="0.1524" layer="91"/>
-<label x="337.82" y="114.3" size="1.778" layer="95" rot="R90"/>
-</segment>
-</net>
-<net name="LED_GRN" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="PC1"/>
-<wire x1="111.76" y1="345.44" x2="132.08" y2="345.44" width="0.1524" layer="91"/>
-<label x="114.3" y="345.44" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="R33" gate="G$1" pin="1"/>
-<wire x1="353.06" y1="129.54" x2="353.06" y2="111.76" width="0.1524" layer="91"/>
-<label x="353.06" y="114.3" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 <net name="N$6" class="0">
@@ -22827,29 +22621,6 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <junction x="454.66" y="368.3"/>
 <pinref part="T9" gate="G$1" pin="D1"/>
 <junction x="454.66" y="370.84"/>
-</segment>
-</net>
-<net name="N$51" class="0">
-<segment>
-<wire x1="345.44" y1="144.78" x2="345.44" y2="139.7" width="0.1524" layer="91"/>
-<pinref part="R32" gate="G$1" pin="2"/>
-<pinref part="LED6" gate="G$1" pin="CBLUE"/>
-</segment>
-</net>
-<net name="N$52" class="0">
-<segment>
-<pinref part="LED6" gate="G$1" pin="CRED"/>
-<wire x1="340.36" y1="144.78" x2="340.36" y2="139.7" width="0.1524" layer="91"/>
-<pinref part="R31" gate="G$1" pin="2"/>
-<wire x1="337.82" y1="139.7" x2="340.36" y2="139.7" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$53" class="0">
-<segment>
-<pinref part="R33" gate="G$1" pin="2"/>
-<wire x1="353.06" y1="139.7" x2="350.52" y2="139.7" width="0.1524" layer="91"/>
-<pinref part="LED6" gate="G$1" pin="CGREEN"/>
-<wire x1="350.52" y1="139.7" x2="350.52" y2="144.78" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="MOT1_5V" class="0">
