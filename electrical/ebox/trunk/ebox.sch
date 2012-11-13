@@ -19636,6 +19636,8 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <part name="T7" library="zetex" deviceset="NMOSSOT23-6" device=""/>
 <part name="T8" library="zetex" deviceset="NMOSSOT23-6" device=""/>
 <part name="T9" library="zetex" deviceset="NMOSSOT23-6" device=""/>
+<part name="R1" library="rcl" deviceset="R-US_" device="R0805" value="1k"/>
+<part name="R31" library="rcl" deviceset="R-US_" device="R0805" value="1k"/>
 </parts>
 <sheets>
 <sheet>
@@ -19990,6 +19992,8 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <attribute name="VALUE" x="457.2" y="363.22" size="1.778" layer="96"/>
 <attribute name="NAME" x="454.66" y="368.3" size="1.778" layer="95" rot="R180"/>
 </instance>
+<instance part="R1" gate="G$1" x="535.94" y="220.98"/>
+<instance part="R31" gate="G$1" x="546.1" y="218.44"/>
 </instances>
 <busses>
 </busses>
@@ -21667,26 +21671,20 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="BATT2" class="0">
 <segment>
-<wire x1="500.38" y1="236.22" x2="515.62" y2="236.22" width="0.1524" layer="91"/>
 <label x="502.92" y="236.22" size="1.778" layer="95"/>
 <pinref part="X11" gate="-3" pin="1"/>
-</segment>
-<segment>
-<wire x1="500.38" y1="220.98" x2="515.62" y2="220.98" width="0.1524" layer="91"/>
-<label x="502.92" y="220.98" size="1.778" layer="95"/>
-<pinref part="X13" gate="-3" pin="1"/>
+<pinref part="R1" gate="G$1" pin="2"/>
+<wire x1="541.02" y1="220.98" x2="541.02" y2="236.22" width="0.1524" layer="91"/>
+<wire x1="541.02" y1="236.22" x2="500.38" y2="236.22" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="BATT1" class="0">
 <segment>
-<wire x1="500.38" y1="233.68" x2="515.62" y2="233.68" width="0.1524" layer="91"/>
 <label x="502.92" y="233.68" size="1.778" layer="95"/>
 <pinref part="X11" gate="-2" pin="1"/>
-</segment>
-<segment>
-<wire x1="500.38" y1="218.44" x2="515.62" y2="218.44" width="0.1524" layer="91"/>
-<label x="502.92" y="218.44" size="1.778" layer="95"/>
-<pinref part="X13" gate="-2" pin="1"/>
+<pinref part="R31" gate="G$1" pin="2"/>
+<wire x1="500.38" y1="233.68" x2="551.18" y2="233.68" width="0.1524" layer="91"/>
+<wire x1="551.18" y1="233.68" x2="551.18" y2="218.44" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="BATT-" class="0">
@@ -22664,6 +22662,20 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="502.92" y1="114.3" x2="502.92" y2="111.76" width="0.1524" layer="91"/>
 <pinref part="X17" gate="-D+" pin="S"/>
 <wire x1="502.92" y1="111.76" x2="500.38" y2="111.76" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$46" class="0">
+<segment>
+<pinref part="X13" gate="-3" pin="1"/>
+<pinref part="R1" gate="G$1" pin="1"/>
+<wire x1="530.86" y1="220.98" x2="500.38" y2="220.98" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$51" class="0">
+<segment>
+<pinref part="X13" gate="-2" pin="1"/>
+<pinref part="R31" gate="G$1" pin="1"/>
+<wire x1="541.02" y1="218.44" x2="500.38" y2="218.44" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
