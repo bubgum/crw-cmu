@@ -22510,6 +22510,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="58.42" y1="63.5" x2="55.88" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="IC16" gate="G$1" pin="VI1"/>
 <junction x="55.88" y="63.5"/>
+<pinref part="IC16" gate="G$1" pin="VI"/>
+<wire x1="58.42" y1="63.5" x2="60.96" y2="63.5" width="0.1524" layer="91"/>
+<junction x="58.42" y="63.5"/>
 </segment>
 <segment>
 <pinref part="L4" gate="G$1" pin="2"/>
