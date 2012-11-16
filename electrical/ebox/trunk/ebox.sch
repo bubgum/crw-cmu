@@ -21872,7 +21872,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="IC3" gate="G$1" pin="PK0"/>
 </segment>
 </net>
-<net name="N$17" class="0">
+<net name="3ROU" class="0">
 <segment>
 <pinref part="IC4" gate="G$1" pin="G1"/>
 <wire x1="424.18" y1="383.54" x2="426.72" y2="383.54" width="0.1524" layer="91"/>
