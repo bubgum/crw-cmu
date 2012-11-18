@@ -19811,10 +19811,10 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="IC18" gate="G$1" x="261.62" y="226.06" rot="MR0"/>
 <instance part="SUPPLY33" gate="GND" x="274.32" y="215.9"/>
 <instance part="R19" gate="G$1" x="292.1" y="226.06"/>
-<instance part="IC19" gate="A" x="408.94" y="325.12"/>
-<instance part="IC19" gate="B" x="408.94" y="309.88"/>
-<instance part="IC19" gate="C" x="408.94" y="294.64"/>
-<instance part="IC19" gate="D" x="408.94" y="279.4"/>
+<instance part="IC19" gate="D" x="408.94" y="325.12"/>
+<instance part="IC19" gate="C" x="408.94" y="309.88"/>
+<instance part="IC19" gate="B" x="408.94" y="294.64"/>
+<instance part="IC19" gate="A" x="408.94" y="279.4"/>
 <instance part="IC19" gate="E" x="408.94" y="264.16"/>
 <instance part="IC19" gate="F" x="408.94" y="248.92"/>
 <instance part="IC19" gate="P" x="434.34" y="256.54"/>
@@ -20893,9 +20893,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="236.22" y="375.92" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="304.8" x2="132.08" y2="304.8" width="0.1524" layer="91"/>
-<label x="114.3" y="304.8" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PE3"/>
+<wire x1="111.76" y1="314.96" x2="132.08" y2="314.96" width="0.1524" layer="91"/>
+<label x="114.3" y="314.96" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PE7"/>
 </segment>
 </net>
 <net name="RX1_TTL" class="0">
@@ -20910,9 +20910,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="236.22" y="396.24" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="302.26" x2="132.08" y2="302.26" width="0.1524" layer="91"/>
-<label x="114.3" y="302.26" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PE2"/>
+<wire x1="111.76" y1="312.42" x2="132.08" y2="312.42" width="0.1524" layer="91"/>
+<label x="114.3" y="312.42" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PE6"/>
 </segment>
 </net>
 <net name="N$10" class="0">
@@ -21136,6 +21136,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <junction x="447.04" y="416.56"/>
 <pinref part="C22" gate="G$1" pin="1"/>
 <wire x1="401.32" y1="416.56" x2="401.32" y2="414.02" width="0.1524" layer="91"/>
+<junction x="401.32" y="416.56"/>
 </segment>
 <segment>
 <pinref part="P+1" gate="1" pin="+12V"/>
@@ -21290,9 +21291,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="236.22" y="337.82" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="312.42" x2="132.08" y2="312.42" width="0.1524" layer="91"/>
-<label x="114.3" y="312.42" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PE6"/>
+<wire x1="111.76" y1="302.26" x2="132.08" y2="302.26" width="0.1524" layer="91"/>
+<label x="114.3" y="302.26" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PE2"/>
 </segment>
 </net>
 <net name="TX2_TTL" class="0">
@@ -21307,9 +21308,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="236.22" y="317.5" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="314.96" x2="132.08" y2="314.96" width="0.1524" layer="91"/>
-<label x="114.3" y="314.96" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PE7"/>
+<wire x1="111.76" y1="304.8" x2="132.08" y2="304.8" width="0.1524" layer="91"/>
+<label x="114.3" y="304.8" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PE3"/>
 </segment>
 </net>
 <net name="RX3_TTL" class="0">
@@ -21324,9 +21325,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="236.22" y="279.4" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="325.12" x2="132.08" y2="325.12" width="0.1524" layer="91"/>
-<label x="114.3" y="325.12" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PD2"/>
+<wire x1="111.76" y1="335.28" x2="132.08" y2="335.28" width="0.1524" layer="91"/>
+<label x="114.3" y="335.28" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PD6"/>
 </segment>
 </net>
 <net name="TX3_TTL" class="0">
@@ -21341,9 +21342,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="236.22" y="259.08" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="327.66" x2="132.08" y2="327.66" width="0.1524" layer="91"/>
-<label x="114.3" y="327.66" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PD3"/>
+<wire x1="111.76" y1="337.82" x2="132.08" y2="337.82" width="0.1524" layer="91"/>
+<label x="114.3" y="337.82" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PD7"/>
 </segment>
 </net>
 <net name="RX4_TTL" class="0">
@@ -21358,9 +21359,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="236.22" y="220.98" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="335.28" x2="132.08" y2="335.28" width="0.1524" layer="91"/>
-<label x="114.3" y="335.28" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PD6"/>
+<wire x1="111.76" y1="325.12" x2="132.08" y2="325.12" width="0.1524" layer="91"/>
+<label x="114.3" y="325.12" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PD2"/>
 </segment>
 </net>
 <net name="TX4_TTL" class="0">
@@ -21375,9 +21376,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="236.22" y="200.66" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="337.82" x2="132.08" y2="337.82" width="0.1524" layer="91"/>
-<label x="114.3" y="337.82" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PD7"/>
+<wire x1="111.76" y1="327.66" x2="132.08" y2="327.66" width="0.1524" layer="91"/>
+<label x="114.3" y="327.66" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PD3"/>
 </segment>
 </net>
 <net name="GPIO2B" class="0">
@@ -21389,22 +21390,17 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="297.18" y1="322.58" x2="297.18" y2="320.04" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="309.88" x2="132.08" y2="309.88" width="0.1524" layer="91"/>
-<label x="114.3" y="309.88" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PE5"/>
+<wire x1="111.76" y1="396.24" x2="132.08" y2="396.24" width="0.1524" layer="91"/>
+<label x="114.3" y="396.24" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PA3"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PB3"/>
-<wire x1="111.76" y1="373.38" x2="132.08" y2="373.38" width="0.1524" layer="91"/>
-<label x="114.3" y="373.38" size="1.778" layer="95"/>
+<wire x1="111.76" y1="297.18" x2="132.08" y2="297.18" width="0.1524" layer="91"/>
+<label x="114.3" y="297.18" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PE0"/>
 </segment>
 </net>
 <net name="GPIO2A" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="PB2"/>
-<wire x1="111.76" y1="370.84" x2="132.08" y2="370.84" width="0.1524" layer="91"/>
-<label x="114.3" y="370.84" size="1.778" layer="95"/>
-</segment>
 <segment>
 <pinref part="PTC3" gate="G$1" pin="1"/>
 <wire x1="292.1" y1="332.74" x2="312.42" y2="332.74" width="0.1524" layer="91"/>
@@ -21413,17 +21409,17 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="292.1" y1="332.74" x2="292.1" y2="320.04" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="307.34" x2="132.08" y2="307.34" width="0.1524" layer="91"/>
-<label x="114.3" y="307.34" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PE4"/>
+<wire x1="111.76" y1="393.7" x2="132.08" y2="393.7" width="0.1524" layer="91"/>
+<label x="114.3" y="393.7" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PA2"/>
+</segment>
+<segment>
+<wire x1="111.76" y1="299.72" x2="132.08" y2="299.72" width="0.1524" layer="91"/>
+<label x="114.3" y="299.72" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PE1"/>
 </segment>
 </net>
 <net name="GPIO4B" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="PB7"/>
-<wire x1="111.76" y1="383.54" x2="132.08" y2="383.54" width="0.1524" layer="91"/>
-<label x="114.3" y="383.54" size="1.778" layer="95"/>
-</segment>
 <segment>
 <pinref part="PTC8" gate="G$1" pin="1"/>
 <wire x1="297.18" y1="205.74" x2="312.42" y2="205.74" width="0.1524" layer="91"/>
@@ -21432,17 +21428,17 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="297.18" y1="205.74" x2="297.18" y2="203.2" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="332.74" x2="132.08" y2="332.74" width="0.1524" layer="91"/>
-<label x="114.3" y="332.74" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PD5"/>
+<wire x1="111.76" y1="406.4" x2="132.08" y2="406.4" width="0.1524" layer="91"/>
+<label x="114.3" y="406.4" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PA7"/>
+</segment>
+<segment>
+<wire x1="111.76" y1="320.04" x2="132.08" y2="320.04" width="0.1524" layer="91"/>
+<label x="114.3" y="320.04" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PD0"/>
 </segment>
 </net>
 <net name="GPIO4A" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="PB6"/>
-<wire x1="111.76" y1="381" x2="132.08" y2="381" width="0.1524" layer="91"/>
-<label x="114.3" y="381" size="1.778" layer="95"/>
-</segment>
 <segment>
 <pinref part="PTC7" gate="G$1" pin="1"/>
 <wire x1="292.1" y1="215.9" x2="312.42" y2="215.9" width="0.1524" layer="91"/>
@@ -21451,9 +21447,14 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="292.1" y1="215.9" x2="292.1" y2="203.2" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="330.2" x2="132.08" y2="330.2" width="0.1524" layer="91"/>
-<label x="114.3" y="330.2" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PD4"/>
+<wire x1="111.76" y1="403.86" x2="132.08" y2="403.86" width="0.1524" layer="91"/>
+<label x="114.3" y="403.86" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PA6"/>
+</segment>
+<segment>
+<wire x1="111.76" y1="322.58" x2="132.08" y2="322.58" width="0.1524" layer="91"/>
+<label x="114.3" y="322.58" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PD1"/>
 </segment>
 </net>
 <net name="GPIO1B" class="0">
@@ -21465,14 +21466,14 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="297.18" y1="381" x2="297.18" y2="378.46" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PB1"/>
-<wire x1="111.76" y1="368.3" x2="132.08" y2="368.3" width="0.1524" layer="91"/>
-<label x="114.3" y="368.3" size="1.778" layer="95"/>
+<wire x1="111.76" y1="391.16" x2="132.08" y2="391.16" width="0.1524" layer="91"/>
+<label x="114.3" y="391.16" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PA1"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="299.72" x2="132.08" y2="299.72" width="0.1524" layer="91"/>
-<label x="114.3" y="299.72" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PE1"/>
+<wire x1="111.76" y1="307.34" x2="132.08" y2="307.34" width="0.1524" layer="91"/>
+<label x="114.3" y="307.34" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PE4"/>
 </segment>
 </net>
 <net name="GPIO1A" class="0">
@@ -21484,22 +21485,17 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="292.1" y1="391.16" x2="292.1" y2="378.46" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PB0"/>
-<wire x1="111.76" y1="365.76" x2="132.08" y2="365.76" width="0.1524" layer="91"/>
-<label x="114.3" y="365.76" size="1.778" layer="95"/>
+<wire x1="111.76" y1="388.62" x2="132.08" y2="388.62" width="0.1524" layer="91"/>
+<label x="114.3" y="388.62" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PA0"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="297.18" x2="132.08" y2="297.18" width="0.1524" layer="91"/>
-<label x="114.3" y="297.18" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PE0"/>
+<wire x1="111.76" y1="309.88" x2="132.08" y2="309.88" width="0.1524" layer="91"/>
+<label x="114.3" y="309.88" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PE5"/>
 </segment>
 </net>
 <net name="GPIO3B" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="PB5"/>
-<wire x1="111.76" y1="378.46" x2="132.08" y2="378.46" width="0.1524" layer="91"/>
-<label x="114.3" y="378.46" size="1.778" layer="95"/>
-</segment>
 <segment>
 <pinref part="PTC6" gate="G$1" pin="1"/>
 <wire x1="297.18" y1="264.16" x2="312.42" y2="264.16" width="0.1524" layer="91"/>
@@ -21508,17 +21504,17 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="297.18" y1="264.16" x2="297.18" y2="261.62" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="322.58" x2="132.08" y2="322.58" width="0.1524" layer="91"/>
-<label x="114.3" y="322.58" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PD1"/>
+<wire x1="111.76" y1="401.32" x2="132.08" y2="401.32" width="0.1524" layer="91"/>
+<label x="114.3" y="401.32" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PA5"/>
+</segment>
+<segment>
+<wire x1="111.76" y1="330.2" x2="132.08" y2="330.2" width="0.1524" layer="91"/>
+<label x="114.3" y="330.2" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PD4"/>
 </segment>
 </net>
 <net name="GPIO3A" class="0">
-<segment>
-<pinref part="IC3" gate="G$1" pin="PB4"/>
-<wire x1="111.76" y1="375.92" x2="132.08" y2="375.92" width="0.1524" layer="91"/>
-<label x="114.3" y="375.92" size="1.778" layer="95"/>
-</segment>
 <segment>
 <pinref part="PTC5" gate="G$1" pin="1"/>
 <wire x1="292.1" y1="274.32" x2="312.42" y2="274.32" width="0.1524" layer="91"/>
@@ -21527,9 +21523,14 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="D6" gate="A" pin="C2"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="320.04" x2="132.08" y2="320.04" width="0.1524" layer="91"/>
-<label x="114.3" y="320.04" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PD0"/>
+<wire x1="111.76" y1="398.78" x2="132.08" y2="398.78" width="0.1524" layer="91"/>
+<label x="114.3" y="398.78" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PA4"/>
+</segment>
+<segment>
+<wire x1="111.76" y1="332.74" x2="132.08" y2="332.74" width="0.1524" layer="91"/>
+<label x="114.3" y="332.74" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PD5"/>
 </segment>
 </net>
 <net name="LED_STATUS" class="0">
@@ -21616,9 +21617,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="27.94" y="99.06" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PH1"/>
-<wire x1="111.76" y1="254" x2="132.08" y2="254" width="0.1524" layer="91"/>
-<label x="114.3" y="254" size="1.778" layer="95"/>
+<wire x1="38.1" y1="259.08" x2="58.42" y2="259.08" width="0.1524" layer="91"/>
+<label x="40.64" y="259.08" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PJ3"/>
 </segment>
 </net>
 <net name="PWR_SENSE" class="0">
@@ -21630,9 +21631,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="20.32" y1="109.22" x2="43.18" y2="109.22" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PH2"/>
-<wire x1="111.76" y1="256.54" x2="132.08" y2="256.54" width="0.1524" layer="91"/>
-<label x="114.3" y="256.54" size="1.778" layer="95"/>
+<wire x1="38.1" y1="256.54" x2="58.42" y2="256.54" width="0.1524" layer="91"/>
+<label x="40.64" y="256.54" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PJ2"/>
 </segment>
 </net>
 <net name="BT_RESET" class="0">
@@ -21669,9 +21670,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="106.68" y="198.12" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PF7"/>
-<wire x1="111.76" y1="292.1" x2="132.08" y2="292.1" width="0.1524" layer="91"/>
-<label x="114.3" y="292.1" size="1.778" layer="95"/>
+<wire x1="111.76" y1="284.48" x2="132.08" y2="284.48" width="0.1524" layer="91"/>
+<label x="114.3" y="284.48" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PF4"/>
 </segment>
 </net>
 <net name="BATT+" class="0">
@@ -21902,7 +21903,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="EN232_1" class="0">
 <segment>
-<pinref part="IC19" gate="A" pin="O"/>
+<pinref part="IC19" gate="D" pin="O"/>
 <wire x1="419.1" y1="325.12" x2="434.34" y2="325.12" width="0.1524" layer="91"/>
 <label x="421.64" y="325.12" size="1.778" layer="95"/>
 </segment>
@@ -21924,7 +21925,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="!EN232_1" class="0">
 <segment>
-<pinref part="IC19" gate="A" pin="I"/>
+<pinref part="IC19" gate="D" pin="I"/>
 <wire x1="398.78" y1="325.12" x2="383.54" y2="325.12" width="0.1524" layer="91"/>
 <label x="386.08" y="325.12" size="1.778" layer="95"/>
 </segment>
@@ -22079,7 +22080,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="EN232_4" class="0">
 <segment>
-<pinref part="IC19" gate="D" pin="O"/>
+<pinref part="IC19" gate="A" pin="O"/>
 <wire x1="419.1" y1="279.4" x2="434.34" y2="279.4" width="0.1524" layer="91"/>
 <label x="421.64" y="279.4" size="1.778" layer="95"/>
 </segment>
@@ -22101,7 +22102,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="EN232_3" class="0">
 <segment>
-<pinref part="IC19" gate="C" pin="O"/>
+<pinref part="IC19" gate="B" pin="O"/>
 <wire x1="419.1" y1="294.64" x2="434.34" y2="294.64" width="0.1524" layer="91"/>
 <label x="421.64" y="294.64" size="1.778" layer="95"/>
 </segment>
@@ -22123,7 +22124,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="EN232_2" class="0">
 <segment>
-<pinref part="IC19" gate="B" pin="O"/>
+<pinref part="IC19" gate="C" pin="O"/>
 <wire x1="419.1" y1="309.88" x2="434.34" y2="309.88" width="0.1524" layer="91"/>
 <label x="421.64" y="309.88" size="1.778" layer="95"/>
 </segment>
@@ -22145,7 +22146,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="!EN232_2" class="0">
 <segment>
-<pinref part="IC19" gate="B" pin="I"/>
+<pinref part="IC19" gate="C" pin="I"/>
 <wire x1="398.78" y1="309.88" x2="383.54" y2="309.88" width="0.1524" layer="91"/>
 <label x="386.08" y="309.88" size="1.778" layer="95"/>
 </segment>
@@ -22162,7 +22163,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="!EN232_3" class="0">
 <segment>
-<pinref part="IC19" gate="C" pin="I"/>
+<pinref part="IC19" gate="B" pin="I"/>
 <wire x1="398.78" y1="294.64" x2="383.54" y2="294.64" width="0.1524" layer="91"/>
 <label x="386.08" y="294.64" size="1.778" layer="95"/>
 </segment>
@@ -22179,7 +22180,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="!EN232_4" class="0">
 <segment>
-<pinref part="IC19" gate="D" pin="I"/>
+<pinref part="IC19" gate="A" pin="I"/>
 <wire x1="398.78" y1="279.4" x2="383.54" y2="279.4" width="0.1524" layer="91"/>
 <label x="386.08" y="279.4" size="1.778" layer="95"/>
 </segment>
@@ -22309,9 +22310,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="IC2" gate="G$1" pin="!CHRG"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PJ3"/>
-<wire x1="58.42" y1="259.08" x2="38.1" y2="259.08" width="0.1524" layer="91"/>
-<label x="40.64" y="259.08" size="1.778" layer="95"/>
+<wire x1="58.42" y1="254" x2="38.1" y2="254" width="0.1524" layer="91"/>
+<label x="40.64" y="254" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PJ1"/>
 </segment>
 </net>
 <net name="!CHRG_FAULT" class="0">
@@ -22321,9 +22322,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="IC2" gate="G$1" pin="!FAULT"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PJ2"/>
-<wire x1="58.42" y1="256.54" x2="38.1" y2="256.54" width="0.1524" layer="91"/>
-<label x="40.64" y="256.54" size="1.778" layer="95"/>
+<wire x1="58.42" y1="251.46" x2="38.1" y2="251.46" width="0.1524" layer="91"/>
+<label x="40.64" y="251.46" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PJ0"/>
 </segment>
 </net>
 <net name="N$41" class="0">
@@ -22396,9 +22397,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="502.92" y="205.74" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PA2"/>
-<wire x1="111.76" y1="393.7" x2="137.16" y2="393.7" width="0.1524" layer="91"/>
-<label x="114.3" y="393.7" size="1.778" layer="95"/>
+<wire x1="111.76" y1="378.46" x2="137.16" y2="378.46" width="0.1524" layer="91"/>
+<label x="114.3" y="378.46" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PB5"/>
 </segment>
 </net>
 <net name="BATT_CURR_IN" class="0">
@@ -22413,9 +22414,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="IC8" gate="G$1" pin="OUT"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PA0"/>
-<wire x1="111.76" y1="388.62" x2="137.16" y2="388.62" width="0.1524" layer="91"/>
-<label x="114.3" y="388.62" size="1.778" layer="95"/>
+<wire x1="111.76" y1="381" x2="137.16" y2="381" width="0.1524" layer="91"/>
+<label x="114.3" y="381" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PB6"/>
 </segment>
 </net>
 <net name="BATT_CURR_OUT" class="0">
@@ -22430,9 +22431,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="IC12" gate="G$1" pin="OUT"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PA1"/>
-<wire x1="111.76" y1="391.16" x2="137.16" y2="391.16" width="0.1524" layer="91"/>
-<label x="114.3" y="391.16" size="1.778" layer="95"/>
+<wire x1="111.76" y1="383.54" x2="137.16" y2="383.54" width="0.1524" layer="91"/>
+<label x="114.3" y="383.54" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PB7"/>
 </segment>
 </net>
 <net name="N$48" class="0">
@@ -22466,11 +22467,6 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </net>
 <net name="BATT_VSENSE" class="0">
 <segment>
-<pinref part="IC3" gate="G$1" pin="PA3"/>
-<wire x1="111.76" y1="396.24" x2="137.16" y2="396.24" width="0.1524" layer="91"/>
-<label x="114.3" y="396.24" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="R29" gate="G$1" pin="1"/>
 <pinref part="R30" gate="G$1" pin="2"/>
 <wire x1="350.52" y1="43.18" x2="350.52" y2="45.72" width="0.1524" layer="91"/>
@@ -22481,6 +22477,11 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <wire x1="360.68" y1="40.64" x2="360.68" y2="43.18" width="0.1524" layer="91"/>
 <junction x="360.68" y="43.18"/>
 <junction x="350.52" y="43.18"/>
+</segment>
+<segment>
+<wire x1="111.76" y1="375.92" x2="137.16" y2="375.92" width="0.1524" layer="91"/>
+<label x="114.3" y="375.92" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PB4"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -22573,9 +22574,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="50.8" y="182.88" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC3" gate="G$1" pin="PF4"/>
-<wire x1="111.76" y1="284.48" x2="132.08" y2="284.48" width="0.1524" layer="91"/>
-<label x="114.3" y="284.48" size="1.778" layer="95"/>
+<wire x1="111.76" y1="292.1" x2="132.08" y2="292.1" width="0.1524" layer="91"/>
+<label x="114.3" y="292.1" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PF7"/>
 </segment>
 </net>
 <net name="N$12" class="0">
