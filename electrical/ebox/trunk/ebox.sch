@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -19656,6 +19656,14 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <part name="SUPPLY52" library="supply2" deviceset="GND" device=""/>
 <part name="C22" library="rcl" deviceset="C-US" device="C0805" value="10uF"/>
 <part name="SUPPLY53" library="supply2" deviceset="GND" device=""/>
+<part name="X18" library="con-molex" deviceset="22-23-2021" device="">
+<attribute name="MF" value="MOLEX"/>
+<attribute name="MPN" value="22-23-2021"/>
+<attribute name="OC_FARNELL" value="1462926"/>
+<attribute name="OC_NEWARK" value="25C3832"/>
+</part>
+<part name="SUPPLY54" library="supply2" deviceset="GND" device=""/>
+<part name="R32" library="rcl" deviceset="R-US_" device="R0805" value="1K"/>
 </parts>
 <sheets>
 <sheet>
@@ -19694,9 +19702,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="SUPPLY5" gate="GND" x="15.24" y="408.94"/>
 <instance part="R2" gate="G$1" x="53.34" y="414.02" rot="R90"/>
 <instance part="+3V4" gate="G$1" x="53.34" y="424.18"/>
-<instance part="LED1" gate="G$1" x="139.7" y="363.22"/>
-<instance part="R3" gate="G$1" x="139.7" y="373.38" rot="R90"/>
-<instance part="+3V5" gate="G$1" x="139.7" y="383.54"/>
+<instance part="LED1" gate="G$1" x="147.32" y="363.22"/>
+<instance part="R3" gate="G$1" x="147.32" y="373.38" rot="R90"/>
+<instance part="+3V5" gate="G$1" x="147.32" y="383.54"/>
 <instance part="S1" gate="G$1" x="76.2" y="99.06"/>
 <instance part="S2" gate="G$1" x="132.08" y="243.84"/>
 <instance part="SUPPLY6" gate="GND" x="132.08" y="233.68"/>
@@ -20016,6 +20024,13 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="SUPPLY52" gate="GND" x="513.08" y="213.36"/>
 <instance part="C22" gate="G$1" x="401.32" y="411.48"/>
 <instance part="SUPPLY53" gate="GND" x="401.32" y="401.32"/>
+<instance part="X18" gate="-1" x="497.84" y="96.52" rot="MR0"/>
+<instance part="X18" gate="-2" x="497.84" y="93.98" rot="MR0"/>
+<instance part="SUPPLY54" gate="GND" x="523.24" y="91.44"/>
+<instance part="R32" gate="G$1" x="119.38" y="373.38" smashed="yes">
+<attribute name="NAME" x="118.11" y="371.8814" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="120.65" y="370.078" size="1.778" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -20550,6 +20565,11 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="SUPPLY53" gate="GND" pin="GND"/>
 <wire x1="401.32" y1="403.86" x2="401.32" y2="406.4" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="X18" gate="-2" pin="S"/>
+<wire x1="500.38" y1="93.98" x2="523.24" y2="93.98" width="0.1524" layer="91"/>
+<pinref part="SUPPLY54" gate="GND" pin="GND"/>
+</segment>
 </net>
 <net name="S1_12V" class="0">
 <segment>
@@ -20963,7 +20983,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <segment>
 <pinref part="+3V5" gate="G$1" pin="+3V3"/>
 <pinref part="R3" gate="G$1" pin="2"/>
-<wire x1="139.7" y1="381" x2="139.7" y2="378.46" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="381" x2="147.32" y2="378.46" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C14" gate="G$1" pin="1"/>
@@ -21536,16 +21556,16 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <net name="LED_STATUS" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="PC5"/>
-<wire x1="111.76" y1="355.6" x2="139.7" y2="355.6" width="0.1524" layer="91"/>
+<wire x1="111.76" y1="355.6" x2="147.32" y2="355.6" width="0.1524" layer="91"/>
 <label x="114.3" y="355.6" size="1.778" layer="95"/>
 <pinref part="LED1" gate="G$1" pin="C"/>
-<wire x1="139.7" y1="355.6" x2="139.7" y2="358.14" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="355.6" x2="147.32" y2="358.14" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$6" class="0">
 <segment>
 <pinref part="LED1" gate="G$1" pin="A"/>
-<wire x1="139.7" y1="365.76" x2="139.7" y2="368.3" width="0.1524" layer="91"/>
+<wire x1="147.32" y1="365.76" x2="147.32" y2="368.3" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="1"/>
 </segment>
 </net>
@@ -22714,6 +22734,25 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <pinref part="X13" gate="-2" pin="1"/>
 <pinref part="R31" gate="G$1" pin="1"/>
 <wire x1="541.02" y1="218.44" x2="500.38" y2="218.44" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="WATER_SENSE" class="0">
+<segment>
+<pinref part="X18" gate="-1" pin="S"/>
+<wire x1="523.24" y1="96.52" x2="500.38" y2="96.52" width="0.1524" layer="91"/>
+<label x="502.92" y="96.52" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="124.46" y1="373.38" x2="142.24" y2="373.38" width="0.1524" layer="91"/>
+<label x="124.46" y="373.38" size="1.778" layer="95"/>
+<pinref part="R32" gate="G$1" pin="2"/>
+</segment>
+</net>
+<net name="N$17" class="0">
+<segment>
+<pinref part="IC3" gate="G$1" pin="PB3"/>
+<pinref part="R32" gate="G$1" pin="1"/>
+<wire x1="114.3" y1="373.38" x2="111.76" y2="373.38" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
