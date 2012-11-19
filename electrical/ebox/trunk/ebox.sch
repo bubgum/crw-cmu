@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -18490,6 +18490,46 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <wire x1="4.445" y1="-5.715" x2="5.715" y2="-5.715" width="0.127" layer="21"/>
 <wire x1="3.81" y1="6.985" x2="3.81" y2="5.715" width="0.127" layer="21"/>
 </package>
+<package name="PLATYPUS_LOGO_SMALL">
+<wire x1="-12.7" y1="-6.35" x2="-12.7" y2="6.35" width="0.127" layer="21"/>
+<wire x1="-12.7" y1="6.35" x2="12.7" y2="6.35" width="0.127" layer="21"/>
+<wire x1="-12.7" y1="-6.35" x2="12.7" y2="-6.35" width="0.127" layer="21"/>
+<wire x1="12.7" y1="-6.35" x2="12.7" y2="6.35" width="0.127" layer="21"/>
+<text x="0" y="-3.81" size="3.048" layer="21" align="center">PLATYPUS</text>
+<wire x1="-3.175" y1="5.08" x2="-3.175" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="-3.175" y1="-1.27" x2="3.175" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="3.175" y1="-1.27" x2="3.175" y2="5.08" width="0.127" layer="21"/>
+<wire x1="3.175" y1="5.08" x2="-3.175" y2="5.08" width="0.127" layer="21"/>
+<wire x1="4.445" y1="5.08" x2="4.445" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="4.445" y1="-1.27" x2="10.795" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="10.795" y1="-1.27" x2="10.795" y2="5.08" width="0.127" layer="21"/>
+<wire x1="10.795" y1="5.08" x2="4.445" y2="5.08" width="0.127" layer="21"/>
+<polygon width="0.127" layer="21">
+<vertex x="-10.795" y="3.175"/>
+<vertex x="-6.35" y="0.635"/>
+<vertex x="-4.445" y="0.635"/>
+<vertex x="-4.445" y="1.905"/>
+<vertex x="-6.35" y="1.905"/>
+</polygon>
+<wire x1="-4.445" y1="-1.27" x2="-4.445" y2="5.08" width="0.127" layer="21"/>
+<wire x1="-4.445" y1="5.08" x2="-10.795" y2="5.08" width="0.127" layer="21"/>
+<wire x1="-10.795" y1="5.08" x2="-10.795" y2="-1.27" width="0.127" layer="21"/>
+<wire x1="-10.795" y1="-1.27" x2="-4.445" y2="-1.27" width="0.127" layer="21"/>
+<polygon width="0.127" layer="21">
+<vertex x="-3.175" y="3.175"/>
+<vertex x="1.27" y="0.635"/>
+<vertex x="3.175" y="0.635"/>
+<vertex x="3.175" y="1.905"/>
+<vertex x="1.27" y="1.905"/>
+</polygon>
+<polygon width="0.127" layer="21">
+<vertex x="4.445" y="3.175"/>
+<vertex x="8.89" y="0.635"/>
+<vertex x="10.795" y="0.635"/>
+<vertex x="10.795" y="1.905"/>
+<vertex x="8.89" y="1.905"/>
+</polygon>
+</package>
 </packages>
 <symbols>
 <symbol name="LT1161">
@@ -18594,6 +18634,9 @@ COMPLIANT TO JEDEC STANDARDS MO-187BA</description>
 <text x="3.81" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
 <pin name="2" x="0" y="-7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R90"/>
 <pin name="1" x="0" y="7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R270"/>
+</symbol>
+<symbol name="PLATYPUS_LOGO">
+<text x="0" y="0" size="1.27" layer="95" align="center">PLATYPUS, LLC</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -18860,6 +18903,19 @@ CURRENT SHUNT MONITOR&lt;/b&gt;</description>
 <connect gate="-[+]" pin="S" pad="1"/>
 <connect gate="-[-]" pin="S" pad="4"/>
 </connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="PLATYPUS_LOGO">
+<gates>
+<gate name="G$1" symbol="PLATYPUS_LOGO" x="0" y="0"/>
+<gate name="G$2" symbol="PLATYPUS_LOGO" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="PLATYPUS_LOGO_SMALL">
 <technologies>
 <technology name=""/>
 </technologies>
@@ -19664,6 +19720,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 </part>
 <part name="SUPPLY54" library="supply2" deviceset="GND" device=""/>
 <part name="R32" library="rcl" deviceset="R-US_" device="R0805" value="1K"/>
+<part name="U$1" library="crw" deviceset="PLATYPUS_LOGO" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -20031,6 +20088,7 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <attribute name="NAME" x="132.08" y="378.46" size="1.778" layer="95"/>
 <attribute name="VALUE" x="142.24" y="378.46" size="1.778" layer="96"/>
 </instance>
+<instance part="U$1" gate="G$1" x="546.1" y="33.02"/>
 </instances>
 <busses>
 </busses>
