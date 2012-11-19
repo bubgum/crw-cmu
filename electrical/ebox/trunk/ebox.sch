@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -20027,9 +20027,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <instance part="X18" gate="-1" x="497.84" y="96.52" rot="MR0"/>
 <instance part="X18" gate="-2" x="497.84" y="93.98" rot="MR0"/>
 <instance part="SUPPLY54" gate="GND" x="523.24" y="91.44"/>
-<instance part="R32" gate="G$1" x="119.38" y="373.38" smashed="yes">
-<attribute name="NAME" x="118.11" y="371.8814" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="120.65" y="370.078" size="1.778" layer="96"/>
+<instance part="R32" gate="G$1" x="119.38" y="378.46" smashed="yes">
+<attribute name="NAME" x="118.11" y="376.9614" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="120.65" y="375.158" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -22417,9 +22417,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="502.92" y="205.74" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="378.46" x2="137.16" y2="378.46" width="0.1524" layer="91"/>
-<label x="114.3" y="378.46" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PB5"/>
+<wire x1="111.76" y1="375.92" x2="137.16" y2="375.92" width="0.1524" layer="91"/>
+<label x="114.3" y="375.92" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PB4"/>
 </segment>
 </net>
 <net name="BATT_CURR_IN" class="0">
@@ -22499,9 +22499,9 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <junction x="350.52" y="43.18"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="375.92" x2="137.16" y2="375.92" width="0.1524" layer="91"/>
-<label x="114.3" y="375.92" size="1.778" layer="95"/>
-<pinref part="IC3" gate="G$1" pin="PB4"/>
+<wire x1="111.76" y1="373.38" x2="137.16" y2="373.38" width="0.1524" layer="91"/>
+<label x="114.3" y="373.38" size="1.778" layer="95"/>
+<pinref part="IC3" gate="G$1" pin="PB3"/>
 </segment>
 </net>
 <net name="+5V" class="0">
@@ -22743,16 +22743,16 @@ Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22049b.pdf</description>
 <label x="502.92" y="96.52" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="124.46" y1="373.38" x2="142.24" y2="373.38" width="0.1524" layer="91"/>
-<label x="124.46" y="373.38" size="1.778" layer="95"/>
+<wire x1="124.46" y1="378.46" x2="142.24" y2="378.46" width="0.1524" layer="91"/>
+<label x="124.46" y="378.46" size="1.778" layer="95"/>
 <pinref part="R32" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="N$17" class="0">
 <segment>
-<pinref part="IC3" gate="G$1" pin="PB3"/>
+<pinref part="IC3" gate="G$1" pin="PB5"/>
 <pinref part="R32" gate="G$1" pin="1"/>
-<wire x1="114.3" y1="373.38" x2="111.76" y2="373.38" width="0.1524" layer="91"/>
+<wire x1="111.76" y1="378.46" x2="114.3" y2="378.46" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
