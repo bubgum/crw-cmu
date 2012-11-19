@@ -1,4 +1,4 @@
-Micro EMG
+Platypus Main Control Board
 Revision A
 
 ------------------
@@ -9,14 +9,15 @@ pkv@cs.cmu.edu
 
 ------------------
 
-Size: 2.00" x 2.00"
+Size: 5.00" x 4.00"
 
- emg.drl	Drill rack data
- emg.drd	Excellon drill description
- emg.dri	Excellon drill tool description
- emg.cmp	Top copper
- emg.sol	Bottom copper
- emg.plc	Top silkscreen
- emg.stc	Top solder mask
- emg.sts	Bottom solder mask
- emg.gpi	Gerber photoplotter information data
+ebox.drl	Drill rack data
+ebox.drd	Excellon drill description
+ebox.dri	Excellon drill tool description
+ebox.cmp	Top copper
+ebox.sol	Bottom copper
+ebox.plc	Top silkscreen
+ebox.pls	Bottom silkscreen
+ebox.stc	Top solder mask
+ebox.sts	Bottom solder mask
+ebox.gpi	Gerber photoplotter information data
