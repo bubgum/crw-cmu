@@ -1,57 +1,1 @@
-"Qty";"Value";"Device";"Package";"Parts";"Description";"MF";"MPN";"OC_FARNELL";"OC_NEWARK";
-"2";"";"D_2CSOT23";"SOT-23";"D3, D7";"Dual DIODE";"";"";"unknown";"unknown";
-"1";"";"JP2E";"JP2";"JP1";"JUMPER";"";"";"";"";
-"4";"";"NMOSSOT23-6";"SOT23-6";"T6, T7, T8, T9";"MOS FET";"";"";"unknown";"unknown";
-"1";"";"PNPSOT23";"SOT-23";"T1";"PNP TRANSISTOR";"";"DSS20200L-7";"unknown";"25R4554";
-"1";"";"ZENER-DIODESOT23";"SOT23";"D1";"Z-Diode";"";"";"";"";
-"5";"0.010";"R-US_R6332";"R6332";"R8, R9, R10, R11, R21";"RESISTOR, American symbol";"";"";"";"";
-"1";"0.050";"R-US_R6332";"R6332";"R20";"RESISTOR, American symbol";"";"";"";"";
-"27";"0.1uF";"C-USC0805";"C0805";"C2, C3, C4, C5, C6, C11, C12, C13, C14, C16, C17, C18, C19, C20, C23, C24, C25, C26, C27, C30, C31, C32, C33, C34, C37, C43, C44";"CAPACITOR, American symbol";"";"";"";"";
-"5";"100k";"R-US_R0805";"R0805";"R6, R16, R17, R18, R19";"RESISTOR, American symbol";"";"";"";"";
-"4";"10k";"R-US_R0805";"R0805";"R2, R5, R27, R29";"RESISTOR, American symbol";"";"";"";"";
-"3";"10pF";"C-USC0805";"C0805";"C45, C46, C48";"CAPACITOR, American symbol";"";"";"";"";
-"6";"10uF";"C-USC0805";"C0805";"C9, C10, C15, C22, C41, C47";"CAPACITOR, American symbol";"";"";"";"";
-"2";"10uH";"L-USL2012C";"L2012C";"L2, L4";"INDUCTOR, American symbol";"";"";"";"";
-"4";"17984-7PG-300";"17984-7PG-300";"17984-7PG-300";"X4, X5, X6, X7";"MICRO-CON-X® FIELD INSTALLABLE CONNECTOR";"";"";"";"";
-"4";"1A";"R-US_R1206";"R1206";"PTC9, PTC10, PTC11, PTC12";"RESISTOR, American symbol";"";"";"";"";
-"1";"1K";"R-US_R0805";"R0805";"R32";"RESISTOR, American symbol";"";"";"";"";
-"4";"1k";"R-US_R0805";"R0805";"R1, R4, R25, R31";"RESISTOR, American symbol";"";"";"";"";
-"4";"1uF";"C-USC0805";"C0805";"C7, C21, C28, C42";"CAPACITOR, American symbol";"";"";"";"";
-"2";"22-23-2021";"22-23-2021";"22-23-2021";"X14, X18";".100" (2.54mm) Center Header - 2 Pin";"MOLEX";"22-23-2021";"1462926";"25C3832";
-"2";"22-23-2031";"22-23-2031";"22-23-2031";"X8, X9";".100" (2.54mm) Center Header - 3 Pin";"MOLEX";"22-23-2031";"1462950";"30C0862";
-"4";"2K";"R-US_R0805";"R0805";"R12, R13, R14, R15";"RESISTOR, American symbol";"";"";"";"";
-"2";"2k";"R-US_R0805";"R0805";"R26, R30";"RESISTOR, American symbol";"";"";"";"";
-"3";"330";"R-US_R0805";"R0805";"R3, R7, R28";"RESISTOR, American symbol";"";"";"";"";
-"1";"4.99k";"R-US_R0805";"R0805";"R23";"RESISTOR, American symbol";"";"";"";"";
-"1";"412k";"R-US_R0805";"R0805";"R24";"RESISTOR, American symbol";"";"";"";"";
-"1";"5.6uH";"IHLP-2020CZ-11";"IHLP-2020CZ-11";"L1";"";"";"";"";"";
-"8";"50mA";"R-US_R1206";"R1206";"PTC1, PTC2, PTC3, PTC4, PTC5, PTC6, PTC7, PTC8";"RESISTOR, American symbol";"";"";"";"";
-"1";"626k";"R-US_R0805";"R0805";"R22";"RESISTOR, American symbol";"";"";"";"";
-"3";"68uF";"CPOL-USD";"PANASONIC_D";"C1, C8, C29";"POLARIZED CAPACITOR, American symbol";"";"";"";"";
-"1";"7381-2PG-300";"7381-2PG-300";"7381-2PG-300";"X3";"";"";"";"";"";
-"2";"7381-3PG-300";"7381-3PG-300";"7381-3PG-300";"X1, X2";"Mini-Con-X Panel Connector";"";"";"";"";
-"1";"74ALS04D";"74ALS04D";"SO14";"IC19";"Hex INVERTER";"";"";"";"";
-"1";"AVR-PDIVERT";"AVR-PDIVERT";"AVR-ISP-6";"ISP1";"AVR PDI programming interface connector";"";"";"";"";
-"2";"B4B-ZR";"B4B-ZR";"B4B-ZR";"X11, X13";"ZH CONNECTOR 1.5 mm, 4 pin 1 row";"FARNELL";"B4B-ZR(LF)(SN)";"1830916";"37K9960";
-"1";"BLUETOOTH-RN42";"BLUETOOTH-RN41"";"RN41";"U1";"Bluetooth SMD module";"";"";"";"";
-"8";"BULLET";"BULLET";"BULLET";"B1, B2, B3, B4, B5, B6, B7, B8";"Bullet Connector";"";"";"";"";
-"1";"D2523T_";"D2523T_";"EM406";"U2";"D2523T GPS Module";"";"";"";"";
-"2";"DEANS-FEMALE";"DEANS-FEMALE";"DEANS_FEMALE";"X15, X16";"Deans Battery Connector";"";"";"";"";
-"2";"DEANS-MALE";"DEANS-MALE";"DEANS_MALE";"X10, X12";"Deans Battery Connector";"";"";"";"";
-"1";"FDD4141TO252";"FDD4141TO252";"TO252";"Q1";"P-Channel PowerTrench® MOSFET";"";"";"";"";
-"1";"FERRITE";"BML15HB121SN1";"0402";"L3";"EMIFIL (R) Chip Ferrite Bead for GHz Noise";"";"";"";"";
-"1";"GRN";"LEDCHIPLED_1206";"CHIPLED_1206";"LED3";"LED";"";"";"";"";
-"4";"GSOT05C";"D_2CSOT23";"SOT-23";"D2, D4, D6, D8";"Dual DIODE";"";"";"unknown";"unknown";
-"2";"INA170";"INA170";"MSOP8";"IC8, IC12";"High-Side, Bidirectional";"";"";"";"";
-"1";"LT1161";"LT1161";"SOIC20R";"IC4";"Single-Supply 16-Bit Stereo ADC";"";"";"";"";
-"1";"LT3652";"LT3652";"MSOP12-MSE";"IC2";"2-Channel, 12-Bit ADC with I2C-Compatible Interface 10-Lead MSOP";"";"AD7992BRMZ-0";"1078311";"31M4422";
-"4";"MAX3221CUE";"MAX3221CUE";"TSSOP16";"IC1, IC7, IC11, IC15";"RS-232 Transceivers with AutoShutdown";"MAXIM";"MAX3221CUE+";"1379915";"68K4608";
-"3";"MBRA340T3";"MBRA340T3";"SMA";"D9, D10, D12";"Surface Mount Schottky Power Rectifier";"";"";"";"";
-"1";"MCP170333MB";"MCP170333MB";"SOT89";"IC16";"250 mA, 16V, Low Quiescent Current LDO Regulator";"";"";"";"";
-"1";"PLATYPUS_LOGO";"PLATYPUS_LOGO";"PLATYPUS_LOGO_SMALL";"U$1";"";"";"";"";"";
-"1";"RED";"LEDCHIPLED_1206";"CHIPLED_1206";"LED2";"LED";"";"";"";"";
-"2";"REED-SWITCH-CT10-1530-G1";"REED-SWITCH-CT10-1530-G1";"CT10-G1";"S1, S2";"Reed Sensor";"COTO TECHNOLOGY";"CT10-1530-G1";"1081696";"";
-"8";"SN74LVC1G125";"SN74LVC1G125";"SOT23-DBV";"IC5, IC6, IC9, IC10, IC13, IC14, IC17, IC18";"SINGLE BUS BUFFER GATE WITH 3-STATE OUTPUT";"";"";"";"";
-"1";"USB_A";"USB_A";"1001-002-01100";"X17";"USB A-type connector";"";"";"";"";
-"1";"XMEGA128A1";"XMEGA128A1";"TQFP100";"IC3";"MICROCONTROLLER";"";"";"unknown";"unknown";
-"1";"YEL";"LEDCHIPLED_1206";"CHIPLED_1206";"LED1";"LED";"";"";"";"";
+OC_DIGIKEY,MF,MPN,Description,QtyAZ23C3V3-FDICT-ND,Diodes Inc.,AZ23C3V3-7-F,Dual DIODE,2A30932-ND,TE Connectivity,2-644861-3,JUMPER,1DMG6402LDM-7DICT-ND,Diodes Inc.,DMG6402LDM-7,MOS FET,4DSS20200LDICT-ND,Diodes Inc.,DSS20200L-7,PNP TRANSISTOR,1MMBZ5226BLT1GOSCT-ND,ON Semiconductor,MMBZ5226BLT1G,Z-Diode,1CRF2512-FV-R001ELFCT-ND,"Bourns, Inc.",CRF2512-FV-R001ELF,"RESISTOR, American symbol",1CRA2512-FZ-R050ELFCT-ND,"Bourns, Inc.",CRA2512-FZ-R050ELF,"RESISTOR, American symbol",4CRF2512-FX-R010ELFCT-ND,"Bourns, Inc.",CRF2512-FX-R010ELF,"RESISTOR, American symbol",1311-1361-1-ND,Yageo,CC0805ZRY5V9BB104,"CAPACITOR, American symbol",27P100KACT-ND,Panasonic Electronic,ERJ-6GEYJ104V,"RESISTOR, American symbol",5P10KACT-ND,Panasonic Electronic,ERJ-6GEYJ103V,"RESISTOR, American symbol",4311-1099-1-ND,Yageo,CC0805JRNPO9BN100,"CAPACITOR, American symbol",3587-1295-1-ND,Taiyo Yuden,EMK212BJ106KG-T,"CAPACITOR, American symbol",6587-2045-1-ND,Taiyo Yuden,LBR2012T100K,"INDUCTOR, American symbol",2283-3142-1-ND,Cooper Bussmann,PTS12066V100,PTC Resettable Fuse,4P1.0KACT-ND,Panasonic Electronic,ERJ-6GEYJ102V,"RESISTOR, American symbol",1587-1283-1-ND,Taiyo Yuden,EMK212B7105KG-T,"CAPACITOR, American symbol",4WM4200-ND,Molex,22-23-2021,".100 (2.54mm) Center Header - 2 Pin""",2WM4201-ND,Molex,22-23-2031,".100 (2.54mm) Center Header - 3 Pin""",2P2.0KACT-ND,Panasonic Electronic,ERJ-6GEYJ202V,"RESISTOR, American symbol",6P330ACT-ND,Panasonic Electronic,ERJ-6GEYJ331V,"RESISTOR, American symbol",3P4.99KCCT-ND,Panasonic Electronic,ERJ-6ENF4991V,"RESISTOR, American symbol",1P412KCCT-ND,Panasonic Electronic,ERJ-6ENF4123V,"RESISTOR, American symbol",1541-1239-1-ND,Vishay Dale,IHLP2020CZER5R6M11,"INDUCTOR, American symbol",1283-3132-1-ND,Cooper Bussmann,PTS120660V005,PTC Resettable Fuse,8P634KCCT-ND,Panasonic Electronic,ERJ-6ENF6343V,"RESISTOR, American symbol",1PCE3806CT-ND,Panasonic Electronic,EEE-FK1E680P,"POLARIZED CAPACITOR, American symbol",3296-1122-1-ND,Texas Instruments,SN74ALS04BDR,Hex INVERTER,1609-2423-ND,FCI,69168-106HLF,AVR PDI programming interface connector,1455-1659-ND,JST,B4B-ZR(LF)(SN),"ZH CONNECTOR 1.5 mm, 4 pin 1 row",2740-1038-1-ND,Microchip,RN42-I/RM,Bluetooth SMD module,1455-1806-1-ND,JST,SM06B-SRSS-TB(LF)(SN),D2523T GPS Module,1IPD90P03P4L-04INCT-ND,Infineon Technologies,IPD90P03P4L-04,P-Channel PowerTrench¨ MOSFET,1587-1859-1-ND,Taiyo Yuden,BK1005LL470-T,EMIFIL (R) Chip Ferrite Bead for GHz Noise,1160-1169-1-ND,Lite-On Inc.,LTST-C150GKT,LED,1751-1415-1-ND,Vishay Semiconductors,GSOT05C-GS08,Dual DIODE,4INA170EA/2K5CT-ND,Texas Instruments,INA170EA/2K5,"High-Side, Bidirectional",2LT1161ISW#PBF-ND,Linear Technology,LT1161ISW#PBF,Quad Protected High-Side MOSFET Driver,1LT3652EMSE#PBF-ND,Linear Technology,LT3652EMSE#PBF,Power Tracking 2A Battery Charger for Solar Power,1MAX3221CUE+-ND,Maxim,MAX3221CUE+,RS-232 Transceivers with AutoShutdown,4MBRA340T3GOSCT-ND,ON Semiconductor,MBRA340T3G,Surface Mount Schottky Power Rectifier,3MCP1700T3302EMBCT-ND,Microchip,MCP1700T-3302E/MB,"250 mA, 16V, Low Quiescent Current LDO Regulator",1160-1405-1-ND,Lite-On Inc.,LTST-C150KRKT,LED,1306-1125-1-ND,Coto Technology,CT10-1530-G1,Reed Sensor,2296-11603-1-ND,Texas Instruments,SN74LVC1G125DBVR,SINGLE BUS BUFFER GATE WITH 3-STATE OUTPUT,81175-1016-ND,CNC Tech,1002-002-01100,USB A-type connector,1ATXMEGA128A1-AU-ND,Atmel,ATXMEGA128A1-AU,MICROCONTROLLER,1160-1406-1-ND,Lite-On Inc.,LTST-C150KSKT,LED,1
