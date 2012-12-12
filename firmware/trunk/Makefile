@@ -78,17 +78,17 @@ PROGRAMMER_MCU=x128a1
 
 # Name of our project
 # (use a single word, e.g. 'myproject')
-PROJECTNAME=emg
+PROJECTNAME=crw_ebox
 
 # Source files
 # List C/C++/Assembly source files:
 # (list all files to compile, e.g. 'a.c b.cpp as.S'):
 # Use .cc, .cpp or .C suffix for C++ files, use .S 
 # (NOT .s !!!) for assembly source code files.
-PRJSRC=main.c serial.c
+PRJSRC=src/main.c src/serial.c
 
 # additional includes (e.g. -I/path/to/mydir)
-INC=
+INC=-Isrc
 
 # libraries to link in (e.g. -lmylib)
 LIBS=
