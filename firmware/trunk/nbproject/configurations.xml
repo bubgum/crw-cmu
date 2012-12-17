@@ -1,49 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="84">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <df name="trunk" root=".">
-      <df name="src">
-        <df name="hardware">
-          <in>analog.c</in>
-          <in>analog.h</in>
-          <in>eeprom.h</in>
-          <in>i2c.cpp</in>
-          <in>i2c.h</in>
-          <in>serial.c</in>
-          <in>serial.h</in>
-        </df>
-        <df name="sensors">
-          <in>depth_sensor.c</in>
-          <in>depth_sensor.h</in>
-          <in>do_sensor.c</in>
-          <in>do_sensor.h</in>
-          <in>sampler.c</in>
-          <in>sampler.h</in>
-          <in>te5_sensor.c</in>
-          <in>te5_sensor.h</in>
-          <in>watercanary_sensor.c</in>
-          <in>watercanary_sensor.h</in>
-        </df>
-        <df name="system">
-          <in>MeetAndroid.cpp</in>
-          <in>MeetAndroid.h</in>
-          <in>TimedAction.cpp</in>
-          <in>TimedAction.h</in>
-          <in>lc.h</in>
-          <in>lcaddrlabels.h</in>
-          <in>lcswitch.h</in>
-          <in>pt.h</in>
-          <in>ptsem.h</in>
-        </df>
-        <in>board.h</in>
-        <in>gyro.c</in>
-        <in>gyro.h</in>
-        <in>main.c</in>
-        <in>main.old.c</in>
-        <in>rudder.c</in>
-        <in>rudder.h</in>
-        <in>thruster.c</in>
-        <in>thruster.h</in>
+    <df name="src" root="src">
+      <df name="hardware">
+      </df>
+      <df name="sensors">
+      </df>
+      <df name="system">
       </df>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -55,7 +18,7 @@
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
-    <Elem>.</Elem>
+    <Elem>src</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -80,72 +43,6 @@
           </cTool>
         </makeTool>
       </makefileType>
-      <item path="src/board.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/gyro.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/gyro.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/hardware/analog.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/hardware/analog.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/hardware/eeprom.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/hardware/i2c.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="src/hardware/i2c.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/hardware/serial.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/main.old.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/rudder.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/rudder.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/sensors/depth_sensor.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/sensors/depth_sensor.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/sensors/do_sensor.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/sensors/do_sensor.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/sensors/sampler.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/sensors/sampler.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/sensors/te5_sensor.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/sensors/te5_sensor.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/sensors/watercanary_sensor.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/sensors/watercanary_sensor.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/system/MeetAndroid.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="src/system/MeetAndroid.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/system/TimedAction.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="src/system/TimedAction.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/system/lc.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/system/lcaddrlabels.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/system/lcswitch.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/system/pt.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/system/ptsem.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/thruster.c" ex="true" tool="0" flavor2="0">
-      </item>
-      <item path="src/thruster.h" ex="true" tool="3" flavor2="0">
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>
