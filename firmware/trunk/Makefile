@@ -226,6 +226,8 @@ GENASMFILES=$(filter %.s, $(OBJDEPS:.o=.s))
 # all, disasm, stats, hex, writeflash/install, clean
 all: $(TRG)
 
+build: all
+
 disasm: $(DUMPTRG) stats
 
 stats: $(TRG)
@@ -304,10 +306,8 @@ gdbinit: $(GDBINITFILE)
 
 $(GDBINITFILE): $(TRG)
 	@echo "file $(TRG)" > $(GDBINITFILE)
-	
 	@echo "target remote localhost:1212" \
 		                >> $(GDBINITFILE)
-	
 	@echo "load"        >> $(GDBINITFILE) 
 	@echo "break main"  >> $(GDBINITFILE)
 	@echo "continue"    >> $(GDBINITFILE)
@@ -323,7 +323,6 @@ clean:
 	$(REMOVE) $(GENASMFILES)
 	$(REMOVE) $(HEXTRG)
 	$(REMOVE) *~ *#
-	
 
 
 #####                    EOF                   #####
