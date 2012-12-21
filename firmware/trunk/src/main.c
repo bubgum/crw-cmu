@@ -1,34 +1,17 @@
 #define F_CPU 2000000
 
+#include "led.h"
 #include "serial.h"
 
 #include <avr/io.h>
 #include <util/delay.h>
-
-#define LEDPORT PORTC
-#define LEDPIN PIN5_bm
-
-void init_led(void) 
-{
-  LEDPORT.DIRSET = LEDPIN;
-}
-
-inline void led_on(void) 
-{
-  LEDPORT.OUTSET = LEDPIN | PIN7_bm | PIN3_bm;
-}
-
-inline void led_off(void) 
-{
-  LEDPORT.OUTCLR = LEDPIN | PIN7_bm | PIN3_bm;
-}
 
 int main(void) 
 {
   int max = -10000;
 
   init_led();
-//  init_serial(BAUD_9600);
+  init_serial(BAUD_9600);
 
   // Enable the TTL on one line
   PORTJ.DIRSET = PIN4_bm | PIN5_bm;

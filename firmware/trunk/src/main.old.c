@@ -15,7 +15,7 @@
 #include <EEPROM.h>
 #include "EEPROMHelper.h"
 #include "TimedAction.h"
-#include "MeetAndroid.h"
+#include "meet_android.h"
 
 // Define indices for specific coordinates
 // Assumes X is forward, Y is left, Z is up, frame is right-handed

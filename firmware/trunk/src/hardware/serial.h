@@ -11,7 +11,7 @@
 
 // Tested baud rates
 #define BAUD_9600    (12)
-#define BAUD_115200  (??)
+#define BAUD_115200  (50) // THIS IS JUST WRONG
 
 // Function descriptions are available in serial.c
 void init_serial(unsigned int baud);

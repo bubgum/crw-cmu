@@ -18,18 +18,11 @@
 */
 
 // Includes
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#include "WConstants.h"
-#endif
-
-#include "HardwareSerial.h"
-#include "MeetAndroid.h"
+#include "meet_android.h"
 
 extern "C" {
 #include <stdlib.h>
+#include <stdio.h>
 }
 
 
@@ -98,7 +91,7 @@ void MeetAndroid::unregisterFunction(uint8_t command){
 
 bool MeetAndroid::receive(){
 	uint8_t lastByte;
-	boolean timeout = false;
+	bool timeout = false;
 	while(!timeout)
 	{
 		while(Serial.available() > 0)
@@ -266,66 +259,66 @@ double MeetAndroid::getDouble()
 
 #if defined(ARDUINO) && ARDUINO >= 100
 size_t MeetAndroid::write(uint8_t b){
-	return Serial.print(b);
+	return puts(b);
 }
 #else
 void MeetAndroid::write(uint8_t b){
-	Serial.print(b);
+	puts(b);
 }
 #endif
 	
 
 
 void MeetAndroid::send(char c ){
-	Serial.print(startFlag);
-	Serial.print(c);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(c);
+	puts(ack);
 }
 
 void MeetAndroid::send(const char str[]){
-	Serial.print(startFlag);
-	Serial.print(str);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(str);
+	puts(ack);
 }
 void MeetAndroid::send(uint8_t n){
-	Serial.print(startFlag);
-	Serial.print(n);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(n);
+	puts(ack);
 }
 void MeetAndroid::send(int n){
-	Serial.print(startFlag);
-	Serial.print(n);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(n);
+	puts(ack);
 }
 void MeetAndroid::send(unsigned int n){
-	Serial.print(startFlag);
-	Serial.print(n);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(n);
+	puts(ack);
 }
 void MeetAndroid::send(long n){
-	Serial.print(startFlag);
-	Serial.print(n);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(n);
+	puts(ack);
 }
 void MeetAndroid::send(unsigned long n){
-	Serial.print(startFlag);
-	Serial.print(n);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(n);
+	puts(ack);
 }
 void MeetAndroid::send(long n, int base){
-	Serial.print(startFlag);
-	Serial.print(n, base);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(n, base);
+	puts(ack);
 }
 void MeetAndroid::send(double n){
-	Serial.print(startFlag);
-	Serial.print(n);
-	Serial.print(ack);
+	puts(startFlag);
+	puts(n);
+	puts(ack);
 }
 void MeetAndroid::sendln(void){
-	Serial.print(startFlag);
-	Serial.println();
-	Serial.print(ack);
+	puts(startFlag);
+	putc('/n');
+	puts(ack);
 }
 
 void MeetAndroid::flush(){

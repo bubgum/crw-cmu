@@ -40,14 +40,13 @@
 #define MeetAndroid_h
 
 #include <inttypes.h>
-#include "Print.h"
 
 
 /******************************************************************************
 * Definitions
 ******************************************************************************/
 
-class MeetAndroid : public Print
+class MeetAndroid
 
 {
 #define ByteBufferLenght 64
