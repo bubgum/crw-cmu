@@ -8,8 +8,17 @@
 #include <serial.h>
 #include <avr/io.h>
 
-// Define stdout as the serial0 stream
+// Define stdout as the debug serial stream
 FILE stdio0 = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
+
+// Define the bluetooth communication stream
+FILE bluetooth = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
+
+// Define alternate streams for sensor ports
+FILE sensor1 = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
+FILE sensor2 = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
+FILE sensor3 = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
+FILE sensor4 = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
 
 /**
  * Init USART.  Transmit only (we're not receiving anything) 
