@@ -6,7 +6,7 @@
  */
 #include <avr/eeprom.h>
 
-template <class T> int EEPROM_writeAnything(int ee, const T& value)
+template <class T> int eeprom_write(int ee, const T& value)
 {
     const char* p = (const char*)(const void*)&value;
     int i;
@@ -15,7 +15,7 @@ template <class T> int EEPROM_writeAnything(int ee, const T& value)
     return i;
 }
 
-template <class T> int EEPROM_readAnything(int ee, T& value)
+template <class T> int eeprom_read(int ee, T& value)
 {
     char* p = (char*)(void*)&value;
     int i;
