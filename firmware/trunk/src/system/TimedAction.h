@@ -30,8 +30,6 @@
 #ifndef TIMEDACTION_H
 #define TIMEDACTION_H
 
-#include "WProgram.h"
-
 #define NO_PREDELAY 0
 
 class TimedAction {

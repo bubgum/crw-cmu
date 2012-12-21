@@ -8,11 +8,8 @@
 #ifndef SERIAL_H
 #define	SERIAL_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 #include <stdio.h>
+#include <avr/io.h>
     
 // Tested baud rates
 #define BAUD_9600    (12)
@@ -27,12 +24,8 @@ FILE sensor3;
 FILE sensor4;
 
 // Function descriptions are available in serial.c
-void init_serial();
+void init_serial(unsigned int baud);
 int uart_putchar(char c, FILE *stream);
 int uart_getchar(FILE *stream);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* SERIAL_H */

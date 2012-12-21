@@ -12,8 +12,7 @@
  */
 
 #include <stdlib.h>
-#include <EEPROM.h>
-#include "EEPROMHelper.h"
+#include "eeprom.h"
 #include "TimedAction.h"
 #include "meet_android.h"
 
@@ -61,17 +60,16 @@ TimedAction controlTimer = TimedAction(UPDATE_INTERVAL, update);
 void setup() 
 { 
   // Load PID constants in from EEPROM
-  EEPROM_readAnything(PID_ADDRESS, pid);
+  eeprom_read(PID_ADDRESS, pid);
 
   // Set up serial communications
-  Serial.begin(115200);
+  init_serial(BAUD_115200);
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
   amarino.registerFunction(setPID, SET_PID_FN);
   amarino.registerFunction(getPID, GET_PID_FN);
   amarino.registerFunction(setSampler, SET_SAMPLER_FN);
 
   // Initialize device modules
-  initGyro();
   initRudder();
   initThruster();
   initSampler();
@@ -104,7 +102,6 @@ void loop()
  */
 void update()
 {
-  updateGyro();
   updateRudder();
   updateThruster();
   updateSampler();
@@ -129,7 +126,7 @@ void watchdog()
 /**
  * Receives a 6D desired velocity command from Amarino.
  */
-void setVelocity(byte flag, byte numOfValues)
+void setVelocity(char flag, char numOfValues)
 {
   // Ignore if wrong number of arguments
   if (numOfValues != 6) return;
@@ -144,7 +141,7 @@ void setVelocity(byte flag, byte numOfValues)
 /**
  * Receives PID constants for a particular axis.
  */
-void setPID(byte flag, byte numOfValues)
+void setPID(char flag, char numOfValues)
 {
   // Ignore if wrong number of arguments
   if (numOfValues != 4) return;
@@ -161,7 +158,7 @@ void setPID(byte flag, byte numOfValues)
   pid.Kp[axis] = args[1];
   pid.Ki[axis] = args[2];
   pid.Kd[axis] = args[3];
-  EEPROM_writeAnything(PID_ADDRESS, pid);
+  eeprom_write(PID_ADDRESS, pid);
   
   // Reset the watchdog timer
   watchdogTimer.reset();
@@ -170,7 +167,7 @@ void setPID(byte flag, byte numOfValues)
 /**
  * Sends the PID constants of a particular axis to Amarino.
  */
-void getPID(byte flag, byte numOfValues)
+void getPID(char flag, char numOfValues)
 {
   // Ignore if wrong number of arguments
   if (numOfValues != 1) return;

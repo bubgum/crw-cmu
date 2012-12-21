@@ -12,6 +12,8 @@
         <in>led.h</in>
         <in>serial.c</in>
         <in>serial.h</in>
+        <in>servo.c</in>
+        <in>servo.h</in>
       </df>
       <df name="sensors">
         <in>depth_sensor.c</in>
@@ -37,8 +39,7 @@
         <in>ptsem.h</in>
       </df>
       <in>board.h</in>
-      <in>main.c</in>
-      <in>main.old.c</in>
+      <in>main.cpp</in>
       <in>rudder.c</in>
       <in>rudder.h</in>
       <in>thruster.c</in>
