@@ -1,7 +1,9 @@
+#include "do_sensor.h"
+
 #define RECV_DO_FN 'o'
 
 char doReading[5];
-static String sensorstring = "";
+static std::string sensorstring = "";
 
 void initDO() {  
   Serial3.begin(38400);                // Enable serial port

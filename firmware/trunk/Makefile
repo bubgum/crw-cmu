@@ -85,7 +85,12 @@ PROJECTNAME=crw_ebox
 # (list all files to compile, e.g. 'a.c b.cpp as.S'):
 # Use .cc, .cpp or .C suffix for C++ files, use .S 
 # (NOT .s !!!) for assembly source code files.
-PRJSRC=src/main.cpp src/hardware/serial.c src/hardware/led.c src/hardware/servo.c
+PRJSRC= src/main.cpp \
+	src/hardware/servo.cpp
+
+# 	src/thruster.cpp \
+#	src/rudder.cpp \
+
 
 # additional includes (e.g. -I/path/to/mydir)
 INC=-Isrc -Isrc/hardware -Isrc/sensors -Isrc/system

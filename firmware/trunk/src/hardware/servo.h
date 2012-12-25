@@ -16,5 +16,16 @@ void init_servos(void);
 void enable_servo(int channel, int which);
 void set_servo(int channel, int which, uint16_t position);
 
+template<int outPin> 
+class Servo
+{
+ public:
+  Servo();
+  ~Servo();
+  
+  void set(uint16_t position);
+  int get();
+};
+
 #endif	/* SERVO_H */
 

@@ -15,7 +15,8 @@
 #define BAUD_9600    (12)
 #define BAUD_115200  (50) // TODO: THIS IS JUST WRONG
 
-struct SerialPort {
+struct SerialConfig 
+{
   USART_t uart;
   PORT_t port;
   int rxPin;
@@ -25,9 +26,9 @@ struct SerialPort {
 //int uart_putchar(char c, FILE *stream);
 //int uart_getchar(FILE *stream);
 
-template <SerialPort &_serial>
-  class Serial {
-  
+template <SerialConfig &_serial>
+class Serial 
+{
  private:
   FILE *_stream;
   

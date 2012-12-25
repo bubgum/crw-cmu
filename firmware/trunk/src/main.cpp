@@ -12,9 +12,12 @@
  */
 
 #include <stdlib.h>
-#include "eeprom.h"
-#include "TimedAction.h"
-#include "meet_android.h"
+#include "board.h"
+#include "rudder.h"
+#include "thruster.h"
+//#include "eeprom.h"
+//#include "TimedAction.h"
+//#include "meet_android.h"
 
 // Define indices for specific coordinates
 // Assumes X is forward, Y is left, Z is up, frame is right-handed
@@ -45,13 +48,13 @@ float actualVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
 
 // Communication structure for Amarino
-MeetAndroid amarino;
+//MeetAndroid amarino;
 
 // Watchdog timer - must be reset() periodically
-TimedAction watchdogTimer = TimedAction(500, watchdog);
+//TimedAction watchdogTimer = TimedAction(500, watchdog);
 
 // Control loop timer
-TimedAction controlTimer = TimedAction(UPDATE_INTERVAL, update);
+//TimedAction controlTimer = TimedAction(UPDATE_INTERVAL, update);
 
 /**
  * The main setup function for the vehicle.  Initalized the Amarino communications,
@@ -60,23 +63,23 @@ TimedAction controlTimer = TimedAction(UPDATE_INTERVAL, update);
 void setup() 
 { 
   // Load PID constants in from EEPROM
-  eeprom_read(PID_ADDRESS, pid);
+  //eeprom_read(PID_ADDRESS, pid);
 
   // Set up serial communications
-  init_serial(BAUD_115200);
-  amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
-  amarino.registerFunction(setPID, SET_PID_FN);
-  amarino.registerFunction(getPID, GET_PID_FN);
-  amarino.registerFunction(setSampler, SET_SAMPLER_FN);
+  //init_serial(BAUD_115200);
+  //amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
+  //amarino.registerFunction(setPID, SET_PID_FN);
+  //amarino.registerFunction(getPID, GET_PID_FN);
+  //amarino.registerFunction(setSampler, SET_SAMPLER_FN);
 
   // Initialize device modules
-  initRudder();
-  initThruster();
-  initSampler();
-  initTE();
-  initDepth();
+  //initRudder();
+  //initThruster();
+  //initSampler();
+  //initTE();
+  //initDepth();
   //initWaterCanary();
-  initDO();
+  //initDO();
 } 
 
 /**
@@ -86,14 +89,14 @@ void setup()
 void loop() 
 {     
   // Get any incoming messages and process them
-  amarino.receive();
+  //amarino.receive();
 
   // Perform psuedothreaded updates in various modules
-  processTE();
+  //processTE();
   
   // Check if either the watchdog or the main loop is scheduled
-  watchdogTimer.check();
-  controlTimer.check();
+  //watchdogTimer.check();
+  //controlTimer.check();
 }
 
 /**
@@ -102,13 +105,13 @@ void loop()
  */
 void update()
 {
-  updateRudder();
-  updateThruster();
-  updateSampler();
-  updateTE();
-  updateDepth();
+  //updateRudder();
+  //updateThruster();
+  //updateSampler();
+  //updateTE();
+  //updateDepth();
   //updateWaterCanary();
-  updateDO();
+  //updateDO();
 }
 
 /**
@@ -132,10 +135,10 @@ void setVelocity(char flag, char numOfValues)
   if (numOfValues != 6) return;
 
   // Load these values into array of desired velocities  
-  amarino.getFloatValues(desiredVelocity);
+  //amarino.getFloatValues(desiredVelocity);
   
   // Reset the watchdog timer
-  watchdogTimer.reset();
+  //watchdogTimer.reset();
 }
 
 /**
@@ -148,7 +151,7 @@ void setPID(char flag, char numOfValues)
   
   // Load all the arguments into memory
   float args[numOfValues];
-  amarino.getFloatValues(args);
+  //amarino.getFloatValues(args);
   
   // Get the axis that is being set
   int axis = (int)args[0];
@@ -158,10 +161,10 @@ void setPID(char flag, char numOfValues)
   pid.Kp[axis] = args[1];
   pid.Ki[axis] = args[2];
   pid.Kd[axis] = args[3];
-  eeprom_write(PID_ADDRESS, pid);
+  //eeprom_write(PID_ADDRESS, pid);
   
   // Reset the watchdog timer
-  watchdogTimer.reset();
+  //watchdogTimer.reset();
 }
 
 /**
@@ -173,17 +176,22 @@ void getPID(char flag, char numOfValues)
   if (numOfValues != 1) return;
   
   // Load the argument into memory
-  float axisRaw = amarino.getFloat();
+  //float axisRaw = amarino.getFloat();
   
   // Get the axis that is being set
-  int axis = (int)axisRaw;
-  if (axis < 0 || axis >=6) return;
+  //int axis = (int)axisRaw;
+  //if (axis < 0 || axis >=6) return;
   
   // Return the appropriate values to Amarino
-  amarino.send(GET_PID_FN);
-  amarino.send((float)axis);
-  amarino.send(pid.Kp[axis]);
-  amarino.send(pid.Ki[axis]);
-  amarino.send(pid.Kd[axis]);
-  amarino.sendln();
+  //amarino.send(GET_PID_FN);
+  //amarino.send((float)axis);
+  //amarino.send(pid.Kp[axis]);
+  //amarino.send(pid.Ki[axis]);
+  //amarino.send(pid.Kd[axis]);
+  //amarino.sendln();
+}
+
+int main(void)
+{
+  // TODO: fill this in
 }

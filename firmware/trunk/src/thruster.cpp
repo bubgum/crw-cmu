@@ -6,7 +6,7 @@
  * reach a desired forward velocity.
  */
  
-#include <Servo.h> 
+#include <servo.h> 
 
 #define TBUFSIZE  100
 #define TMIN  0
@@ -23,7 +23,7 @@ int tIndx = 0;
 
 int send_thruster_cnt = 6;
 
-void armThruster()
+void armThruster(void)
 {  
   thruster.write(1000);  
   delay(1200);
@@ -35,7 +35,7 @@ void armThruster()
   delay(1200);
 }
 
-void initThruster()
+void initThruster(void)
 {
   thruster.attach(40);
   armThruster();
@@ -44,7 +44,7 @@ void initThruster()
        tBuffer[i] = 0;
 }
 
-void updateThruster()
+void updateThruster(void)
 { 
    float tError = desiredVelocity[0] - actualVelocity[0];
    

@@ -23,14 +23,14 @@ int rIndx = 0;
 
 int send_pos_cnt = 3;
 
-void initRudder() {
+void initRudder(void) {
     init_servos();
 
     for (int i = 0; i < 100; i++)
         rBuffer[i] = 0;
 }
 
-void updateRudder() {
+void updateRudder(void) {
     float rError = desiredVelocity[5] - actualVelocity[5];
 
     rIndx++;

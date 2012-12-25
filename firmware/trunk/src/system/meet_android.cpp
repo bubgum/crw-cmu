@@ -28,7 +28,7 @@ extern "C" {
 
 // Private methods
 void MeetAndroid::processCommand(){
-	if(buffer[0]-FunctionBufferOffset < FunctionBufferLenght){
+	if(buffer[0]-FunctionBufferOffset < FunctionBufferLength){
 		void (*H_FuncPtr)(uint8_t, uint8_t) = intFunc[buffer[0]-FunctionBufferOffset];
 		if (H_FuncPtr != 0) {
 			H_FuncPtr(buffer[0], getArrayLength());
