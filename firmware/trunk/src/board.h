@@ -4,6 +4,8 @@
  * author: Pras Velagapudi <pras@senseplatypus.com>
  */
 
+#define F_CPU 20000000UL
+
 #include "led.h"
 #include "serial.h"
 #include "servo.h"
