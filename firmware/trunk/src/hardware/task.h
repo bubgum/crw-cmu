@@ -10,6 +10,13 @@
 #include <avr/io.h>
 #include <avr/interrupt.h> 
 
+#if (F_CPU != 32000000UL)
+#error Task timer settings do not match CPU frequency!
+#endif
+
+// Scale factor converting from milliseconds to timer ticks
+#define TASK_SCALE_FACTOR ((F_CPU / 1024) / 1000)
+
 struct TaskConfig
 {
   TC0_t timer;
@@ -37,14 +44,15 @@ class Task
     TASK_Args = args;
 
     // Set up the timer to fire periodically
-    _config.timer.PER = interval_ms;
-    _config.timer.CTRLA = 0; // TODO: fix me: Get this close to milliseconds
-    _config.timer.CTRLB = 0; // TODO: fix me: See above
+    _config.timer.PER = interval_ms * TASK_SCALE_FACTOR;
+    _config.timer.INTCTRLA = TC_OVFINTLVL_HI_gc; // Enable overflow interrupt
+    _config.timer.CTRLB = TC_WGMODE_NORMAL_gc;
 
-    // TODO: Connect up the callback to the ISR for the timer
+    // Start the timer running
+    _config.timer.CTRLA = TC_CLKSEL_DIV1024_gc; // 32Mhz / 1024 = 31.25kHz
 
-    // Start the timer
-    _config.timer.CTRLA |= 0x04;
+    // Enable medium level interrupts
+    PMIC.CTRL |= PMIC_HILVLEN_bm;
     sei();
   }
 
@@ -52,7 +60,7 @@ class Task
     // TODO: remove callback function from the timer handler
 
     // Disable the timer
-    _config.timer = 0;
+    _config.timer.CTRLA = 0;
   }
 };
 
