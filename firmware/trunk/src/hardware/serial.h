@@ -2,6 +2,7 @@
   XMEGA serial library for use with avr-gcc.
   
   author:  Pras Velagapudi
+  
   based on: http://blog.frankvh.com/2009/11/14/atmel-xmega-printf-howto/
 */
 
@@ -10,10 +11,11 @@
 
 #include <stdio.h>
 #include <avr/io.h>
-    
+  
+// TODO: remvoe me once serial works  
 // Tested baud rates
-#define BAUD_9600    (12)
-#define BAUD_115200  (50) // TODO: THIS IS JUST WRONG
+//#define BAUD_9600    (12)
+//#define BAUD_115200  (50) // TODO: THIS IS JUST WRONG
 
 struct SerialConfig 
 {
@@ -23,8 +25,18 @@ struct SerialConfig
   int txPin;
 };
 
-//int uart_putchar(char c, FILE *stream);
-//int uart_getchar(FILE *stream);
+struct BaudConfig
+{
+  uint16_t bsel;
+  uint8_t bscale;
+};
+
+// Serial rates computed using:
+// http://prototalk.net/forums/showthread.php?t=188
+const BaudConfig BAUD_1200 = { 3331, 15 };
+const BaudConfig BAUD_9600 = { 3317, 12 };
+const BaudConfig BAUD_115200 = { 1047, 10 };
+
 
 template <SerialConfig &_serial>
 class Serial 
@@ -40,7 +52,7 @@ class Serial
    * BSEL = ( 2000000 / (2^0 * 16*9600)) -1 = 12
    * Fbaud = 2000000 / (2^0 * 16 * (12+1))  = 9615 bits/sec
    */
-  Serial(unsigned int baud, bool isDefault = true) {
+  Serial(BaudConfig baud, bool isDefault = true) {
     
     // Set the TxD pin high and the RxD pin low
     _serial.port.OUTSET = _BV(_serial.txPin);
@@ -51,9 +63,9 @@ class Serial
     _serial.port.DIRCLR = _BV(_serial.rxPin);
     
     // Set baud rate & frame format
-    _serial.uart.BAUDCTRLB = 0; // BSCALE = 0
-    _serial.uart.BAUDCTRLA = baud;
-    
+    _serial.uart.BAUDCTRLA = (uint8_t) baud.bsel;
+    _serial.uart.BAUDCTRLB = (baud.bscale << 4) | (baud.bsel >> 8);
+
     // Set mode of operation
     // (async, no parity, 8 bit data, 1 stop bit)
     _serial.uart.CTRLA = 0; // no interrupts enabled
