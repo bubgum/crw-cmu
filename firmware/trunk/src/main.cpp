@@ -193,5 +193,6 @@ void getPID(char flag, char numOfValues)
 
 int main(void)
 {
+  initBoard();
   // TODO: fill this in
 }

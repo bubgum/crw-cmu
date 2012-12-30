@@ -5,7 +5,7 @@
  */
 
 #ifndef F_CPU
-#define F_CPU 20000000UL
+#define F_CPU 32000000UL
 #endif /* F_CPU */
 
 #include "led.h"
@@ -36,3 +36,19 @@ ServoConfig Servo4 = { TCC0, PORTC, PIN4 }; // TODO: FIXME
 
 // Set up general purpose task timer
 TaskConfig UserTask = { TCC0 }; // TODO: FIXME
+
+// Helper function to change to high-speed clock
+void setClockTo32MHz() 
+{
+  CCP = CCP_IOREG_gc;              // disable register security for oscillator update
+  OSC.CTRL = OSC_RC32MEN_bm;       // enable 32MHz oscillator
+  while(!(OSC.STATUS & OSC_RC32MRDY_bm)); // wait for oscillator to be ready
+  CCP = CCP_IOREG_gc;              // disable register security for clock update
+  CLK.CTRL = CLK_SCLKSEL_RC32M_gc; // switch to 32MHz clock
+}
+
+// Startup function for basic board functionality
+void initBoard()
+{
+  setClockTo32MHz();
+}

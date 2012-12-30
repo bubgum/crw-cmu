@@ -12,6 +12,10 @@
 
 #include <inttypes.h>
 
+#if (F_CPU != 32000000UL)
+#error Servo timer settings do not match CPU frequency!
+#endif
+
 #define MIN_PULSE_WIDTH_US       544L    // the shortest pulse sent to a servo 
 #define MAX_PULSE_WIDTH_US      2400L    // the longest pulse sent to a servo 
 #define DEFAULT_PULSE_WIDTH_US  1500L    // default pulse width when servo is attached
@@ -30,12 +34,12 @@ class Servo
 {
  public:
   Servo() {
-    // Set up the timer
-    _config.timer.CNT = 0;
-    _config.timer.PER = REFRESH_INTERVAL_US;
-    _config.timer.CTRLA = 0; // TODO: figure out what I actually am
-    _config.timer.CTRLB = 0; // TODO: figure out what I actually am
-    // TODO: we want ~100khz, or 1us ticks, should be CLOCK/20-ish
+    // Set up the timer to a 0.5MHz tick resolution, so we
+    // can convert timings easily (1 tick = 2uS)
+    _config.timer.CNT = 0; // Start the counter at 0
+    _config.timer.PER = REFRESH_INTERVAL_US >> 1; // Set the PWM resolution
+    _config.timer.CTRLA = TC_CLKSEL_DIV64_gc; // 32MHz / 64 = 0.5Mhz
+    _config.timer.CTRLB = TC0_CCAEN_bm | TC_WGMODE_SS_gc; 
 
     // Initialize the timer to the default position
     _position = DEFAULT_PULSE_WIDTH_US;
@@ -44,9 +48,6 @@ class Servo
     // Set up the timer pin as an output
     _config.port.OUTCLR = _BV(_config.pin);
     _config.port.DIRSET = _BV(_config.pin);
-
-    // Start the timer
-    _config.timer.CTRLA |= 0x04;
   }
 
   ~Servo() {
@@ -93,7 +94,7 @@ class Servo
   static void update(uint16_t position)
   {
     // Configure the timer period to match the servo setting
-    _config.timer.CCA = position; // TODO: CHECK THIS IS CORRECT
+    _config.timer.CCABUF = position >> 1; // 2 uS = 1 ticks @ 32MHz/64
   }
 };
 
