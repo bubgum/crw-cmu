@@ -7,6 +7,7 @@
 #include "led.h"
 #include "serial.h"
 #include "servo.h"
+#include "task.h"
 
 #warning Set up board configuration with correct port values!
 
@@ -28,3 +29,6 @@ ServoConfig Servo1 = { TCC0, PORTC, PIN4 }; // TODO: FIXME
 ServoConfig Servo2 = { TCC0, PORTC, PIN4 }; // TODO: FIXME
 ServoConfig Servo3 = { TCC0, PORTC, PIN4 }; // TODO: FIXME
 ServoConfig Servo4 = { TCC0, PORTC, PIN4 }; // TODO: FIXME
+
+// Set up general purpose task timer
+TaskConfig UserTask = { TCC0 }; // TODO: FIXME
