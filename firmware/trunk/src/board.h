@@ -38,7 +38,8 @@ ServoConfig Servo4 = { &TCD0, &PORTD, PIN1 };
 // Set up general purpose task timer
 TaskConfig UserTask = { &TCC0 }; // No one is using TCC0
 
-// Helper function to change to high-speed clock
+// Helper function to change to high-speed clock adapted from:
+// http://fivevolt.blogspot.com/2010/11/enabling-32mhz-operation-on-avr-xmega.html
 void setClockTo32MHz() 
 {
   CCP = CCP_IOREG_gc;              // disable register security for oscillator update

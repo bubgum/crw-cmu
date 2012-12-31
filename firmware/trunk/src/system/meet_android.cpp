@@ -20,11 +20,15 @@
 // Includes
 #include "meet_android.h"
 
+#ifndef F_CPU
+#define F_CPU 32000000UL
+#endif
+
 extern "C" {
 #include <stdlib.h>
 #include <stdio.h>
+#include <util/delay.h>
 }
-
 
 // Private methods
 void MeetAndroid::processCommand(){
@@ -54,32 +58,34 @@ void MeetAndroid::init()
 	waitTime = 30;
 	startFlag = 18;
 	ack = 19;
-	abord = 27;
+	abort = 27;
 	delimiter = 59; //';'
 
 	numberOfValues = 0;
 	
-	for(int a = 0;a < FunctionBufferLenght;a++){
+	for(int a = 0;a < FunctionBufferLength;a++){
 		intFunc[a] = errorFunc;
 	}
 }
 
 
 // public methods
-MeetAndroid::MeetAndroid()
+MeetAndroid::MeetAndroid(FILE *str, H_boolFuncPtr avail) 
+  : stream(str), available(avail)
 {
-    // it is hard to use member function pointer together with normal function pointers.
-    customErrorFunc = false;
-	errorFunc = 0;
-	init();
+  // it is hard to use member function pointer together with normal function pointers.
+  customErrorFunc = false;
+  errorFunc = 0;
+  init();
 }
 
 // Constructur for use with HardwareSerial library
-MeetAndroid::MeetAndroid(H_voidFuncPtr err)
+MeetAndroid::MeetAndroid(FILE *str, H_boolFuncPtr avail, H_voidFuncPtr err)
+  : stream(str), available(avail)
 {
-    customErrorFunc = true;
-	errorFunc = err;
-	init();
+  customErrorFunc = true;
+  errorFunc = err;
+  init();
 }
 
 void MeetAndroid::registerFunction(void(*userfunction)(uint8_t, uint8_t),uint8_t command){
@@ -94,27 +100,27 @@ bool MeetAndroid::receive(){
 	bool timeout = false;
 	while(!timeout)
 	{
-		while(Serial.available() > 0)
+		while(available() > 0)
 		{
-			lastByte = Serial.read();
+			lastByte = fgetc(stream);
 			
-			if(lastByte == abord){
+			if(lastByte == abort){
 				flush();
 			}
 			else if(lastByte == ack){
 				processCommand();
 				flush();
 			}
-			else if(bufferCount < ByteBufferLenght){
+			else if(bufferCount < ByteBufferLength){
 				buffer[bufferCount] = lastByte;
 				bufferCount++;
 			}
 			else return false;
 		}
 		
-		if(Serial.available() <= 0 && !timeout){
-			if(waitTime > 0) delayMicroseconds(waitTime);
-			if(Serial.available() <= 0) timeout = true;
+		if(available() <= 0 && !timeout){
+		  if(waitTime > 0) _delay_us(30); // TODO: This is hardcoded because IT NEVER CHANGES
+		  if(available() <= 0) timeout = true;
 		}
 	}
 	return timeout;
@@ -252,79 +258,69 @@ double MeetAndroid::getDouble()
 	}
 
 	b[bufferCount-1] = '\0';
-	return atof(b);
-	
+	return atof(b);	
 }
 
-
-#if defined(ARDUINO) && ARDUINO >= 100
-size_t MeetAndroid::write(uint8_t b){
-	return puts(b);
-}
-#else
 void MeetAndroid::write(uint8_t b){
-	puts(b);
+  fprintf(stream, "%u", b); // Is this the same as the sends?
 }
-#endif
-	
 
-
-void MeetAndroid::send(char c ){
-	puts(startFlag);
-	puts(c);
-	puts(ack);
+void MeetAndroid::send(char c){
+  fputc(startFlag, stream);
+  fputc(c, stream);
+  fputc(ack, stream);
 }
 
 void MeetAndroid::send(const char str[]){
-	puts(startFlag);
-	puts(str);
-	puts(ack);
+  fputc(startFlag, stream);
+  fputs(str, stream);
+  fputc(ack, stream);
 }
 void MeetAndroid::send(uint8_t n){
-	puts(startFlag);
-	puts(n);
-	puts(ack);
+  fputc(startFlag, stream);
+  fprintf(stream, "%u", n);
+  fputc(ack, stream);
 }
 void MeetAndroid::send(int n){
-	puts(startFlag);
-	puts(n);
-	puts(ack);
+  fputc(startFlag, stream);
+  fprintf(stream, "%d", n);
+  fputc(ack, stream);
 }
 void MeetAndroid::send(unsigned int n){
-	puts(startFlag);
-	puts(n);
-	puts(ack);
+  fputc(startFlag, stream);
+  fprintf(stream, "%u", n);
+  fputc(ack, stream);
 }
 void MeetAndroid::send(long n){
-	puts(startFlag);
-	puts(n);
-	puts(ack);
+  fputc(startFlag, stream);
+  fprintf(stream, "%ld", n);
+  fputc(ack, stream);
 }
 void MeetAndroid::send(unsigned long n){
-	puts(startFlag);
-	puts(n);
-	puts(ack);
+  fputc(startFlag, stream);
+  fprintf(stream, "%lu", n);
+  fputc(ack, stream);
 }
 void MeetAndroid::send(long n, int base){
-	puts(startFlag);
-	puts(n, base);
-	puts(ack);
+  fputc(startFlag, stream);
+  fprintf(stream, "%ld %d", n, base); // TODO: This is almost certainly wrong
+  fputc(ack, stream);
 }
 void MeetAndroid::send(double n){
-	puts(startFlag);
-	puts(n);
-	puts(ack);
+  fputc(startFlag, stream);
+  fprintf(stream, "%f", n);
+  fputc(ack, stream);
 }
 void MeetAndroid::sendln(void){
-	puts(startFlag);
-	putc('/n');
-	puts(ack);
+  fputc(startFlag, stream);
+  fputc('/n', stream);
+  fputc(ack, stream);
 }
 
 void MeetAndroid::flush(){
-	for(uint8_t a=0; a < ByteBufferLenght; a++){
-		buffer[a] = 0;
-	}
-	bufferCount = 0;
-	numberOfValues = 0;
+  for(uint8_t a=0; a < ByteBufferLength; a++){
+    buffer[a] = 0;
+  }
+  bufferCount = 0;
+  numberOfValues = 0;
 }

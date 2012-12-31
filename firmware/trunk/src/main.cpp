@@ -50,6 +50,8 @@ struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
 
 // Hardware configuration
 Led<UserLed> led;
+Servo<Motor> motor;
+Serial<SerialBluetooth> bluetooth(BAUD_115200);
 
 // Communication structure for Amarino
 //MeetAndroid amarino;
@@ -114,6 +116,7 @@ void update(void *)
 {
   // Toggle LED just to let us know things are working
   led.toggle();
+  printf("Test\r\n");
 
   //updateRudder();
   //updateThruster();

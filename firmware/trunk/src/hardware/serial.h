@@ -52,7 +52,7 @@ class Serial
    * BSEL = ( 2000000 / (2^0 * 16*9600)) -1 = 12
    * Fbaud = 2000000 / (2^0 * 16 * (12+1))  = 9615 bits/sec
    */
-  Serial(BaudConfig baud, bool isDefault = true) {
+  Serial(BaudConfig baud, bool isDefault = false) {
     
     // Set the TxD pin high and the RxD pin low
     _serial.port->OUTSET = _BV(_serial.txPin);

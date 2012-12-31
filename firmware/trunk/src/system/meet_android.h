@@ -22,7 +22,7 @@
   specific demand to communicate with the Amarino toolkit.
   
   Following changes were made:
-          - ByteBufferLenght has been increased from 16 to 64
+          - ByteBufferLength has been increased from 16 to 64
           - FunctionBufferLength has been decreased from 128 to 75
           - A startFlag and delimiter char has been added.
           - ack and abord chars has been made private
@@ -39,6 +39,7 @@
 #ifndef MeetAndroid_h
 #define MeetAndroid_h
 
+#include "serial.h"
 #include <inttypes.h>
 
 /******************************************************************************
@@ -58,13 +59,16 @@ private:
 
     int numberOfValues;
 
-    char abord;
+    char abort;
     char ack;
     char delimiter;
     char startFlag; // used to communicate with Android (leads each msg to Android)
 
-    bool customErrorFunc;
+    FILE *stream;
+    typedef bool (*H_boolFuncPtr)(void);
+    H_boolFuncPtr available;
 
+    bool customErrorFunc;
     typedef void (*H_voidFuncPtr)(uint8_t, uint8_t);
     H_voidFuncPtr intFunc[FunctionBufferLength];
     H_voidFuncPtr errorFunc;
@@ -78,8 +82,8 @@ private:
 
 public:
     // public methods
-    MeetAndroid(H_voidFuncPtr err);
-    MeetAndroid(void);
+    MeetAndroid(FILE *str, H_boolFuncPtr avail, H_voidFuncPtr err);
+    MeetAndroid(FILE *str, H_boolFuncPtr avail);
 
     void flush(void);
     bool receive(void);
