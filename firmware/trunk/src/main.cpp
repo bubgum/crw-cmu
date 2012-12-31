@@ -15,9 +15,9 @@
 #include "board.h"
 #include "rudder.h"
 #include "thruster.h"
-//#include "eeprom.h"
+#include "eeprom.h"
 //#include "TimedAction.h"
-//#include "meet_android.h"
+#include "meet_android.h"
 #include <util/delay.h>
 
 // Define indices for specific coordinates
@@ -54,13 +54,88 @@ Servo<Motor> motor;
 Serial<SerialBluetooth> bluetooth(BAUD_115200);
 
 // Communication structure for Amarino
-//MeetAndroid amarino;
+bool btAvailable(void) { return bluetooth.available(); };
+MeetAndroid amarino(bluetooth.stream(), btAvailable);
 
 // Watchdog timer - must be reset() periodically
 //TimedAction watchdogTimer = TimedAction(500, watchdog);
 
-// Control loop timer
-//TimedAction controlTimer = TimedAction(UPDATE_INTERVAL, update);
+/**
+ * This callback is only reached when there has been no communication from the serial
+ * port for the specified timeout interval.  This function should attempt to gradually
+ * transition the boat to a safe state.
+ */
+void watchdog()
+{
+  // Slow the vehicle down by reducing velocity in every direction
+  for (int i = 0; i < 6; ++i)
+    desiredVelocity[i] *= 0.75;
+}
+
+/**
+ * Receives a 6D desired velocity command from Amarino.
+ */
+void setVelocity(uint8_t flag, uint8_t numOfValues)
+{
+  // Ignore if wrong number of arguments
+  if (numOfValues != 6) return;
+
+  // Load these values into array of desired velocities  
+  amarino.getFloatValues(desiredVelocity);
+  
+  // Reset the watchdog timer
+  //watchdogTimer.reset();
+}
+
+/**
+ * Receives PID constants for a particular axis.
+ */
+void setPID(uint8_t flag, uint8_t numOfValues)
+{
+  // Ignore if wrong number of arguments
+  if (numOfValues != 4) return;
+  
+  // Load all the arguments into memory
+  float args[numOfValues];
+  amarino.getFloatValues(args);
+  
+  // Get the axis that is being set
+  int axis = (int)args[0];
+  if (axis < 0 || axis >= 6) return;
+  
+  // Set these values and save them to the EEPROM
+  pid.Kp[axis] = args[1];
+  pid.Ki[axis] = args[2];
+  pid.Kd[axis] = args[3];
+  eeprom_write(PID_ADDRESS, pid);
+  
+  // Reset the watchdog timer
+  //watchdogTimer.reset();
+}
+
+/**
+ * Sends the PID constants of a particular axis to Amarino.
+ */
+void getPID(uint8_t flag, uint8_t numOfValues)
+{
+  // Ignore if wrong number of arguments
+  if (numOfValues != 1) return;
+  
+  // Load the argument into memory
+  float axisRaw = amarino.getFloat();
+  
+  // Get the axis that is being set
+  int axis = (int)axisRaw;
+  if (axis < 0 || axis >=6) return;
+  
+  // Return the appropriate values to Amarino
+  amarino.send(GET_PID_FN);
+  amarino.send((float)axis);
+  amarino.send(pid.Kp[axis]);
+  amarino.send(pid.Ki[axis]);
+  amarino.send(pid.Kd[axis]);
+  amarino.sendln();
+}
 
 /**
  * The main setup function for the vehicle.  Initalized the Amarino communications,
@@ -72,14 +147,13 @@ void setup()
   initBoard();
 
   // Load PID constants in from EEPROM
-  //eeprom_read(PID_ADDRESS, pid);
+  eeprom_read(PID_ADDRESS, pid);
 
   // Set up serial communications
-  //init_serial(BAUD_115200);
-  //amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
-  //amarino.registerFunction(setPID, SET_PID_FN);
-  //amarino.registerFunction(getPID, GET_PID_FN);
-  //amarino.registerFunction(setSampler, SET_SAMPLER_FN);
+  amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
+  amarino.registerFunction(setPID, SET_PID_FN);
+  amarino.registerFunction(getPID, GET_PID_FN);
+  //  amarino.registerFunction(setSampler, SET_SAMPLER_FN);
 
   // Initialize device modules
   //initRudder();
@@ -125,90 +199,6 @@ void update(void *)
   //updateDepth();
   //updateWaterCanary();
   //updateDO();
-}
-
-/**
- * This callback is only reached when there has been no communication from the serial
- * port for the specified timeout interval.  This function should attempt to gradually
- * transition the boat to a safe state.
- */
-void watchdog()
-{
-  // Slow the vehicle down by reducing velocity in every direction
-  for (int i = 0; i < 6; ++i)
-    desiredVelocity[i] *= 0.75;
-}
-
-/**
- * Receives a 6D desired velocity command from Amarino.
- */
-void setVelocity(char flag, char numOfValues)
-{
-  // Ignore if wrong number of arguments
-  if (numOfValues != 6) return;
-
-  // Load these values into array of desired velocities  
-  //amarino.getFloatValues(desiredVelocity);
-  
-  // Reset the watchdog timer
-  //watchdogTimer.reset();
-}
-
-/**
- * Receives PID constants for a particular axis.
- */
-void setPID(char flag, char numOfValues)
-{
-  // Ignore if wrong number of arguments
-  if (numOfValues != 4) return;
-  
-  // Load all the arguments into memory
-  float args[numOfValues];
-  //amarino.getFloatValues(args);
-  
-  // Get the axis that is being set
-  int axis = (int)args[0];
-  if (axis < 0 || axis >= 6) return;
-  
-  // Set these values and save them to the EEPROM
-  pid.Kp[axis] = args[1];
-  pid.Ki[axis] = args[2];
-  pid.Kd[axis] = args[3];
-  //eeprom_write(PID_ADDRESS, pid);
-  
-  // Reset the watchdog timer
-  //watchdogTimer.reset();
-}
-
-/**
- * Sends the PID constants of a particular axis to Amarino.
- */
-void getPID(char flag, char numOfValues)
-{
-  // Ignore if wrong number of arguments
-  if (numOfValues != 1) return;
-  
-  // Load the argument into memory
-  //float axisRaw = amarino.getFloat();
-  
-  // Get the axis that is being set
-  //int axis = (int)axisRaw;
-  //if (axis < 0 || axis >=6) return;
-  
-  // Return the appropriate values to Amarino
-  //amarino.send(GET_PID_FN);
-  //amarino.send((float)axis);
-  //amarino.send(pid.Kp[axis]);
-  //amarino.send(pid.Ki[axis]);
-  //amarino.send(pid.Kd[axis]);
-  //amarino.sendln();
-}
-
-
-
-void updater(void* args)
-{
-  led.toggle();
 }
 
 int main(void)

@@ -154,7 +154,7 @@ HEXFORMAT=ihex
 CFLAGS=-I. $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
 	-funsigned-bitfields -funsigned-char    \
-	-Wall -Wstrict-prototypes               \
+	-Wall 					\
 	-Wa,-ahlms=$(firstword                  \
 	$(filter %.lst, $(<:.c=.lst)))
 
@@ -174,7 +174,7 @@ ASMFLAGS =-I. $(INC) -mmcu=$(MCU)        \
 
 # linker
 LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) \
-	-lm $(LIBS)
+	$(LIBS) -lm
 
 ##### executables ####
 CC=avr-gcc
@@ -255,7 +255,7 @@ $(DUMPTRG): $(TRG)
 
 
 $(TRG): $(OBJDEPS) 
-	$(CC) $(LDFLAGS) -o $(TRG) $(OBJDEPS)
+	$(CC) -o $(TRG) $(OBJDEPS) $(LDFLAGS)
 
 
 #### Generating assembly ####

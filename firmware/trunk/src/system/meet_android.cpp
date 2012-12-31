@@ -79,15 +79,6 @@ MeetAndroid::MeetAndroid(FILE *str, H_boolFuncPtr avail)
   init();
 }
 
-// Constructur for use with HardwareSerial library
-MeetAndroid::MeetAndroid(FILE *str, H_boolFuncPtr avail, H_voidFuncPtr err)
-  : stream(str), available(avail)
-{
-  customErrorFunc = true;
-  errorFunc = err;
-  init();
-}
-
 void MeetAndroid::registerFunction(void(*userfunction)(uint8_t, uint8_t),uint8_t command){
 	intFunc[command-FunctionBufferOffset] = userfunction;
 }

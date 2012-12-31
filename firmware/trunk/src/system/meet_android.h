@@ -82,7 +82,6 @@ private:
 
 public:
     // public methods
-    MeetAndroid(FILE *str, H_boolFuncPtr avail, H_voidFuncPtr err);
     MeetAndroid(FILE *str, H_boolFuncPtr avail);
 
     void flush(void);
@@ -108,11 +107,7 @@ public:
     void getFloatValues(float[]);
     void getDoubleValues(float[]); // in Arduino double and float are the same
 
-#if defined(ARDUINO) && ARDUINO >= 100
-    size_t write(uint8_t);
-#else
     void write(uint8_t);
-#endif
 
     void send(char);
     void send(const char[]);
@@ -124,7 +119,6 @@ public:
     void send(long, int);
     void send(double);
     void sendln(void);
-
 
     uint16_t waitTime;
 
