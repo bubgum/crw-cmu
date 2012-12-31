@@ -12,11 +12,15 @@
  */
 
 #include <stdlib.h>
+
+// Structure storing PID constants for each axis
+// TODO: This placement is an utter hack to share PID with rudder and thruster
+struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
+
 #include "board.h"
 #include "rudder.h"
 #include "thruster.h"
 #include "eeprom.h"
-//#include "TimedAction.h"
 #include "meet_android.h"
 #include <util/delay.h>
 
@@ -45,17 +49,17 @@
 float desiredVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 float actualVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
-// Structure storing PID constants for each axis
-struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
-
 // Hardware configuration
 Led<UserLed> led;
-Servo<Motor> motor;
 Serial<SerialBluetooth> bluetooth(BAUD_115200);
 
 // Communication structure for Amarino
 bool btAvailable(void) { return bluetooth.available(); };
 MeetAndroid amarino(bluetooth.stream(), btAvailable);
+
+// Module configuration
+Servo<Motor> thruster;
+Rudder<Servo2> rudder(&amarino);
 
 // Watchdog timer - must be reset() periodically
 //TimedAction watchdogTimer = TimedAction(500, watchdog);
@@ -156,7 +160,7 @@ void setup()
   //  amarino.registerFunction(setSampler, SET_SAMPLER_FN);
 
   // Initialize device modules
-  //initRudder();
+  //initRudder(rudder, amarino);
   //initThruster();
   //initSampler();
   //initTE();
@@ -172,7 +176,7 @@ void setup()
 void loop() 
 {     
   // Get any incoming messages and process them
-  //amarino.receive();
+  amarino.receive();
 
   // Perform psuedothreaded updates in various modules
   //processTE();
@@ -192,7 +196,7 @@ void update(void *)
   led.toggle();
   printf("Test\r\n");
 
-  //updateRudder();
+  rudder.update();
   //updateThruster();
   //updateSampler();
   //updateTE();
