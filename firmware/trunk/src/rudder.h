@@ -27,13 +27,15 @@ template <ServoConfig &_config>
 class Rudder
 {
  public:
-  Rudder(MeetAndroid *rAmarino) 
-    : servo(), amarino(rAmarino)
+ Rudder(MeetAndroid *rAmarino) 
+   : rIndx(0), servo(), amarino(rAmarino)
   {
     for (int i = 0; i < 100; i++)
       rBuffer[i] = 0;
   }
-
+ 
+  ~Rudder() { }
+  
   void update(void)
   {
     float rError = desiredVelocity[5] - actualVelocity[5];
@@ -50,10 +52,9 @@ class Rudder
     rprevError = rError;
     
     if (rPID < RMIN)
-        rPID = RMIN;
-    else
-        if (rPID > RMAX)
-	  rPID = RMAX;
+      rPID = RMIN;
+    if (rPID > RMAX)
+      rPID = RMAX;
     
     servo.set(rPID);
     
