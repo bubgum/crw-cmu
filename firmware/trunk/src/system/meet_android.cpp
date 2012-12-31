@@ -313,7 +313,7 @@ void MeetAndroid::send(double n){
 }
 void MeetAndroid::sendln(void){
   fputc(startFlag, stream);
-  fputc('/n', stream);
+  fputc('\n', stream);
   fputc(ack, stream);
 }
 
