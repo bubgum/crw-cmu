@@ -29,6 +29,7 @@ SerialConfig Serial3 = { &USARTD1, &PORTD, PIN6, PIN7 };
 SerialConfig Serial4 = { &USARTD0, &PORTD, PIN2, PIN3 };
 
 // Servo PWM configurations for each sensor port
+ServoConfig Motor = { &TCF0, &PORTF, PIN1 };
 //ServoConfig Servo1 = { &TCE1, &PORTE, PIN5 }; // At the moment, can't do these
 ServoConfig Servo2 = { &TCE0, &PORTE, PIN1 };
 //ServoConfig Servo3 = { &TCD1, &PORTD, PIN5 }; // At the moment, can't do these
