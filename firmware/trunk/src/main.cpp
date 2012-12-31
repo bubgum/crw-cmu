@@ -18,6 +18,7 @@
 //#include "eeprom.h"
 //#include "TimedAction.h"
 //#include "meet_android.h"
+#include <util/delay.h>
 
 // Define indices for specific coordinates
 // Assumes X is forward, Y is left, Z is up, frame is right-handed
@@ -195,4 +196,14 @@ int main(void)
 {
   initBoard();
   // TODO: fill this in
+
+  // For now, simple test code.
+  Led<UserLed> led;
+  
+  while(true) {
+    _delay_ms(750);
+    led.on();
+    _delay_ms(250);
+    led.off();
+  }
 }
