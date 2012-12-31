@@ -16,11 +16,11 @@
 #error Servo timer settings do not match CPU frequency!
 #endif
 
-#define MIN_PULSE_WIDTH_US       544L    // the shortest pulse sent to a servo 
-#define MAX_PULSE_WIDTH_US      2400L    // the longest pulse sent to a servo 
-#define DEFAULT_PULSE_WIDTH_US  1500L    // default pulse width when servo is attached
-#define REFRESH_INTERVAL_US    20000L    // minimum time to refresh servos
-#define SERVO_SCALE_FACTOR    (65535L / (MAX_PULSE_WIDTH_US - MIN_PULSE_WIDTH_US))
+#define MIN_PULSE_WIDTH_US      1000L    // the shortest pulse sent to a servo 
+#define MAX_PULSE_WIDTH_US      2000L    // the longest pulse sent to a servo 
+#define DEFAULT_PULSE_WIDTH_US  ((MAX_PULSE_WIDTH_US + MIN_PULSE_WIDTH_US) / 2)
+#define REFRESH_INTERVAL_US     20000L   // minimum time to refresh servos
+#define SERVO_SCALE_FACTOR      (65535L / (MAX_PULSE_WIDTH_US - MIN_PULSE_WIDTH_US))
 
 struct ServoConfig
 {
@@ -44,7 +44,6 @@ class Servo
 
     // Set up the timer to a 0.5MHz tick resolution, so we
     // can convert timings easily (1 tick = 2uS)
-    _config.timer->CNT = 0; // Start the counter at 0
     _config.timer->PER = REFRESH_INTERVAL_US >> 1; // Set the PWM resolution
     _config.timer->CTRLB = TC0_CCBEN_bm | TC_WGMODE_SS_gc; // Use compare channel B
 
@@ -61,15 +60,15 @@ class Servo
     _config.port->DIRCLR = _BV(_config.pin);
   }
 
-  void set(uint16_t position)
+  void set(int16_t position)
   {
-    _position = position / SERVO_SCALE_FACTOR;
+    _position = (position / SERVO_SCALE_FACTOR) + DEFAULT_PULSE_WIDTH_US;
     update(_position);
   }
 
   int get()
   {
-    return _position * SERVO_SCALE_FACTOR;
+    return (_position - DEFAULT_PULSE_WIDTH_US) * SERVO_SCALE_FACTOR;
   }
 
   void setRaw(uint16_t position)
@@ -96,7 +95,7 @@ class Servo
   static void update(uint16_t position)
   {
     // Configure the timer period to match the servo setting
-    _config.timer->CCABUF = position >> 1; // 2 uS = 1 ticks @ 32MHz/64
+    _config.timer->CCBBUF = position >> 1; // 2 uS = 1 ticks @ 32MHz/64
   }
 };
 
