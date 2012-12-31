@@ -48,6 +48,9 @@ float actualVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 // Structure storing PID constants for each axis
 struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
 
+// Hardware configuration
+Led<UserLed> led;
+
 // Communication structure for Amarino
 //MeetAndroid amarino;
 
@@ -63,6 +66,9 @@ struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
  */
 void setup() 
 { 
+  // Core board initialization
+  initBoard();
+
   // Load PID constants in from EEPROM
   //eeprom_read(PID_ADDRESS, pid);
 
@@ -104,8 +110,11 @@ void loop()
  * The main control loop for the vehicle.  Within this function we mainly call the 
  * periodic update functions for the various modules.
  */
-void update()
+void update(void *)
 {
+  // Toggle LED just to let us know things are working
+  led.toggle();
+
   //updateRudder();
   //updateThruster();
   //updateSampler();
@@ -192,7 +201,7 @@ void getPID(char flag, char numOfValues)
   //amarino.sendln();
 }
 
-Led<UserLed> led;
+
 
 void updater(void* args)
 {
@@ -201,13 +210,12 @@ void updater(void* args)
 
 int main(void)
 {
-  initBoard();
-  // TODO: fill this in
-
-  // For now, simple test code.
-  Task<UserTask> task(updater, NULL, 500);
+  // Initial setup for boat
+  setup();
   
-  while(true) {
-    _delay_ms(500);
-  }
+  // Schedule periodic updates
+  Task<UserTask> task(update, NULL, 500);
+  
+  // Start main tight loop
+  while(true) { loop(); }
 }
