@@ -19,7 +19,7 @@
 
 struct TaskConfig
 {
-  TC0_t timer;
+  TC0_t *timer;
 };
 
 // TODO: NO GLOBAL STUFF!
@@ -33,7 +33,7 @@ ISR (TCC0_OVF_vect) // TODO: Make me parameterizable!
   TASK_Function(TASK_Args);
 }
 
-template <TaskConfig &_config>
+template <const TaskConfig &_config>
 class Task
 {
  public:
@@ -44,12 +44,12 @@ class Task
     TASK_Args = args;
 
     // Set up the timer to fire periodically
-    _config.timer.PER = interval_ms * TASK_SCALE_FACTOR;
-    _config.timer.INTCTRLA = TC_OVFINTLVL_HI_gc; // Enable overflow interrupt
-    _config.timer.CTRLB = TC_WGMODE_NORMAL_gc;
+    _config.timer->PER = interval_ms * TASK_SCALE_FACTOR;
+    _config.timer->INTCTRLA = TC_OVFINTLVL_HI_gc; // Enable overflow interrupt
+    _config.timer->CTRLB = TC_WGMODE_NORMAL_gc;
 
     // Start the timer running
-    _config.timer.CTRLA = TC_CLKSEL_DIV1024_gc; // 32Mhz / 1024 = 31.25kHz
+    _config.timer->CTRLA = TC_CLKSEL_DIV1024_gc; // 32Mhz / 1024 = 31.25kHz
 
     // Enable medium level interrupts
     PMIC.CTRL |= PMIC_HILVLEN_bm;
@@ -60,7 +60,7 @@ class Task
     // TODO: remove callback function from the timer handler
 
     // Disable the timer
-    _config.timer.CTRLA = 0;
+    _config.timer->CTRLA = 0;
   }
 };
 

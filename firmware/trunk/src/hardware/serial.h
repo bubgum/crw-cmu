@@ -19,8 +19,8 @@
 
 struct SerialConfig 
 {
-  USART_t uart;
-  PORT_t port;
+  USART_t *uart;
+  PORT_t *port;
   int rxPin;
   int txPin;
 };
@@ -55,24 +55,24 @@ class Serial
   Serial(BaudConfig baud, bool isDefault = true) {
     
     // Set the TxD pin high and the RxD pin low
-    _serial.port.OUTSET = _BV(_serial.txPin);
-    _serial.port.OUTCLR = _BV(_serial.rxPin);
+    _serial.port->OUTSET = _BV(_serial.txPin);
+    _serial.port->OUTCLR = _BV(_serial.rxPin);
     
     // Set the TxD pin as an output and the RxD pin as an input
-    _serial.port.DIRSET = _BV(_serial.txPin);
-    _serial.port.DIRCLR = _BV(_serial.rxPin);
+    _serial.port->DIRSET = _BV(_serial.txPin);
+    _serial.port->DIRCLR = _BV(_serial.rxPin);
     
     // Set baud rate & frame format
-    _serial.uart.BAUDCTRLA = (uint8_t) baud.bsel;
-    _serial.uart.BAUDCTRLB = (baud.bscale << 4) | (baud.bsel >> 8);
+    _serial.uart->BAUDCTRLA = (uint8_t) baud.bsel;
+    _serial.uart->BAUDCTRLB = (baud.bscale << 4) | (baud.bsel >> 8);
 
     // Set mode of operation
     // (async, no parity, 8 bit data, 1 stop bit)
-    _serial.uart.CTRLA = 0; // no interrupts enabled
-    _serial.uart.CTRLC = USART_CHSIZE_8BIT_gc | USART_PMODE_DISABLED_gc; 
+    _serial.uart->CTRLA = 0; // no interrupts enabled
+    _serial.uart->CTRLC = USART_CHSIZE_8BIT_gc | USART_PMODE_DISABLED_gc; 
     
     // Enable transmitter and receiver
-    _serial.uart.CTRLB = USART_TXEN_bm | USART_RXEN_bm;
+    _serial.uart->CTRLB = USART_TXEN_bm | USART_RXEN_bm;
     
     // Connect up the transmit and receive functions to a serial stream
     _stream = fdevopen(uart_putchar, uart_getchar);
@@ -89,10 +89,10 @@ class Serial
     fclose(_stream);
 
     // Set the TxD pin and the RxD pin low
-    _serial.port.OUTCLR = _BV(_serial.txPin) | _BV(_serial.rxPin);
+    _serial.port->OUTCLR = _BV(_serial.txPin) | _BV(_serial.rxPin);
     
     // Set the TxD pin and the RxD pin as an input
-    _serial.port.DIRCLR = _BV(_serial.txPin) | _BV(_serial.rxPin);
+    _serial.port->DIRCLR = _BV(_serial.txPin) | _BV(_serial.rxPin);
   }
   
   /**
@@ -102,14 +102,14 @@ class Serial
   static int uart_putchar(char c, FILE *stream) 
   {
     // Wait for the transmit buffer to be empty
-    while ( !(_serial.uart.STATUS & USART_DREIF_bm) );
+    while ( !(_serial.uart->STATUS & USART_DREIF_bm) );
     
     // Put our character into the transmit buffer
-    _serial.uart.DATA = c;
+    _serial.uart->DATA = c;
     
     // Wait for the transmission to complete
-    while ( !(_serial.uart.STATUS & USART_TXCIF_bm) );
-    _serial.uart.STATUS |= USART_TXCIF_bm;
+    while ( !(_serial.uart->STATUS & USART_TXCIF_bm) );
+    _serial.uart->STATUS |= USART_TXCIF_bm;
     
     return 0;
   }
@@ -123,10 +123,10 @@ class Serial
   static int uart_getchar(FILE *stream)
   {
     // Wait for the receive buffer is filled
-    while( !( _serial.uart.STATUS & USART_RXCIF_bm) );
+    while( !( _serial.uart->STATUS & USART_RXCIF_bm) );
   
     // Read the receive buffer
-    return _serial.uart.DATA;
+    return _serial.uart->DATA;
   }
   
   FILE *stream() 
@@ -136,7 +136,7 @@ class Serial
 
   bool available()
   {
-    return (_serial.uart.STATUS & USART_TXCIF_bm);
+    return (_serial.uart->STATUS & USART_TXCIF_bm);
   }
 };
 
