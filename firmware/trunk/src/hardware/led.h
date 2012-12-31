@@ -49,6 +49,15 @@ class Led {
     set(false);
   }
 
+  void toggle(void)
+  {
+    if (_led.port->OUT & _BV(_led.outputPin)) {
+      _led.port->OUTCLR = _BV(_led.outputPin);
+    } else {
+      _led.port->OUTSET = _BV(_led.outputPin);
+    }
+  }
+
   void set(bool enabled)
   {
     // Turn the LED on or off as specified

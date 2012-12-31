@@ -37,7 +37,7 @@ template <const TaskConfig &_config>
 class Task
 {
  public:
-  Task(const void (*task)(void*), const void* args, uint16_t interval_ms) {
+  Task(void (*task)(void*), void* args, uint16_t interval_ms) {
 
     // Store the reference to the callback function
     TASK_Function = task;

@@ -16,7 +16,7 @@
 #warning Set up board configuration with correct port values!
 
 // Configure the LED on the board
-LedConfig UserLed = { &PORTC, PIN5, true };
+LedConfig UserLed = { &PORTC, PIN5, false };
 
 // Serial configurations for external and bluetooth ports
 SerialConfig SerialBluetooth = { &USARTE1, &PORTE, PIN6, PIN7 };

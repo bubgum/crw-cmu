@@ -192,18 +192,22 @@ void getPID(char flag, char numOfValues)
   //amarino.sendln();
 }
 
+Led<UserLed> led;
+
+void updater(void* args)
+{
+  led.toggle();
+}
+
 int main(void)
 {
   initBoard();
   // TODO: fill this in
 
   // For now, simple test code.
-  Led<UserLed> led;
+  Task<UserTask> task(updater, NULL, 500);
   
   while(true) {
-    _delay_ms(750);
-    led.on();
-    _delay_ms(250);
-    led.off();
+    _delay_ms(500);
   }
 }
