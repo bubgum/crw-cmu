@@ -90,11 +90,11 @@ PROJECTNAME=crw_ebox
 # Use .cc, .cpp or .C suffix for C++ files, use .S 
 # (NOT .s !!!) for assembly source code files.
 PRJSRC= src/main.cpp \
-	src/hardware/portability.cpp \
 	src/hardware/servo.cpp \
 	src/hardware/serial.cpp \
 	src/hardware/led.cpp \
 	src/system/meet_android.cpp \
+	src/system/portability.cpp \
 	src/thruster.cpp \
 	src/rudder.cpp
 
