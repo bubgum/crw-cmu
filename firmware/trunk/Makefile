@@ -249,15 +249,20 @@ stats: $(TRG)
 
 hex: $(HEXTRG)
 
-
 writeflash: hex
 	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
 	 -p $(PROGRAMMER_MCU) -P $(AVRDUDE_PORT) -e        \
 	 -U flash:w:$(HEXROMTRG) -v \
 	$(AVRDUDE_FLAGS) \
-	 -U flash:w:$(HEXROMTRG) -b $(AVRDUDE_BAUD) \
+	 -U flash:w:$(HEXROMTRG) -b $(AVRDUDE_BAUD)
 
 install: writeflash
+program: writeflash
+
+fuses: 	
+	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMERID)   \
+	 -p $(PROGRAMMER_MCU) -P $(AVRDUDE_PORT) -e        \
+	 -U fuse5:w:0xF7:m -b $(AVRDUDE_BAUD)
 
 $(DUMPTRG): $(TRG) 
 	$(OBJDUMP) -S  $< > $@

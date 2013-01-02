@@ -12,15 +12,17 @@
  */
 
 #include <stdlib.h>
+#include <avr/eeprom.h>
 
 // Structure storing PID constants for each axis
 // TODO: This placement is currently a hack to share with rudder and thruster
-struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
+struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; };
+pidConstants_t pid;
+pidConstants_t EEMEM pidEeprom;
 
 // Core functionality
 #include "board.h"
 #include "meet_android.h"
-#include "eeprom.h"
 #include <util/delay.h>
 
 // Core modules
@@ -51,7 +53,7 @@ struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
 #define SET_SAMPLER_FN 'q'
 
 // Defines update interval in milliseconds
-#define UPDATE_INTERVAL 500
+#define UPDATE_INTERVAL 250
 
 // Arrays to store the actual and desired velocity of the vehicle in 6D
 float desiredVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -123,7 +125,8 @@ void setPID(uint8_t flag, uint8_t numOfValues)
   pid.Kp[axis] = args[1];
   pid.Ki[axis] = args[2];
   pid.Kd[axis] = args[3];
-  eeprom_write(PID_ADDRESS, pid);
+
+  eeprom_update_block(&pidEeprom, &pid, sizeof(pidConstants_t));
 }
 
 /**
@@ -151,6 +154,15 @@ void getPID(uint8_t flag, uint8_t numOfValues)
 }
 
 /**
+ * Sets the PID gains to zero-values.
+ */
+void resetPID()
+{
+  memset(&pid, 0, sizeof(pid));
+  eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
+}
+
+/**
  * The main setup function for the vehicle.  Initalized the Amarino communications,
  * then calls the various setup functions for the various modules.
  */
@@ -160,10 +172,13 @@ void setup()
   initBoard();
 
   // Arm thruster
-  thruster.arm();
+  //  thruster.arm();
+
+  // Reset all PID values to zero
+  //resetPID();
 
   // Load PID constants in from EEPROM
-  eeprom_read(PID_ADDRESS, pid);
+  eeprom_read_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 
   // Set up serial communications
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
