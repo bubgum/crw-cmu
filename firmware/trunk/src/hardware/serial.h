@@ -47,7 +47,7 @@ class Serial
 };
 
 
-template <SerialConfig &_serial>
+template <const SerialConfig &_serial>
 class SerialHW : public Serial
 {
  public:  

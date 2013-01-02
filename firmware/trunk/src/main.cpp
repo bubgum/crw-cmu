@@ -30,7 +30,7 @@ struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
 // Sensor modules
 #include "depth_sensor.h"
 #include "do_sensor.h"
-//#include "te5_sensor.h"
+#include "te5_sensor.h"
 
 // Define indices for specific coordinates
 // Assumes X is forward, Y is left, Z is up, frame is right-handed
@@ -73,6 +73,10 @@ Rudder rudder(&amarino, &servo1);
 
 DepthSensor<Serial2> depthSensor(&amarino);
 DOSensor<Serial3> doSensor(&amarino);
+
+#warning TE5 pinout needs to be filled in!
+TE5Config teConfig = { &PORTC, PIN2, &PORTC, PIN3};
+TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
 // Watchdog timer - must be reset() periodically
 //TimedAction watchdogTimer = TimedAction(500, watchdog);
