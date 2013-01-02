@@ -14,15 +14,23 @@
 #include <stdlib.h>
 
 // Structure storing PID constants for each axis
-// TODO: This placement is an utter hack to share PID with rudder and thruster
+// TODO: This placement is currently a hack to share with rudder and thruster
 struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
 
+// Core functionality
 #include "board.h"
+#include "meet_android.h"
+#include "eeprom.h"
+#include <util/delay.h>
+
+// Core modules
 #include "rudder.h"
 #include "thruster.h"
-#include "eeprom.h"
-#include "meet_android.h"
-#include <util/delay.h>
+
+// Sensor modules
+//#include "depth_sensor.h"
+//#include "do_sensor.h"
+//#include "te5_sensor.h"
 
 // Define indices for specific coordinates
 // Assumes X is forward, Y is left, Z is up, frame is right-handed
