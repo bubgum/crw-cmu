@@ -159,6 +159,9 @@ void setup()
   // Core board initialization
   initBoard();
 
+  // Arm thruster
+  thruster.arm();
+
   // Load PID constants in from EEPROM
   eeprom_read(PID_ADDRESS, pid);
 

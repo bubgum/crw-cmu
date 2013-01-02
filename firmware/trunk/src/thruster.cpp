@@ -17,14 +17,14 @@ Thruster::~Thruster() { }
 
 void Thruster::arm(void)
 {
-  servo->set(-1000);
-  _delay_ms(1000);
+  servo->set(32000);
+  _delay_ms(5000);
 
-  servo->set(1000);
-  _delay_ms(1000);
+  servo->set(-32000);
+  _delay_ms(3000);
 
-  servo->set(-1000);
-  _delay_ms(1000);
+  servo->set(0);
+  _delay_ms(8000);
 }
 
 void Thruster::update(void)
