@@ -55,10 +55,10 @@ class Servo
 };
 
 template<const ServoConfig0 &_config>
-class ServoTC0 : public Servo
+class ServoHW0 : public Servo
 {
  public:
- ServoTC0() : Servo() {
+ ServoHW0() : Servo() {
     // Initialize the timer to the default position
     update(_position);
 
@@ -75,7 +75,7 @@ class ServoTC0 : public Servo
     _config.timer->CTRLA = TC_CLKSEL_DIV64_gc; // 32MHz / 64 = 0.5Mhz
   }
 
-  ~ServoTC0() {
+  ~ServoHW0() {
     // Disable the timer
     _config.timer->CTRLA = 0;
 
@@ -93,10 +93,10 @@ class ServoTC0 : public Servo
 };
 
 template<const ServoConfig1 &_config>
-class ServoTC1 : public Servo
+class ServoHW1 : public Servo
 {
  public:
- ServoTC1() : Servo() {
+ ServoHW1() : Servo() {
     // Initialize the timer to the default position
     update(_position);
 
@@ -113,7 +113,7 @@ class ServoTC1 : public Servo
     _config.timer->CTRLA = TC_CLKSEL_DIV64_gc; // 32MHz / 64 = 0.5Mhz
   }
 
-  ~ServoTC1() {
+  ~ServoHW1() {
     // Disable the timer
     _config.timer->CTRLA = 0;
 

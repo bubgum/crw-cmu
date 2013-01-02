@@ -16,11 +16,26 @@ struct LedConfig {
   bool isActiveHigh;
 };
 
-template<const LedConfig &_led>
-class Led {
- public:
-  Led(void) { 
+class Led
+{
+ protected:
+  Led();
+  virtual ~Led() = 0;
 
+ public:
+  void on(void);
+  void off(void);
+  void toggle(void);
+  virtual void set(bool enabled) = 0;
+  virtual bool get() = 0;
+};
+
+template<const LedConfig &_led>
+class LedHW : public Led
+{
+ public:
+ LedHW() : Led() { 
+    
     // Turn the LED off by default
     if (_led.isActiveHigh) {
       _led.port->OUTCLR = _BV(_led.outputPin);
@@ -32,30 +47,15 @@ class Led {
     _led.port->DIRSET = _BV(_led.outputPin);
   }
 
-  ~Led(void) {
+  ~LedHW(void) {
 
     // Set the LED pin to be an input and low
     _led.port->OUTCLR = _BV(_led.outputPin);
     _led.port->DIRCLR = _BV(_led.outputPin);
   }
-
-  void on(void)
-  {
-    set(true);
-  }
-
-  void off(void)
-  {
-    set(false);
-  }
-
-  void toggle(void)
-  {
-    if (_led.port->OUT & _BV(_led.outputPin)) {
-      _led.port->OUTCLR = _BV(_led.outputPin);
-    } else {
-      _led.port->OUTSET = _BV(_led.outputPin);
-    }
+  
+  bool get(void) {
+    return ((_led.port->OUT & _BV(_led.outputPin)) ^ _led.isActiveHigh);
   }
 
   void set(bool enabled)

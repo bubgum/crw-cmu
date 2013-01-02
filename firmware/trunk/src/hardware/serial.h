@@ -12,11 +12,6 @@
 #include <stdio.h>
 #include <avr/io.h>
   
-// TODO: remvoe me once serial works  
-// Tested baud rates
-//#define BAUD_9600    (12)
-//#define BAUD_115200  (50) // TODO: THIS IS JUST WRONG
-
 struct SerialConfig 
 {
   USART_t *uart;
@@ -37,13 +32,22 @@ const BaudConfig BAUD_1200 = { 3331, 15 };
 const BaudConfig BAUD_9600 = { 3317, 12 };
 const BaudConfig BAUD_115200 = { 1047, 10 };
 
+class Serial
+{
+ protected:
+  FILE* _stream;
+  Serial(bool isDefault);
+  virtual ~Serial() = 0;
+
+ public:
+  FILE *stream();
+  virtual bool available() = 0;
+};
+
 
 template <SerialConfig &_serial>
-class Serial 
+class SerialHW : public Serial
 {
- private:
-  FILE *_stream;
-  
  public:  
   /**
    * Init USART.  Transmit only (we're not receiving anything) 
@@ -52,7 +56,9 @@ class Serial
    * BSEL = ( 2000000 / (2^0 * 16*9600)) -1 = 12
    * Fbaud = 2000000 / (2^0 * 16 * (12+1))  = 9615 bits/sec
    */
-  Serial(BaudConfig baud, bool isDefault = false) {
+ SerialHW(BaudConfig baud, bool isDefault = false) 
+   : Serial(isDefault) 
+  {
     
     // Set the TxD pin high and the RxD pin low
     _serial.port->OUTSET = _BV(_serial.txPin);
@@ -73,20 +79,14 @@ class Serial
     
     // Enable transmitter and receiver
     _serial.uart->CTRLB = USART_TXEN_bm | USART_RXEN_bm;
-    
-    // Connect up the transmit and receive functions to a serial stream
-    _stream = fdevopen(uart_putchar, uart_getchar);
 
-    // If specified, set as default IO stream
-    if (isDefault) {
-      stdout = _stream;
-      stdin = _stream;
-    }
+    // Connect up the transmit and receive functions to a serial stream 
+    _stream = fdevopen(uart_putchar, uart_getchar);
   }
 
-  ~Serial() {
-    // Close the IO stream for this object
-    fclose(_stream);
+  ~SerialHW() {
+    // Connect up the transmit and receive functions to a serial stream
+    _stream = fdevopen(uart_putchar, uart_getchar);
 
     // Set the TxD pin and the RxD pin low
     _serial.port->OUTCLR = _BV(_serial.txPin) | _BV(_serial.rxPin);
@@ -127,11 +127,6 @@ class Serial
   
     // Read the receive buffer
     return _serial.uart->DATA;
-  }
-  
-  FILE *stream() 
-  {
-    return _stream;
   }
 
   bool available()

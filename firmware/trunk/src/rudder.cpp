@@ -6,7 +6,7 @@ extern float desiredVelocity[];
 extern float actualVelocity[];
 extern pidConstants_t pid;
 
-Rudder::Rudder(MeetAndroid *a, Servo *s) 
+Rudder::Rudder(MeetAndroid * const a, Servo * const s) 
   : rIndx(0), servo(s), amarino(a)
 {
   for (int i = 0; i < 100; i++)

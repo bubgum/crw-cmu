@@ -22,7 +22,7 @@
 class Thruster
 {
  public:
-  Thruster(MeetAndroid *a, Servo *s);  
+  Thruster(MeetAndroid * const a, Servo * const s);  
   ~Thruster();
 
   void arm(void);  
@@ -36,8 +36,8 @@ class Thruster
   
   int send_thruster_cnt;
   
-  Servo *servo;
-  MeetAndroid *amarino;
+  Servo * const servo;
+  MeetAndroid * const amarino;
 };
 
 #endif /* THRUSTER_H */

@@ -22,7 +22,7 @@
 class Rudder
 {
  public:
-  Rudder(MeetAndroid *rAmarino, Servo *servo);
+  Rudder(MeetAndroid * const a, Servo * const s);
   ~Rudder();
   
   void update(void);
@@ -36,8 +36,8 @@ class Rudder
   
   int send_pos_cnt;
 
-  Servo *servo;
-  MeetAndroid *amarino;
+  Servo * const servo;
+  MeetAndroid * const amarino;
 };
 
 #endif /* RUDDER_H */

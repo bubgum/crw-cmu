@@ -92,6 +92,8 @@ PROJECTNAME=crw_ebox
 PRJSRC= src/main.cpp \
 	src/hardware/portability.cpp \
 	src/hardware/servo.cpp \
+	src/hardware/serial.cpp \
+	src/hardware/led.cpp \
 	src/system/meet_android.cpp \
 	src/thruster.cpp \
 	src/rudder.cpp

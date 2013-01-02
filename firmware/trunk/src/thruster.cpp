@@ -6,7 +6,7 @@ extern float desiredVelocity[];
 extern float actualVelocity[];
 extern pidConstants_t pid;
 
-Thruster::Thruster(MeetAndroid *a, Servo *s)
+Thruster::Thruster(MeetAndroid * const a, Servo * const s)
   : tIndx(0), servo(s), amarino(a)
 {
   for (int i = 0; i < 100; i++)

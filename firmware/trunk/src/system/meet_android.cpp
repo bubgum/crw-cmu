@@ -70,8 +70,8 @@ void MeetAndroid::init()
 
 
 // public methods
-MeetAndroid::MeetAndroid(FILE *str, H_boolFuncPtr avail) 
-  : stream(str), available(avail)
+MeetAndroid::MeetAndroid(Serial * const ser) 
+  : serial(ser), stream(ser->stream())
 {
   // it is hard to use member function pointer together with normal function pointers.
   customErrorFunc = false;
@@ -91,7 +91,7 @@ bool MeetAndroid::receive(){
 	bool timeout = false;
 	while(!timeout)
 	{
-		while(available() > 0)
+		while(serial->available() > 0)
 		{
 			lastByte = fgetc(stream);
 			
@@ -109,9 +109,9 @@ bool MeetAndroid::receive(){
 			else return false;
 		}
 		
-		if(available() <= 0 && !timeout){
+		if(serial->available() <= 0 && !timeout){
 		  if(waitTime > 0) _delay_us(30); // TODO: This is hardcoded because IT NEVER CHANGES
-		  if(available() <= 0) timeout = true;
+		  if(serial->available() <= 0) timeout = true;
 		}
 	}
 	return timeout;

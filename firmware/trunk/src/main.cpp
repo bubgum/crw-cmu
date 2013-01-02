@@ -58,18 +58,17 @@ float desiredVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 float actualVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
 // Hardware configuration
-Led<UserLed> led;
-Serial<SerialBluetooth> bluetooth(BAUD_115200);
+LedHW<UserLed> led;
+SerialHW<SerialBluetooth> bluetooth(BAUD_115200);
 
 // Communication structure for Amarino
-bool btAvailable(void) { return bluetooth.available(); };
-MeetAndroid amarino(bluetooth.stream(), btAvailable);
+MeetAndroid amarino(&bluetooth);
 
 // Module configuration
-ServoTC0<Motor> motor;
+ServoHW0<Motor> motor;
 Thruster thruster(&amarino, &motor);
 
-ServoTC1<Servo1> servo1;
+ServoHW1<Servo1> servo1;
 Rudder rudder(&amarino, &servo1);
 
 // Watchdog timer - must be reset() periodically

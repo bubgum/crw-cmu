@@ -64,9 +64,8 @@ private:
     char delimiter;
     char startFlag; // used to communicate with Android (leads each msg to Android)
 
-    FILE *stream;
-    typedef bool (*H_boolFuncPtr)(void);
-    H_boolFuncPtr available;
+    Serial * const serial;
+    FILE * const stream;
 
     bool customErrorFunc;
     typedef void (*H_voidFuncPtr)(uint8_t, uint8_t);
@@ -82,7 +81,7 @@ private:
 
 public:
     // public methods
-    MeetAndroid(FILE *str, H_boolFuncPtr avail);
+    MeetAndroid(Serial * const ser);
 
     void flush(void);
     bool receive(void);
