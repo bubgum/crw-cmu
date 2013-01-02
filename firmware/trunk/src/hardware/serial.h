@@ -28,8 +28,10 @@ struct BaudConfig
 
 // Serial rates computed using:
 // http://prototalk.net/forums/showthread.php?t=188
-const BaudConfig BAUD_1200 = { 3331, 15 };
-const BaudConfig BAUD_9600 = { 3317, 12 };
+const BaudConfig BAUD_1200 =   { 3331, 15 };
+const BaudConfig BAUD_4800 =   { 3325, 13 };
+const BaudConfig BAUD_9600 =   { 3317, 12 };
+const BaudConfig BAUD_38400 =  { 3269, 10 };
 const BaudConfig BAUD_115200 = { 1047, 10 };
 
 class Serial
