@@ -68,6 +68,10 @@
 # options for possible values)
 MCU=atxmega128a1
 
+# Speed of processor (in Hz)
+# (e.g. 32000000UL for 32Mhz)
+F_CPU=32000000UL
+
 # id to use with programmer
 # default: PROGRAMMER_MCU=$(MCU)
 # In case the programer used, e.g avrdude, doesn't
@@ -86,9 +90,11 @@ PROJECTNAME=crw_ebox
 # Use .cc, .cpp or .C suffix for C++ files, use .S 
 # (NOT .s !!!) for assembly source code files.
 PRJSRC= src/main.cpp \
-	src/system/meet_android.cpp
-# 	src/thruster.cpp \
-#	src/rudder.cpp \
+	src/hardware/portability.cpp \
+	src/hardware/servo.cpp \
+	src/system/meet_android.cpp \
+	src/thruster.cpp \
+	src/rudder.cpp
 
 
 # additional includes (e.g. -I/path/to/mydir)
@@ -155,6 +161,7 @@ CFLAGS=-I. $(INC) -g -mmcu=$(MCU) -O$(OPTLEVEL) \
 	-fpack-struct -fshort-enums             \
 	-funsigned-bitfields -funsigned-char    \
 	-Wall 					\
+	-DF_CPU=$(F_CPU) 			\
 	-Wa,-ahlms=$(firstword                  \
 	$(filter %.lst, $(<:.c=.lst)))
 

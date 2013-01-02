@@ -66,8 +66,11 @@ bool btAvailable(void) { return bluetooth.available(); };
 MeetAndroid amarino(bluetooth.stream(), btAvailable);
 
 // Module configuration
-Thruster<Motor> thruster(&amarino);
-Rudder<Servo2> rudder(&amarino);
+ServoTC0<Motor> motor;
+Thruster thruster(&amarino, &motor);
+
+ServoTC1<Servo1> servo1;
+Rudder rudder(&amarino, &servo1);
 
 // Watchdog timer - must be reset() periodically
 //TimedAction watchdogTimer = TimedAction(500, watchdog);

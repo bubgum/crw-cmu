@@ -21,7 +21,7 @@
 #include "meet_android.h"
 
 #ifndef F_CPU
-#define F_CPU 32000000UL
+#error F_CPU must be defined!
 #endif
 
 extern "C" {

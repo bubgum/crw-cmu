@@ -1,77 +1,62 @@
-/**
- * Airboat Control Firmware - Thruster
- *
- * Contains control and update code interfacing with the main thrust
- * motor of the vehicle.  This code runs a PWL open-loop attempting to 
- * reach a desired forward velocity.
- */
- 
-#include <servo.h> 
+#include "thruster.h"
 
-#define TBUFSIZE  100
-#define TMIN  0
-#define TMAX  1000
+struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; };
 
-#define RECV_THRUSTER_DEG 't'
+extern float desiredVelocity[];
+extern float actualVelocity[];
+extern pidConstants_t pid;
 
-Servo thruster;
-
-float tBuffer[TBUFSIZE];
-float tprevError = 0;
-float tBufferSum = 0;
-int tIndx = 0;
-
-int send_thruster_cnt = 6;
-
-void armThruster(void)
-{  
-  thruster.write(1000);  
-  delay(1200);
-
-  thruster.write(2000); 
-  delay(1200);
-
-  thruster.write(1000);  
-  delay(1200);
-}
-
-void initThruster(void)
+Thruster::Thruster(MeetAndroid *a, Servo *s)
+  : tIndx(0), servo(s), amarino(a)
 {
-  thruster.attach(40);
-  armThruster();
-  
   for (int i = 0; i < 100; i++)
-       tBuffer[i] = 0;
+    tBuffer[i] = 0;
 }
 
-void updateThruster(void)
-{ 
-   float tError = desiredVelocity[0] - actualVelocity[0];
-   
-   tIndx = (tIndx >= 100)?0 : tIndx++;
-   tBufferSum -= tBuffer[tIndx];
-   tBufferSum += tError;
-   tBuffer[tIndx] = tError;
-  
-   float tPID = (pid.Kp[0] * tError) + (pid.Kd[0] * ((tError - tprevError)/(UPDATE_INTERVAL))) + (pid.Ki[0] * tBufferSum);
-   tprevError = tError;
-   
-   if (tPID < TMIN) 
-       tPID = TMIN;
-   if (tPID > TMAX)
-       tPID = TMAX;
+Thruster::~Thruster() { }
 
-   int deg = map((int)tPID, 0, 1000, 1000, 2200); //32767
-   thruster.write(deg);
-   
-   send_thruster_cnt++;
-  
-   if (send_thruster_cnt > 10)
-   {
-      amarino.send(RECV_THRUSTER_DEG);
-      amarino.send(deg);
-      amarino.sendln();
-     
-      send_thruster_cnt = 0;
-   }
+void Thruster::arm(void)
+{
+  servo->set(-1000);
+  _delay_ms(1000);
+
+  servo->set(1000);
+  _delay_ms(1000);
+
+  servo->set(-1000);
+  _delay_ms(1000);
 }
+
+void Thruster::update(void)
+{
+  float tError = desiredVelocity[0] - actualVelocity[0];
+
+  tIndx++;
+  if (tIndx >= TBUFSIZE)
+    tIndx = 0;
+
+  tBufferSum -= tBuffer[tIndx];
+  tBufferSum += tError;
+  tBuffer[tIndx] = tError;
+
+  float tPID = (pid.Kp[0] * tError) + (pid.Kd[0] * ((tError - tprevError)/(THRUSTER_UPDATE_INTERVAL_MS))) + (pid.Ki[0] * tBufferSum);
+  tprevError = tError;
+
+  if (tPID < TMIN)
+    tPID = TMIN;
+  if (tPID > TMAX)
+    tPID = TMAX;
+
+  servo->set(tPID);
+
+  send_thruster_cnt++;
+
+  if (send_thruster_cnt > 11) {
+    amarino->send(RECV_THRUSTER_DEG);
+    amarino->send(tPID);
+    amarino->sendln();
+
+    send_thruster_cnt = 0;
+  }
+}
+

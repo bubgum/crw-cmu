@@ -13,61 +13,19 @@
 #include "meet_android.h"
 
 #define RBUFSIZE  100
-#define RMIN  -1000
-#define RMAX  1000
+#define RMIN   -32000
+#define RMAX    32000
 
 #define RECV_RUDDER_POS 'r'
 #define RUDDER_UPDATE_INTERVAL_MS (100)
 
-extern float desiredVelocity[];
-extern float actualVelocity[];
-extern pidConstants_t pid;
-
-template <ServoConfig &_config> 
 class Rudder
 {
  public:
- Rudder(MeetAndroid *rAmarino) 
-   : rIndx(0), servo(), amarino(rAmarino)
-  {
-    for (int i = 0; i < 100; i++)
-      rBuffer[i] = 0;
-  }
- 
-  ~Rudder() { }
+  Rudder(MeetAndroid *rAmarino, Servo *servo);
+  ~Rudder();
   
-  void update(void)
-  {
-    float rError = desiredVelocity[5] - actualVelocity[5];
-    
-    rIndx++;
-    if (rIndx == RBUFSIZE)
-      rIndx = 0;
-    
-    rBufferSum -= rBuffer[rIndx];
-    rBufferSum += rError;
-    rBuffer[rIndx] = rError;
-    
-    float rPID = (pid.Kp[5] * rError) + (pid.Kd[5] * ((rError - rprevError) / (RUDDER_UPDATE_INTERVAL_MS))) + (pid.Ki[5] * rBufferSum);
-    rprevError = rError;
-    
-    if (rPID < RMIN)
-      rPID = RMIN;
-    if (rPID > RMAX)
-      rPID = RMAX;
-    
-    servo.set(rPID);
-    
-    send_pos_cnt++;
-    
-    if (send_pos_cnt > 10) {
-      amarino->send(RECV_RUDDER_POS);
-      amarino->send(pos);
-      amarino->sendln();
-      
-      send_pos_cnt = 0;
-    }
-  }
+  void update(void);
 
  private:
   int pos;
@@ -78,7 +36,7 @@ class Rudder
   
   int send_pos_cnt;
 
-  Servo<_config> servo;
+  Servo *servo;
   MeetAndroid *amarino;
 };
 
