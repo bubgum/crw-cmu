@@ -23,8 +23,7 @@ class DepthSensor
  public:
  DepthSensor(MeetAndroid * const a) 
    : serial(BAUD_4800), stream(serial.stream()), 
-    amarino(a), nmeaIndex(0) 
-      { }
+    amarino(a), nmeaIndex(0) { }
 
   ~DepthSensor() { }
 
@@ -40,6 +39,8 @@ class DepthSensor
 
 	// Check if it is a valid reading
 	if ((nmeaIndex > 6) && (!strncmp(nmeaSample, "$SDDBT", 6)) && (nmeaChecksum(nmeaSample))) {
+
+	  // Send parsed reading to server
 	  amarino->send(RECV_DEPTH_FN);
 	  amarino->send(parseNMEA(nmeaSample));
 	  amarino->sendln();
@@ -56,11 +57,14 @@ class DepthSensor
   FILE * const stream;
   MeetAndroid * const amarino;
 
-  char nmeaSample[NMEA_BUFFER_SIZE];
+  char nmeaSample[NMEA_BUFFER_SIZE+1];
   uint8_t nmeaIndex;
   
   // Parses the NMEA string to just the depth in meters.
-  static const char* parseNMEA(const char* depth) {
+  static char* parseNMEA(char* depth) {
+
+    // Null-terminate the string after the depth reading
+    depth[22] = '\0';
     return &depth[16];
   }
 

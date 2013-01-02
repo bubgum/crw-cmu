@@ -5,42 +5,51 @@
 #include <string.h>
 
 #define RECV_DO_FN 'o'
+#define DO_BUFFER_SIZE 20
 
 template<const SerialConfig &_config>
 class DOSensor
 {
-  char doReading[5];
-  std::string sensorstring = "";
-  
-  Serial<_config> serial;
-  FILE *stream;
-  MeetAndroid *amarino;
+ public:
+ DOSensor(MeetAndroid *a) 
+   : serial(BAUD_38400), stream(serial.stream()),
+    amarino(a), doIndex(0) {  
 
- DOSensor(MeetAndroid *a) : serial(BAUD_38400) {  
-    stream = serial.stream();
-    amarino = a;
-
-    // The command "C" will tell the stamp to take continues readings
+    // The command "C" will tell the stamp to take continuous readings
     fputs("\rC\r", stream);
   }
-
+  
   ~DOSensor() { }
 
-  void update() {
+  void loop() {
     while (serial.available()) {       
-      char inchar = fgetc(stream);  // Get the char we just received
-      sensorstring += inchar;       // Add it to the inputString
-      
-      if (inchar == '\r') {         // if a string from the Atlas Scientific product has been received in its entirety
-	sensorstring.toCharArray(doReading, 5);
+      char c = fgetc(stream);   // Get the char we just received
+      doReading[doIndex++] = c; // Add it to the inputString
+
+      // if Atlas Scientific reading has been received in its entirety      
+      if (c == '\r' || doIndex >= DO_BUFFER_SIZE) {
+
+	// Null-terminate current reading 
+	doReading[doIndex] = '\0';
+
+	// Send to server
 	amarino->send(RECV_DO_FN);
 	amarino->send(doReading);
 	amarino->sendln();
-	sensorstring = "";
-	break;
+	
+	// Move to beginning of buffer
+	doIndex = 0;
       }
     } 
   }
-}
+
+ private:
+  SerialHW<_config> serial;
+  FILE *stream;
+  MeetAndroid *amarino;
+
+  char doReading[DO_BUFFER_SIZE+1];
+  uint8_t doIndex;
+};
 
 #endif /* DO_SENSOR_H */

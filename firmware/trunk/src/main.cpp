@@ -29,7 +29,7 @@ struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
 
 // Sensor modules
 #include "depth_sensor.h"
-//#include "do_sensor.h"
+#include "do_sensor.h"
 //#include "te5_sensor.h"
 
 // Define indices for specific coordinates
@@ -71,7 +71,8 @@ Thruster thruster(&amarino, &motor);
 ServoHW1<Servo1> servo1;
 Rudder rudder(&amarino, &servo1);
 
-DepthSensor<Serial2> depth(&amarino);
+DepthSensor<Serial2> depthSensor(&amarino);
+DOSensor<Serial3> doSensor(&amarino);
 
 // Watchdog timer - must be reset() periodically
 //TimedAction watchdogTimer = TimedAction(500, watchdog);
@@ -190,8 +191,9 @@ void loop()
   // Get any incoming messages and process them
   amarino.receive();
 
-  // Process the depth sensor
-  depth.loop();
+  // Process the sensors
+  depthSensor.loop();
+  doSensor.loop();
 
   // Perform psuedothreaded updates in various modules
   //processTE();
