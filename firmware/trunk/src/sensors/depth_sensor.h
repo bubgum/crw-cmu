@@ -22,14 +22,12 @@ class DepthSensor
   std::string nmeaSample;
   char nmeaBuffer[36];
 
-  Serial<_config> serial;
-  FILE *stream;
-  MeetAndroid amarino;
+  SerialHW<_config> serial;
+  FILE * const stream;
+  MeetAndroid * const amarino;
   
- DepthSensor(MeetAndroid *a) : serial(BAUD_4800) { 
-    amarino = a;
-    stream = serial.stream();
-  }
+ DepthSensor(MeetAndroid * const a) : 
+  serial(BAUD_4800), stream(serial.stream()), amarino(a) { }
 
   ~DepthSensor() { }
   
@@ -40,7 +38,7 @@ class DepthSensor
   }
 
   // Calculate nmea checksum and return if it is correct or not
-  boolean nmeaChecksum(String& depth) {
+  bool nmeaChecksum(String& depth) {
     char checksum = 0;
     char buf[36], cs[2], ccs[2];
     String strcs; 
