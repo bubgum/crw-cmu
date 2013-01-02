@@ -182,8 +182,8 @@ ASMFLAGS =-I. $(INC) -mmcu=$(MCU)        \
 
 
 # linker
-LDFLAGS=-Wl,-Map,$(TRG).map -mmcu=$(MCU) \
-	$(LIBS) -lm
+LDFLAGS=-Wl,-u,vfprintf,-Map,$(TRG).map -mmcu=$(MCU) \
+	$(LIBS) -lprintf_flt -lm
 
 ##### executables ####
 CC=avr-gcc

@@ -7,10 +7,10 @@ extern float actualVelocity[];
 extern pidConstants_t pid;
 
 Thruster::Thruster(MeetAndroid * const a, Servo * const s)
-  : tIndx(0), servo(s), amarino(a)
+  : servo(s), amarino(a), prevError(0), bufferSum(0), bufferIdx(0), sendCounter(0)
 {
   for (int i = 0; i < 100; i++)
-    tBuffer[i] = 0;
+    buffer[i] = 0;
 }
 
 Thruster::~Thruster() { }
@@ -29,34 +29,33 @@ void Thruster::arm(void)
 
 void Thruster::update(void)
 {
-  float tError = desiredVelocity[0] - actualVelocity[0];
+  float error = desiredVelocity[0] - actualVelocity[0];
 
-  tIndx++;
-  if (tIndx >= TBUFSIZE)
-    tIndx = 0;
+  bufferIdx++;
+  if (bufferIdx >= TBUFSIZE)
+    bufferIdx = 0;
 
-  tBufferSum -= tBuffer[tIndx];
-  tBufferSum += tError;
-  tBuffer[tIndx] = tError;
+  bufferSum -= buffer[bufferIdx];
+  bufferSum += error;
+  buffer[bufferIdx] = error;
 
-  float tPID = (pid.Kp[0] * tError) + (pid.Kd[0] * ((tError - tprevError)/(THRUSTER_UPDATE_INTERVAL_MS))) + (pid.Ki[0] * tBufferSum);
-  tprevError = tError;
+  float output = (pid.Kp[0] * error) + (pid.Kd[0] * ((error - prevError)/(THRUSTER_UPDATE_INTERVAL_MS))) + (pid.Ki[0] * bufferSum);
+  prevError = error;
 
-  if (tPID < TMIN)
-    tPID = TMIN;
-  if (tPID > TMAX)
-    tPID = TMAX;
+  if (output < TMIN)
+    output = TMIN;
+  if (output > TMAX)
+    output = TMAX;
 
-  servo->set(tPID);
+  servo->set(output);
 
-  send_thruster_cnt++;
-
-  if (send_thruster_cnt > 11) {
+  sendCounter++;
+  if (sendCounter > THRUSTER_UPDATE_COUNT) {
     amarino->send(RECV_THRUSTER_DEG);
-    amarino->send(tPID);
+    amarino->send(output);
     amarino->sendln();
 
-    send_thruster_cnt = 0;
+    sendCounter = 0;
   }
 }
 

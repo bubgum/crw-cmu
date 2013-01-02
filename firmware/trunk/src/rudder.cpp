@@ -7,42 +7,41 @@ extern float actualVelocity[];
 extern pidConstants_t pid;
 
 Rudder::Rudder(MeetAndroid * const a, Servo * const s) 
-  : rIndx(0), servo(s), amarino(a)
+  : servo(s), amarino(a), prevError(0), bufferSum(0), bufferIdx(0), sendCounter(5)
 {
   for (int i = 0; i < 100; i++)
-    rBuffer[i] = 0;
+    buffer[i] = 0;
 }
 
 Rudder::~Rudder() { }
 
 void Rudder::update(void)
 {
-  float rError = desiredVelocity[5] - actualVelocity[5];
+  float error = desiredVelocity[5] - actualVelocity[5];
   
-  rIndx++;
-  if (rIndx == RBUFSIZE)
-    rIndx = 0;
+  bufferIdx++;
+  if (bufferIdx == RBUFSIZE)
+    bufferIdx = 0;
   
-  rBufferSum -= rBuffer[rIndx];
-  rBufferSum += rError;
-  rBuffer[rIndx] = rError;
+  bufferSum -= buffer[bufferIdx];
+  bufferSum += error;
+  buffer[bufferIdx] = error;
   
-  float rPID = (pid.Kp[5] * rError) + (pid.Kd[5] * ((rError - rprevError) / (RUDDER_UPDATE_INTERVAL_MS))) + (pid.Ki[5] * rBufferSum);
-  rprevError = rError;
+  float output = (pid.Kp[5] * error) + (pid.Kd[5] * ((error - prevError) / (RUDDER_UPDATE_INTERVAL_MS))) + (pid.Ki[5] * bufferSum);
+  prevError = error;
   
-  if (rPID < RMIN)
-    rPID = RMIN;
-  if (rPID > RMAX)
-    rPID = RMAX;
-  servo->set(rPID);
+  if (output < RMIN)
+    output = RMIN;
+  if (output > RMAX)
+    output = RMAX;
+  servo->set(output);
   
-  send_pos_cnt++;
-  
-  if (send_pos_cnt > 10) {
+  sendCounter++;
+  if (sendCounter > RUDDER_UPDATE_COUNT) {
     amarino->send(RECV_RUDDER_POS);
-    amarino->send(pos);
+    amarino->send(output);
     amarino->sendln();
     
-    send_pos_cnt = 0;
+    sendCounter = 0;
   }
 }

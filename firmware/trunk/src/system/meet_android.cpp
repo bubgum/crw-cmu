@@ -297,7 +297,8 @@ void MeetAndroid::send(long n, int base){
   fprintf(stream, "%ld %d", n, base); // TODO: This is almost certainly wrong
   fputc(ack, stream);
 }
-void MeetAndroid::send(double n){
+
+void MeetAndroid::send(float n){
   fputc(startFlag, stream);
   fprintf(stream, "%f", n);
   fputc(ack, stream);

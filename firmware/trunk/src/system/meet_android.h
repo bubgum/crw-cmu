@@ -116,7 +116,7 @@ public:
     void send(long);
     void send(unsigned long);
     void send(long, int);
-    void send(double);
+    void send(float);
     void sendln(void);
 
     uint16_t waitTime;

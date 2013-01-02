@@ -18,6 +18,7 @@
 
 #define RECV_THRUSTER_DEG 't'
 #define THRUSTER_UPDATE_INTERVAL_MS (100)
+#define THRUSTER_UPDATE_COUNT (10)
 
 class Thruster
 {
@@ -29,15 +30,15 @@ class Thruster
   void update(void);
   
  private:
-  float tBuffer[TBUFSIZE];
-  float tprevError;
-  float tBufferSum;
-  int tIndx;
-  
-  int send_thruster_cnt;
-  
   Servo * const servo;
   MeetAndroid * const amarino;
+
+  float prevError;
+  float bufferSum;
+  float buffer[TBUFSIZE];
+  int bufferIdx;
+  
+  int sendCounter;
 };
 
 #endif /* THRUSTER_H */

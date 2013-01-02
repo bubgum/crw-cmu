@@ -194,11 +194,10 @@ void update(void *)
 {
   // Toggle LED just to let us know things are working
   led.toggle();
-  printf("Test\r\n");
 
   // Update the thrust and rudder control loops
-  //  rudder.update();
-  //  thruster.update();
+  rudder.update();
+  thruster.update();
 
   // Perform periodic updates for sensors
   //  teSensor.update();

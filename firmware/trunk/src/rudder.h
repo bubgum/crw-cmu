@@ -18,6 +18,7 @@
 
 #define RECV_RUDDER_POS 'r'
 #define RUDDER_UPDATE_INTERVAL_MS (100)
+#define RUDDER_UPDATE_COUNT (10)
 
 class Rudder
 {
@@ -28,16 +29,16 @@ class Rudder
   void update(void);
 
  private:
-  int pos;
-  float rBuffer[RBUFSIZE];
-  float rprevError;
-  float rBufferSum;
-  int rIndx;
-  
-  int send_pos_cnt;
-
   Servo * const servo;
   MeetAndroid * const amarino;
+
+  int pos;
+  float prevError;
+  float bufferSum;
+  float buffer[RBUFSIZE];
+  int bufferIdx;
+  
+  int sendCounter;
 };
 
 #endif /* RUDDER_H */
