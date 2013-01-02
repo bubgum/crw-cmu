@@ -133,7 +133,7 @@ class SerialHW : public Serial
 
   bool available()
   {
-    return (_serial.uart->STATUS & USART_TXCIF_bm);
+    return (_serial.uart->STATUS & USART_RXCIF_bm);
   }
 };
 
