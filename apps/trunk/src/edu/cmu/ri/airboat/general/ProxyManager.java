@@ -5,7 +5,6 @@
 package edu.cmu.ri.airboat.general;
 
 import edu.cmu.ri.airboat.generalAlmost.*;
-import edu.cmu.ri.airboat.floodtest.OperatorConsole;
 import edu.cmu.ri.crw.CrwNetworkUtils;
 import java.awt.Color;
 import java.net.InetSocketAddress;
@@ -41,7 +40,7 @@ public class ProxyManager {
         return instance.boatProxies;
     }
 
-    public static void remove(BoatSimpleProxy proxy) {
+    public static void remove(BoatProxy proxy) {
         instance.remove(proxy);
     }
 
@@ -68,11 +67,15 @@ public class ProxyManager {
         listeners.add(l);
     }
     
+    public void setConsole(OperatorConsoleInterface c) {
+        instance.setConsole(c);
+    }
+    
     private static class Singleton {
 
         ArrayList<BoatProxy> boatProxies = new ArrayList<BoatProxy>();
         HashMap<InetSocketAddress, BoatProxy> boatMap = new HashMap<InetSocketAddress, BoatProxy>();
-        OperatorConsole console = null;
+        OperatorConsoleInterface console = null;
 
         public Singleton() {
         }
@@ -102,7 +105,7 @@ public class ProxyManager {
             }
         }
 
-        public void setConsole(OperatorConsole console) {
+        public void setConsole(OperatorConsoleInterface console) {
             this.console = console;
         }
 
@@ -114,7 +117,7 @@ public class ProxyManager {
             }
         }
 
-        private void remove(BoatSimpleProxy proxy) {
+        private void remove(BoatProxy proxy) {
             boatProxies.remove(proxy);
             // @todo Proxies are not removed from hash table, expecting that something else with a new URI will override
             // boatMap.remove(proxy.)

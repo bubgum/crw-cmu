@@ -55,7 +55,7 @@ import robotutils.Pose3D;
 
 /**
  * @todo Need a flag for autonomous or under human control
- * 
+ *
  * @author pscerri
  */
 public class BoatSimpleProxy extends Thread {
@@ -144,7 +144,6 @@ public class BoatSimpleProxy extends Thread {
         _server = new UdpVehicleServer(addr);
 
         _stateListener = new PoseListener() {
-
             public void receivedPose(UtmPose upwcs) {
                 _pose = upwcs.clone();
 
@@ -183,32 +182,35 @@ public class BoatSimpleProxy extends Thread {
                     // Update state variables
                     currLoc = p;
 
-                    /** @todo FIX
-                    UtmPose wpPose = _server.getWaypoint();
-                    
-                    if (wpPose != null && !(wpPose.utm.zone == 0 && wpPose.pose.position.x == 0.0)) {
-                    
-                    // System.out.println("wpPose is " + wpPose.utm.zone + " " + wpPose.pose.position.x);
-                    
-                    longZone = wpPose.utm.zone;
-                    wwHemi = (wpPose.utm.isNorth) ? "gov.nasa.worldwind.avkey.North" : "gov.nasa.worldwind.avkey.South";
-                    UTMCoord wpPos = UTMCoord.fromUTM(longZone, wwHemi, wpPose.pose.position.x, wpPose.pose.position.y);
-                    
-                    latlon = new LatLon(wpPos.getLatitude(), wpPos.getLongitude());
-                    
-                    Position pstn = new Position(latlon, 0.0);
-                    
-                    if (waypointMarker == null) {
-                    waypointMarker = new BasicMarker(pstn, new BasicMarkerAttributes(material, BasicMarkerShape.CONE, 0.9));
-                    markers.add(waypointMarker);
-                    }
-                    waypointMarker.setPosition(pstn);
-                    
-                    } else if (waypointMarker != null) {
-                    markers.remove(waypointMarker);
-                    waypointMarker = null;
-                    }
-                    
+                    /**
+                     * @todo FIX UtmPose wpPose = _server.getWaypoint();
+                     *
+                     * if (wpPose != null && !(wpPose.utm.zone == 0 &&
+                     * wpPose.pose.position.x == 0.0)) {
+                     *
+                     * // System.out.println("wpPose is " + wpPose.utm.zone + "
+                     * " + wpPose.pose.position.x);
+                     *
+                     * longZone = wpPose.utm.zone; wwHemi = (wpPose.utm.isNorth)
+                     * ? "gov.nasa.worldwind.avkey.North" :
+                     * "gov.nasa.worldwind.avkey.South"; UTMCoord wpPos =
+                     * UTMCoord.fromUTM(longZone, wwHemi,
+                     * wpPose.pose.position.x, wpPose.pose.position.y);
+                     *
+                     * latlon = new LatLon(wpPos.getLatitude(),
+                     * wpPos.getLongitude());
+                     *
+                     * Position pstn = new Position(latlon, 0.0);
+                     *
+                     * if (waypointMarker == null) { waypointMarker = new
+                     * BasicMarker(pstn, new BasicMarkerAttributes(material,
+                     * BasicMarkerShape.CONE, 0.9));
+                     * markers.add(waypointMarker); }
+                     * waypointMarker.setPosition(pstn);
+                     *
+                     * } else if (waypointMarker != null) {
+                     * markers.remove(waypointMarker); waypointMarker = null; }
+                     *
                      */
                 } catch (Exception e) {
                     System.err.println("BoatSimpleProxy: Invalid pose received: " + e + " Pose: [" + _pose.pose.getX() + ", " + _pose.pose.getY() + "], zone = " + _pose.origin.zone);
@@ -222,7 +224,6 @@ public class BoatSimpleProxy extends Thread {
         };
 
         _sensorListener = new SensorListener() {
-
             HashMap<String, Object> seen = new HashMap<String, Object>();
 
             public void receivedSensor(SensorData sd) {
@@ -258,8 +259,8 @@ public class BoatSimpleProxy extends Thread {
                                     _pose.origin.zone, _pose.origin.isNorth);
 
                             /*if (i == 0) {
-                                System.out.println("Data " + sd.type + " = " + sd.data[i] + " " + _pose.pose.getX());
-                            }*/
+                             System.out.println("Data " + sd.type + " = " + sd.data[i] + " " + _pose.pose.getX());
+                             }*/
 
                             dataDisplay.newObservation(o, i);
                         }
@@ -284,17 +285,17 @@ public class BoatSimpleProxy extends Thread {
         };
 
         /*
-        _server.getNumSensors(new FunctionObserver() {
+         _server.getNumSensors(new FunctionObserver() {
         
-        public void completed(Object v) {
-        System.out.println("NUMBER SENSORS: " + v);
-        }
+         public void completed(Object v) {
+         System.out.println("NUMBER SENSORS: " + v);
+         }
         
-        public void failed(FunctionError fe) {
+         public void failed(FunctionError fe) {
         
-        }
+         }
         
-        });
+         });
          */
 
         for (int i = 0; i < 3; i++) {
@@ -302,10 +303,9 @@ public class BoatSimpleProxy extends Thread {
         }
 
         _waypointListener = new WaypointListener() {
-
             public void waypointUpdate(WaypointState ws) {
-                
-                
+
+
                 if (ws.equals(WaypointState.DONE)) {
 
                     if (state == StateEnum.AREA) {
@@ -324,7 +324,7 @@ public class BoatSimpleProxy extends Thread {
                     }
 
                 }
-                 
+
             }
         };
 
@@ -339,10 +339,9 @@ public class BoatSimpleProxy extends Thread {
         // effectively overridden by overridding addSensorListener in FastSimpleBoatSimulator
         // because no access to that code from here.
         // @todo Only should be on for simulation
-        
+
         // ABHINAV COMMENT OUT THIS THREAD BEFORE RUNNING ON THE REAL BOATS!!
         (new Thread() {
-
             Random rand = new Random();
 
             public void run() {
@@ -368,7 +367,7 @@ public class BoatSimpleProxy extends Thread {
                         _sensorListener.receivedSensor(sd);
 
                     }
-                    
+
                     try {
                         sleep(100L);
                     } catch (InterruptedException e) {
@@ -389,7 +388,6 @@ public class BoatSimpleProxy extends Thread {
         System.out.println("DONE SLEEPING BEFORE CAMERA START");
 
         _server.addImageListener(new ImageListener() {
-
             public void receivedImage(byte[] ci) {
                 // Take a picture, and put the resulting image into the panel
                 try {
@@ -487,7 +485,6 @@ public class BoatSimpleProxy extends Thread {
 
         _server.setAutonomous(true, null);
         _server.startWaypoints(_waypoints.toArray(new UtmPose[_waypoints.size()]), "POINT_AND_SHOOT", new FunctionObserver() {
-
             public void completed(Object v) {
 
                 System.out.println("Completed called");
@@ -507,21 +504,21 @@ public class BoatSimpleProxy extends Thread {
         setWaypoints(ps);
 
         /*
-        clearRenderables();
+         clearRenderables();
         
-        if (p == null) {
-        System.out.println("Null Position waypoint provided to BoatSimpleProxy");
-        return;
-        }
+         if (p == null) {
+         System.out.println("Null Position waypoint provided to BoatSimpleProxy");
+         return;
+         }
         
-        UTMCoord utm = UTMCoord.fromLatLon(p.latitude, p.longitude);
-        UtmPose wputm = new UtmPose(new Pose3D(utm.getEasting(), utm.getNorthing(), 0.0, 0.0, 0.0, 0.0), new Utm(utm.getZone(), utm.getHemisphere().contains("North")));
+         UTMCoord utm = UTMCoord.fromLatLon(p.latitude, p.longitude);
+         UtmPose wputm = new UtmPose(new Pose3D(utm.getEasting(), utm.getNorthing(), 0.0, 0.0, 0.0, 0.0), new Utm(utm.getZone(), utm.getHemisphere().contains("North")));
         
-        System.out.println("Setting waypoint for " + this + " to " + wputm);        
+         System.out.println("Setting waypoint for " + this + " to " + wputm);        
         
-        setWaypoint(wputm);
+         setWaypoint(wputm);
         
-        state = StateEnum.WAYPOINT;
+         state = StateEnum.WAYPOINT;
          * 
          */
     }
@@ -535,7 +532,6 @@ public class BoatSimpleProxy extends Thread {
         // @todo Register a waypoint listener to get the same status updates (and know at the end of the waypoints)
         _server.setAutonomous(true, null);
         _server.startWaypoints(new UtmPose[]{wputm}, "POINT_AND_SHOOT", new FunctionObserver() {
-
             public void completed(Object v) {
                 System.out.println("Waypoint call completed");
             }
@@ -592,7 +588,6 @@ public class BoatSimpleProxy extends Thread {
         AutonomyPanel.dataSelectCombo.setEnabled(true);
 
         (new Thread() {
-
             public void run() {
                 while (true) {
 
@@ -632,7 +627,8 @@ public class BoatSimpleProxy extends Thread {
     }
 
     /**
-     * Passing in the list of boats assigned to autonomy so that cooperation can occur
+     * Passing in the list of boats assigned to autonomy so that cooperation can
+     * occur
      */
     public void setAutonomousSense(ArrayList<BoatSimpleProxy> selected) {
 
@@ -650,8 +646,8 @@ public class BoatSimpleProxy extends Thread {
         planAutonomousBuoy();
 
     }
-
     public ArrayList<BoatSimpleProxy> autonomousSensingBoats = null;
+
     public void planAutonomousSense() {
         System.out.println("Planning autonomous sense");
 
@@ -717,9 +713,10 @@ public class BoatSimpleProxy extends Thread {
 
     /**
      * From: http://forum.worldwindcentral.com/showthread.php?t=20739
+     *
      * @param point
      * @param positions
-     * @return 
+     * @return
      */
     public static boolean isLocationInside(LatLon point, ArrayList<? extends LatLon> positions) {
         if (point == null) {

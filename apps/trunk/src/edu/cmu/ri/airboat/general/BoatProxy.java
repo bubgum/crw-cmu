@@ -5,6 +5,7 @@
 package edu.cmu.ri.airboat.general;
 
 import com.sun.xml.internal.rngom.digested.DXMLPrinter;
+import edu.cmu.ri.airboat.client.UtmUtils;
 import edu.cmu.ri.crw.FunctionObserver;
 import edu.cmu.ri.crw.FunctionObserver.FunctionError;
 import edu.cmu.ri.crw.ImageListener;
@@ -64,6 +65,9 @@ public class BoatProxy extends Thread {
     PoseListener _stateListener;
     SensorListener _sensorListener;
     WaypointListener _waypointListener;
+    
+    ArrayList<BoatProxyListener> listeners = new ArrayList<BoatProxyListener>();
+    
     int _boatNo;
     UtmPose _pose;
     volatile boolean _isShutdown = false;
@@ -87,6 +91,7 @@ public class BoatProxy extends Thread {
     UtmPose home = null;
     private StateEnum state = StateEnum.IDLE;
     final Queue<UtmPose> _waypoints = new LinkedList<UtmPose>();
+    Iterable<Position> _waypointsPos = null;
     private UtmPose currentWaypoint = null;
     UdpVehicleServer _server;
     private Polygon currentArea = null;
@@ -185,6 +190,10 @@ public class BoatProxy extends Thread {
                     // Update state variables
                     currLoc = p;
 
+                    for (BoatProxyListener boatProxyListener : listeners) {
+                        boatProxyListener.poseUpdated();
+                    }
+                    
                 } catch (Exception e) {
                     System.err.println("BoatSimpleProxy: Invalid pose received: " + e + " Pose: [" + _pose.pose.getX() + ", " + _pose.pose.getY() + "], zone = " + _pose.origin.zone);
                 }
@@ -196,6 +205,18 @@ public class BoatProxy extends Thread {
 
         //add Listeners
         _server.addPoseListener(_stateListener, null);
+        
+        _server.addWaypointListener(new WaypointListener() {
+            public void waypointUpdate(WaypointState ws) {
+
+                if (ws.equals(WaypointState.DONE)) {
+                    for (BoatProxyListener boatProxyListener : listeners) {
+                        boatProxyListener.waypointsComplete();
+                    }                    
+                }                                
+                
+            }
+        }, null);
 
         // Cheating dummy data, another version of this is in SimpleBoatSimulator, 
         // effectively overridden by overridding addSensorListener in FastSimpleBoatSimulator
@@ -274,7 +295,10 @@ public class BoatProxy extends Thread {
                         }
 
                         if (_sensorListener != null) {
+                            // System.out.println("SENDING Data");
                             _sensorListener.receivedSensor(sd);
+                        } else {
+                            // System.out.println("NO SENSOR LISTENER");
                         }
                         prev = sd.data;
                     }
@@ -305,7 +329,11 @@ public class BoatProxy extends Thread {
     public Queue<UtmPose> getWaypoints() {
         return _waypoints;
     }
-
+    
+    public Iterable<Position> getWaypointsAsPositions() {
+        return _waypointsPos;
+    }
+    
     public Position getCurrLoc() {
         return currLoc;
     }
@@ -317,8 +345,10 @@ public class BoatProxy extends Thread {
     public void addSensorListener(int channel, SensorListener l) {
         _server.addSensorListener(channel, l, null);
 
-        // @todo This only allows one sensor, generalize
+        // @todo This only allows one sensor, generalize (but I think this is only for the fake data ...)
         _sensorListener = l;
+        
+        // System.out.println("Setting SENSOR LISTENER TO: " + l);
     }
 
     public void addPoseListener(PoseListener l) {
@@ -329,6 +359,14 @@ public class BoatProxy extends Thread {
         _server.addWaypointListener(l, null);
     }
 
+    public void addListener(BoatProxyListener l) {
+        listeners.add(l);
+    }
+    
+    public void removeListener(BoatProxyListener l) {
+        listeners.remove(l);
+    }
+    
     private void startCamera() {
 
         (new Thread() {
@@ -399,6 +437,9 @@ public class BoatProxy extends Thread {
     public void setWaypoints(Iterable<Position> ps) {
         _waypoints.clear();
 
+        // Stored to help out the OperatorConsole (i.e., save a couple of translations)
+        _waypointsPos = ps;
+        
         for (Position position : ps) {
             UTMCoord utm = UTMCoord.fromLatLon(position.latitude, position.longitude);
             UtmPose pose = new UtmPose(new Pose3D(utm.getEasting(), utm.getNorthing(), 0.0, 0.0, 0.0, 0.0), new Utm(utm.getZone(), utm.getHemisphere().contains("North")));
