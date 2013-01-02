@@ -51,7 +51,7 @@ struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; } pid;
 #define SET_SAMPLER_FN 'q'
 
 // Defines update interval in milliseconds
-#define UPDATE_INTERVAL 10
+#define UPDATE_INTERVAL 500
 
 // Arrays to store the actual and desired velocity of the vehicle in 6D
 float desiredVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -59,9 +59,9 @@ float actualVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
 // Hardware configuration
 LedHW<UserLed> led;
-SerialHW<SerialBluetooth> bluetooth(BAUD_115200);
 
 // Communication structure for Amarino
+SerialHW<SerialBluetooth> bluetooth(BAUD_115200);
 MeetAndroid amarino(&bluetooth);
 
 // Module configuration
@@ -71,28 +71,24 @@ Thruster thruster(&amarino, &motor);
 ServoHW1<Servo1> servo1;
 Rudder rudder(&amarino, &servo1);
 
-#warning Be careful powering the DepthSensor!
-DepthConfig depthConfig = { &PORTK, PIN4 };
-DepthSensor<depthConfig, Serial2> depthSensor(&amarino);
+//#warning Be careful powering the DepthSensor!
+//DepthConfig depthConfig = { &PORTK, PIN4 };
+//DepthSensor<depthConfig, Serial2> depthSensor(&amarino);
 
-DOSensor<Serial3> doSensor(&amarino);
+//DOSensor<Serial3> doSensor(&amarino);
 
-#warning TE5 pinout needs to be verified!
-TE5Config teConfig = { &PORTD, PIN1, &PORTD, PIN0};
-TE5Sensor<teConfig, Serial4> teSensor(&amarino);
-
-// TODO: add back Watchdog timer
+//#warning TE5 pinout needs to be verified!
+//TE5Config teConfig = { &PORTD, PIN1, &PORTD, PIN0};
+//TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
 /**
- * This callback is only reached when there has been no communication from the serial
- * port for the specified timeout interval.  This function should attempt to gradually
- * transition the boat to a safe state.
+ * Gradually transition the boat to a safe state.
  */
-void watchdog()
+void decayVelocity()
 {
   // Slow the vehicle down by reducing velocity in every direction
   for (int i = 0; i < 6; ++i)
-    desiredVelocity[i] *= 0.75;
+    desiredVelocity[i] *= 0.9;
 }
 
 /**
@@ -105,9 +101,6 @@ void setVelocity(uint8_t flag, uint8_t numOfValues)
 
   // Load these values into array of desired velocities  
   amarino.getFloatValues(desiredVelocity);
-  
-  // Reset the watchdog timer
-  //watchdogTimer.reset();
 }
 
 /**
@@ -131,9 +124,6 @@ void setPID(uint8_t flag, uint8_t numOfValues)
   pid.Ki[axis] = args[2];
   pid.Kd[axis] = args[3];
   eeprom_write(PID_ADDRESS, pid);
-  
-  // Reset the watchdog timer
-  //watchdogTimer.reset();
 }
 
 /**
@@ -176,16 +166,6 @@ void setup()
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
   amarino.registerFunction(setPID, SET_PID_FN);
   amarino.registerFunction(getPID, GET_PID_FN);
-  //  amarino.registerFunction(setSampler, SET_SAMPLER_FN);
-
-  // Initialize device modules
-  //initRudder(rudder, amarino);
-  //initThruster();
-  //initSampler();
-  //initTE();
-  //initDepth();
-  //initWaterCanary();
-  //initDO();
 } 
 
 /**
@@ -198,13 +178,9 @@ void loop()
   amarino.receive();
 
   // Process the sensors
-  depthSensor.loop();
-  doSensor.loop();
-  teSensor.loop();
-
-  // Check if either the watchdog or the main loop is scheduled
-  //watchdogTimer.check();
-  //controlTimer.check();
+  //  depthSensor.loop();
+  //  doSensor.loop();
+  //  teSensor.loop();
 }
 
 /**
@@ -218,13 +194,16 @@ void update(void *)
   printf("Test\r\n");
 
   // Update the thrust and rudder control loops
-  rudder.update();
-  thruster.update();
+  //  rudder.update();
+  //  thruster.update();
 
   // Perform periodic updates for sensors
-  teSensor.update();
-  doSensor.update();
-  depthSensor.update();
+  //  teSensor.update();
+  //  doSensor.update();
+  //  depthSensor.update();
+
+  // Decay the desired velocities slightly
+  //  decayVelocity();
 }
 
 int main(void)
@@ -233,7 +212,7 @@ int main(void)
   setup();
   
   // Schedule periodic updates
-  Task<UserTask> task(update, NULL, 500);
+  Task<UserTask> task(update, NULL, UPDATE_INTERVAL);
   
   // Start main tight loop
   while(true) { loop(); }
