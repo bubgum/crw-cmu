@@ -17,15 +17,34 @@
 
 #define NMEA_BUFFER_SIZE 40
 
-template<const SerialConfig &_config>
+struct DepthConfig
+{
+  PORT_t * const pwr_port;
+  const uint8_t pwr_pin;
+};
+
+template<const DepthConfig &_depthConfig, const SerialConfig &_serialConfig>
 class DepthSensor 
 {
  public:
  DepthSensor(MeetAndroid * const a) 
    : serial(BAUD_4800), stream(serial.stream()), 
-    amarino(a), nmeaIndex(0) { }
+    amarino(a), nmeaIndex(0) { 
 
-  ~DepthSensor() { }
+    // Power up the sensor                                                     
+    _depthConfig.pwr_port->OUTSET = _BV(_depthConfig.pwr_pin);
+    _depthConfig.pwr_port->DIRSET = _BV(_depthConfig.pwr_pin);
+
+    // Wait until it has powered up                                            
+    _delay_ms(1000);
+  }
+
+  ~DepthSensor() { 
+
+    // Power down the sensor                                                   
+    _depthConfig.pwr_port->OUTCLR = _BV(_depthConfig.pwr_pin);
+    _depthConfig.pwr_port->DIRCLR = _BV(_depthConfig.pwr_pin);
+  }
 
   void loop() {
     
@@ -53,7 +72,7 @@ class DepthSensor
   }
 
  private:
-  SerialHW<_config> serial;
+  SerialHW<_serialConfig> serial;
   FILE * const stream;
   MeetAndroid * const amarino;
 
