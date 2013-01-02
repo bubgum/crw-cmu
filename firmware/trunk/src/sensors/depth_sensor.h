@@ -7,6 +7,7 @@
 #ifndef DEPTH_SENSOR_H
 #define DEPTH_SENSOR_H
 
+#include "sensor.h"
 #include "serial.h" 
 
 #include <stdio.h>
@@ -24,7 +25,7 @@ struct DepthConfig
 };
 
 template<const DepthConfig &_depthConfig, const SerialConfig &_serialConfig>
-class DepthSensor 
+class DepthSensor : public Sensor
 {
  public:
  DepthSensor(MeetAndroid * const a) 
@@ -70,6 +71,8 @@ class DepthSensor
       }
     }
   }
+
+  void update() { }
 
  private:
   SerialHW<_serialConfig> serial;

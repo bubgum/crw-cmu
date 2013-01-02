@@ -7,6 +7,7 @@
 #ifndef TE5_SENSOR_H
 #define TE5_SENSOR_H
 
+#include "sensor.h"
 #include "meet_android.h"
 #include <stdio.h>
 #include <util/delay.h>
@@ -30,7 +31,7 @@ struct TE5Config
 
 
 template<const TE5Config &_teConfig, const SerialConfig &_serialConfig>
-class TE5Sensor
+class TE5Sensor : public Sensor
 {
  private:
   SerialHW<_serialConfig> serial;

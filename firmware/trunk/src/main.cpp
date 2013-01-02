@@ -81,8 +81,7 @@ DOSensor<Serial3> doSensor(&amarino);
 TE5Config teConfig = { &PORTD, PIN1, &PORTD, PIN0};
 TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
-// Watchdog timer - must be reset() periodically
-//TimedAction watchdogTimer = TimedAction(500, watchdog);
+// TODO: add back Watchdog timer
 
 /**
  * This callback is only reached when there has been no communication from the serial
@@ -201,10 +200,8 @@ void loop()
   // Process the sensors
   depthSensor.loop();
   doSensor.loop();
+  teSensor.loop();
 
-  // Perform psuedothreaded updates in various modules
-  //processTE();
-  
   // Check if either the watchdog or the main loop is scheduled
   //watchdogTimer.check();
   //controlTimer.check();
@@ -220,13 +217,14 @@ void update(void *)
   led.toggle();
   printf("Test\r\n");
 
+  // Update the thrust and rudder control loops
   rudder.update();
   thruster.update();
-  //updateSampler();
-  //updateTE();
-  //updateDepth();
-  //updateWaterCanary();
-  //updateDO();
+
+  // Perform periodic updates for sensors
+  teSensor.update();
+  doSensor.update();
+  depthSensor.update();
 }
 
 int main(void)

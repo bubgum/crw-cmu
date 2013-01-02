@@ -1,6 +1,7 @@
 #ifndef DO_SENSOR_H
 #define DO_SENSOR_H
 
+#include "sensor.h"
 #include "serial.h"
 #include <string.h>
 
@@ -8,7 +9,7 @@
 #define DO_BUFFER_SIZE 20
 
 template<const SerialConfig &_config>
-class DOSensor
+class DOSensor : public Sensor
 {
  public:
  DOSensor(MeetAndroid *a) 
@@ -42,6 +43,8 @@ class DOSensor
       }
     } 
   }
+  
+  void update() { }
 
  private:
   SerialHW<_config> serial;
