@@ -49,4 +49,8 @@ void setClockTo32MHz()
 void initBoard()
 {
   setClockTo32MHz();
+
+  // Enable BT CTS line forever
+  PORTF.DIRSET = PIN5_bm;
+  PORTF.OUTCLR = PIN5_bm;
 }
