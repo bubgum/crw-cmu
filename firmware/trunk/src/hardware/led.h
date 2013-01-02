@@ -55,7 +55,7 @@ class LedHW : public Led
   }
   
   bool get(void) {
-    return ((_led.port->OUT & _BV(_led.outputPin)) ^ _led.isActiveHigh);
+    return (!(_led.port->OUT & _BV(_led.outputPin)) ^ _led.isActiveHigh);
   }
 
   void set(bool enabled)
