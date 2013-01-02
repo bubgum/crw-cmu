@@ -71,11 +71,12 @@ Thruster thruster(&amarino, &motor);
 ServoHW1<Servo1> servo1;
 Rudder rudder(&amarino, &servo1);
 
+#warning DepthSensor needs to be powered!
 DepthSensor<Serial2> depthSensor(&amarino);
 DOSensor<Serial3> doSensor(&amarino);
 
 #warning TE5 pinout needs to be filled in!
-TE5Config teConfig = { &PORTC, PIN2, &PORTC, PIN3};
+TE5Config teConfig = { &PORTD, PIN1, &PORTD, PIN0};
 TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
 // Watchdog timer - must be reset() periodically
