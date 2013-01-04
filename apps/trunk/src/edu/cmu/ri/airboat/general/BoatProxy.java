@@ -97,7 +97,7 @@ public class BoatProxy extends Thread {
     private Polygon currentArea = null;
     private Polyline currentPath = null;
     private Color color = null;
-    private URI masterURI = null;
+    //private URI masterURI = null;
     Marker marker = null;
     Marker waypointMarker = null;
 
@@ -142,7 +142,7 @@ public class BoatProxy extends Thread {
 
         System.out.println("Boat proxy created");
 
-        this.masterURI = masterURI;
+        // this.masterURI = masterURI;
         this.name = name;
         this.color = color;
 
@@ -610,6 +610,7 @@ public class BoatProxy extends Thread {
 
     @Override
     public String toString() {
-        return name + "@" + (masterURI == null ? "Unknown" : masterURI.toString());
+        return name + "@" + _server.getVehicleService();
+                // (masterURI == null ? "Unknown" : masterURI.toString());
     }
 }

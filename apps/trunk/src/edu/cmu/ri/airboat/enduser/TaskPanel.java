@@ -11,8 +11,6 @@
 
 package edu.cmu.ri.airboat.enduser;
 
-import edu.cmu.ri.airboat.floodtest.*;
-
 /**
  *
  * @author pscerri

@@ -589,6 +589,10 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                 // @todo Operator console ignores waypoint complete
             }
         });
+        
+        if (selectedProxy == null) {
+            setSelected(bp);
+        }
 
     }
 
