@@ -50,10 +50,11 @@ public class DataDisplay {
     private final Polygon pgon;
 
     /**
-     * Some of these numbers are confusing, ul and lr only work in one hemisphere, translation should fix it.
-     * 
+     * Some of these numbers are confusing, ul and lr only work in one
+     * hemisphere, translation should fix it.
+     *
      * @param ul
-     * @param lr 
+     * @param lr
      */
     public DataDisplay(double[] ul, double[] lr, Polygon pgon) {
         this.ul = ul;
@@ -78,7 +79,6 @@ public class DataDisplay {
 
         if (loggingOn) {
             (new Thread() {
-
                 public void run() {
                     while (true) {
                         try {
@@ -86,7 +86,7 @@ public class DataDisplay {
                             sleep(10000);
                         } catch (InterruptedException e) {
                         }
-                        int index = 0;                        
+                        int index = 0;
                         // Play with this to change format
                         System.out.println("Log data @ " + System.currentTimeMillis());
                         for (LocationInfo[][] model : locInfo) {
@@ -152,10 +152,11 @@ public class DataDisplay {
 
     /**
      * x and y are normalized so that 0,0 is bottom, left and 1,1 is top, right.
+     *
      * @param x
      * @param y
      * @param index
-     * @return 
+     * @return
      */
     public double getValueAt(double x, double y, int index) {
 
@@ -264,9 +265,8 @@ public class DataDisplay {
         this.showMean = showMean;
     }
     private Hashtable<String, Integer> baseIndicies = new Hashtable<String, Integer>();
-
     int prevX = -1, prevY = -1, obsInCell = 0;
-    
+
     public void newObservation(Observation o, int index) {
         o.index = index;
         observations.add(o);
@@ -304,13 +304,13 @@ public class DataDisplay {
             li[bx][by].addObs(o);
 
             //System.out.println("Added obs to " + bx + " " + by + " mean " + li[bx][by].getMean() + " std. dev. " + li[bx][by].getStdDev() + " count " + li[bx][by].getCount() + " bounds mid " + li[bx][by].getBoundsMidpoint());
-            
-            
+
+
         } catch (ArrayIndexOutOfBoundsException e) {
             // System.out.println("OUT OF EXTENT: " + bx + " " + li.length + " " + by + " " + li[0].length);
         }
-        
-        
+
+
         // Ugly version of kicking the boat back into action if a waypoint done isn't received for a while
         if (prevX == bx && prevY == by) {
             ++obsInCell;
@@ -329,17 +329,16 @@ public class DataDisplay {
             prevY = by;
             obsInCell = 0;
         }
-        
+
     }
-    
     Random rand = new Random();
 
     /**
      * Picks the next point for inspection
-     *      * 
+     *
      * @param currLoc
      * @param sensors The list of boats doing autonomous sensing
-     * @return 
+     * @return
      */
     public ArrayList<Position> getWaypoints(Position currLoc, BoatSimpleProxy self, ArrayList<BoatSimpleProxy> sensors) {
 
@@ -386,7 +385,7 @@ public class DataDisplay {
 
             int xb = 0;
             int xt = xCount;
-            
+
             Position p = positionForIndex(currLoc, xb, ri);
             while (!pointInPolygon(p, pgon)) {
                 xb++;
@@ -396,7 +395,7 @@ public class DataDisplay {
                     System.exit(0);
                 }
             }
-                     
+
             p = positionForIndex(currLoc, xt, ri);
             while (!pointInPolygon(p, pgon)) {
                 xt--;
@@ -406,7 +405,7 @@ public class DataDisplay {
                     System.exit(0);
                 }
             }
-            
+
             path.add(positionForIndex(currLoc, xb, ri));
             path.add(positionForIndex(currLoc, xt, ri));
             path.add(positionForIndex(currLoc, xt, ri + 1));
@@ -420,9 +419,46 @@ public class DataDisplay {
 
     private ArrayList<Position> getMaxUncertaintyPlan(Position currLoc) {
 
+        /*
+        int [] best = getMaxuncertaintyPoint(currLoc, null);
+        
+
+        if (best[0] >= 0 && best[1] >= 0) {
+            return indexToPath(currLoc, best[0], best[1]);
+        } else {
+            System.out.println("No best value for sensing, fails");
+        }
+        */
+        
+        return null;
+    }
+
+    private ArrayList<Position> indexToPath(Position currLoc, int i, int j) {
+        ArrayList<Position> path = new ArrayList<Position>();
+        path.add(positionForIndex(currLoc, i, j));
+        return path;
+    }
+
+    public Position getMaxuncertaintyPoint(Position currLoc, ArrayList<Position> dests) {
+
         int bestI = -1;
         int bestJ = -1;
 
+        ArrayList<int[]> ex = null;
+        if (dests != null) {
+            ex = new ArrayList<int []>();
+            
+            for (Position position : dests) {
+                UTMCoord utm = UTMCoord.fromLatLon(position.latitude, position.longitude);
+                int bx = (int) ((utm.getEasting() - ul[0]) / dx);
+                int by = (int) ((utm.getNorthing() - lr[1]) / dy);
+                
+                ex.add(new int[] { bx, by});
+            }
+        }
+        
+        Position p = null;
+        
         if (locInfo.size() > 0) {
             LocationInfo[][] data = locInfo.get(0);
 
@@ -430,11 +466,23 @@ public class DataDisplay {
 
             for (int i = 0; i < data.length - 1; i++) {
                 for (int j = 0; j < data[i].length - 1; j++) {
-                    Position p = positionForIndex(currLoc, i, j);
+                    p = positionForIndex(currLoc, i, j);
                     LocationInfo locationInfo = data[i][j];
                     double v = locationInfo == null ? Double.MAX_VALUE : locationInfo.valueOfMoreObservations();
+
                     if (v > bestValue || (v == bestValue && rand.nextBoolean())) {
-                        if (pointInPolygon(p, pgon)) {
+
+                        // Check to make sure not already used
+                        boolean taken = false;
+                        if (ex != null) {
+                            for (int[] is : ex) {
+                                if (is[0] == i && is[1] == j) {
+                                    taken = true;
+                                }
+                            }
+                        }
+
+                        if (!taken && pointInPolygon(p, pgon)) {
                             bestI = i;
                             bestJ = j;
                             bestValue = v;
@@ -449,25 +497,13 @@ public class DataDisplay {
             System.out.println("No data for sensing, defaulting");
             bestI = -1;
             bestJ = -1;
-            Position p = null;
+            p = null;
             do {
                 p = positionForIndex(currLoc, ++bestI, ++bestJ);
             } while (!pointInPolygon(p, pgon));
         }
 
-        if (bestI >= 0 && bestJ >= 0) {
-            return indexToPath(currLoc, bestI, bestJ);
-        } else {
-            System.out.println("No best value for sensing, fails");
-        }
-
-        return null;
-    }
-
-    private ArrayList<Position> indexToPath(Position currLoc, int i, int j) {
-        ArrayList<Position> path = new ArrayList<Position>();
-        path.add(positionForIndex(currLoc, i, j));
-        return path;
+        return p;
     }
 
     /*
@@ -495,7 +531,7 @@ public class DataDisplay {
         if (intersects) {
             count++;
         }
-        
+
         //System.out.println("Counts = " + count);
 
         return count % 2 != 0;
@@ -505,49 +541,49 @@ public class DataDisplay {
      * Adapted from http://paulbourke.net/geometry/lineline2d/
      */
     private boolean segmentsIntersect(Position s1, Position e1, Position s2, Position e2) {
-        
+
         double d = ((e2.latitude.degrees - s2.latitude.degrees) * (s1.longitude.degrees - s2.longitude.degrees) - (e2.longitude.degrees - s2.longitude.degrees) * (s2.latitude.degrees - s1.latitude.degrees));
         double ua = ((e2.longitude.degrees - s2.longitude.degrees) * (s1.latitude.degrees - s2.latitude.degrees) - (e2.latitude.degrees - s2.latitude.degrees) * (s1.longitude.degrees - s2.longitude.degrees)) / d;
         double ub = ((e1.longitude.degrees - s1.longitude.degrees) * (s1.latitude.degrees - s2.latitude.degrees) - (e1.latitude.degrees - s1.latitude.degrees) * (s1.longitude.degrees - s2.longitude.degrees)) / d;
 
         boolean ret = (ua >= 0.0 && ua <= 1.0 && ub >= 0.0 && ub <= 1.0);
-        
+
         // System.out.println("Line segment: " + ret + " " + s1 + "-" + e1 + " against " + s2 + " - " + e2);
-        
+
         return ret;
     }
 
     private boolean segmentsIntersectA(Position s1, Position e1, Position s2, Position e2) {
-        
+
         double x1 = s1.longitude.degrees;
         double x2 = e1.longitude.degrees;
         double x3 = s2.longitude.degrees;
         double x4 = e2.longitude.degrees;
-        
+
         double y1 = s1.latitude.degrees;
         double y2 = e1.latitude.degrees;
         double y3 = s2.latitude.degrees;
         double y4 = e2.latitude.degrees;
-        
-        double d = ((y4-y3)*(x2-x1)) - ((x4-x3)*(y2-y1));
-        double ua = (((x4-x3)*(y1-y3)) - ((y4-y3)*(x1-x3))) / d;
-        double ub = (((x2-x1)*(y1-y3)) - ((y2-y1)*(x1-x3))) / d;
+
+        double d = ((y4 - y3) * (x2 - x1)) - ((x4 - x3) * (y2 - y1));
+        double ua = (((x4 - x3) * (y1 - y3)) - ((y4 - y3) * (x1 - x3))) / d;
+        double ub = (((x2 - x1) * (y1 - y3)) - ((y2 - y1) * (x1 - x3))) / d;
 
         boolean ret = (ua >= 0.0 && ua <= 1.0 && ub >= 0.0 && ub <= 1.0);
-        
+
         //System.out.println("Line segment: " + ret + " " + s1 + "-" + e1 + " against " + s2 + " - " + e2);
-        
+
         return ret;
     }
 
-    
     /**
-     * @todo Offsets are for Pittsburgh, need to have signs reversed for other hemispheres
-     * 
+     * @todo Offsets are for Pittsburgh, need to have signs reversed for other
+     * hemispheres
+     *
      * @param curr
      * @param bestI
      * @param bestJ
-     * @return 
+     * @return
      */
     private Position positionForIndex(Position curr, int bestI, int bestJ) {
 

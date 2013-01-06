@@ -35,6 +35,8 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     };
     private static Algorithm currAlg = Algorithm.Grid;
     private static ArrayList<BoatProxy> proxies = new ArrayList<BoatProxy>();
+    private static ArrayList<int []> destLocations = new ArrayList<int []>();
+    
     private static Polygon area = null;
     private static Angle minLat = Angle.ZERO, maxLat = Angle.ZERO, minLon = Angle.ZERO, maxLon = Angle.ZERO;
     private static Angle currLat = Angle.ZERO;
@@ -155,7 +157,9 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     // Path planning stuff
     // 
     public void waypointsComplete() {
-        // @todo IntelligenceAlgorithms got a waypoint complete
+        // IntelligenceAlgorithms got a waypoint complete
+        
+        System.out.println("Waypoint complete!!!!!!!!!!!!!!!!!!!!");
         if (autonomous && !allAutonomous) {
             if (selectedProxy.getCurrWaypoint() == null) {
                 generatePathFor(selectedProxy);
@@ -179,6 +183,8 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
 
                 case Entropy:
                     // @todo Handle entropy autonomy case
+                    data.getxCount();
+                    
                     break;
             }
         } else {
@@ -189,7 +195,9 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
                     break;
 
                 case Entropy:
-                    // @todo Handle entropy autonomy case
+                    ArrayList<Position> path = new ArrayList<Position>();
+                    path.add(data.getMaxuncertaintyPoint(bp.getCurrLoc(), null));
+                    bp.setWaypoints(path);
                     break;
             }
 

@@ -40,6 +40,11 @@ public class IntelligencePanel extends javax.swing.JPanel {
         setBorder(javax.swing.BorderFactory.createTitledBorder("Intelligence"));
 
         algC.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        algC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                algCActionPerformed(evt);
+            }
+        });
 
         startB.setText("Start");
         startB.setEnabled(false);
@@ -131,6 +136,10 @@ public class IntelligencePanel extends javax.swing.JPanel {
     private void liveBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_liveBActionPerformed
         (new IntelligenceAlgorithms()).showDataDisplay();
     }//GEN-LAST:event_liveBActionPerformed
+
+    private void algCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algCActionPerformed
+        (new IntelligenceAlgorithms()).setCurrAlg((IntelligenceAlgorithms.Algorithm)algC.getSelectedItem());
+    }//GEN-LAST:event_algCActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox algC;
