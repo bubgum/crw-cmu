@@ -267,7 +267,7 @@ public class DataDisplay {
     private Hashtable<String, Integer> baseIndicies = new Hashtable<String, Integer>();
     int prevX = -1, prevY = -1, obsInCell = 0;
 
-    public void newObservation(Observation o, int index) {
+    public synchronized void newObservation(Observation o, int index) {
         o.index = index;
         observations.add(o);
 
@@ -303,14 +303,13 @@ public class DataDisplay {
 
             li[bx][by].addObs(o);
 
-            //System.out.println("Added obs to " + bx + " " + by + " mean " + li[bx][by].getMean() + " std. dev. " + li[bx][by].getStdDev() + " count " + li[bx][by].getCount() + " bounds mid " + li[bx][by].getBoundsMidpoint());
-
+            //System.out.println("Added " + index + " " + o.variable + " obs to " + bx + " " + by + " mean " + li[bx][by].getMean() + " std. dev. " + li[bx][by].getStdDev() + " count " + li[bx][by].getCount() + " bounds mid " + li[bx][by].getBoundsMidpoint());
 
         } catch (ArrayIndexOutOfBoundsException e) {
             // System.out.println("OUT OF EXTENT: " + bx + " " + li.length + " " + by + " " + li[0].length);
         }
 
-
+        /*
         // Ugly version of kicking the boat back into action if a waypoint done isn't received for a while
         if (prevX == bx && prevY == by) {
             ++obsInCell;
@@ -329,8 +328,9 @@ public class DataDisplay {
             prevY = by;
             obsInCell = 0;
         }
-
+        */
     }
+    
     Random rand = new Random();
 
     /**
@@ -443,6 +443,7 @@ public class DataDisplay {
 
         int bestI = -1;
         int bestJ = -1;
+        double bestValue = -1.0;
 
         ArrayList<int[]> ex = null;
         if (dests != null) {
@@ -461,9 +462,7 @@ public class DataDisplay {
         
         if (locInfo.size() > 0) {
             LocationInfo[][] data = locInfo.get(0);
-
-            double bestValue = -1.0;
-
+            
             for (int i = 0; i < data.length - 1; i++) {
                 for (int j = 0; j < data[i].length - 1; j++) {
                     p = positionForIndex(currLoc, i, j);
@@ -486,6 +485,7 @@ public class DataDisplay {
                             bestI = i;
                             bestJ = j;
                             bestValue = v;
+                                                        
                         } else {
                             // System.out.println("REJECTING, not in poly");
                         }
@@ -493,6 +493,8 @@ public class DataDisplay {
                 }
             }
 
+            p = positionForIndex(currLoc, bestI, bestJ);
+            
         } else {
             System.out.println("No data for sensing, defaulting");
             bestI = -1;
@@ -503,6 +505,8 @@ public class DataDisplay {
             } while (!pointInPolygon(p, pgon));
         }
 
+        System.out.println("Chose " + bestI + " " + bestJ + " " + bestValue);
+        
         return p;
     }
 

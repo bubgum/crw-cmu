@@ -115,7 +115,7 @@ public class FastSimpleBoatSimulator extends SimpleBoatSimulator {
                 // If we are facing away, turn around first
                 twist.dx(0.5);
                 twist.drz(Math.max(Math.min(angle / 1.0, 5.0), -5.0));
-            } else if (distanceSq >= 9.0) {
+            } else if (distanceSq >= 3.0) {
 
                 // If we are far away, drive forward and turn
                 twist.dx(Math.min(distanceSq / 10.0, 10.0));

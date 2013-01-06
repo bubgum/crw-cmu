@@ -40,7 +40,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     private static Polygon area = null;
     private static Angle minLat = Angle.ZERO, maxLat = Angle.ZERO, minLon = Angle.ZERO, maxLon = Angle.ZERO;
     private static Angle currLat = Angle.ZERO;
-    private boolean autonomous = false, allAutonomous = false;
+    private static boolean autonomous = false, allAutonomous = false;
     private static boolean listening = false;
     private static DataDisplay data = null;
 
@@ -64,7 +64,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
                         for (int i = 0; i < sd.data.length; i++) {
                             Position p = bp.getCurrLoc();
                             UTMCoord c = UTMCoord.fromLatLon(p.latitude, p.longitude);
-                            Observation obs = new Observation(sd.type.toString(), sd.data[0], new double [] {c.getEasting(), c.getNorthing()}, c.getZone(), c.getHemisphere().equalsIgnoreCase("N"));
+                            Observation obs = new Observation(sd.type.toString(), sd.data[i], new double [] {c.getEasting(), c.getNorthing()}, c.getZone(), c.getHemisphere().equalsIgnoreCase("N"));
                             data.newObservation(obs, i);
                         }
                     }
@@ -162,15 +162,20 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
         System.out.println("Waypoint complete!!!!!!!!!!!!!!!!!!!!");
         if (autonomous && !allAutonomous) {
             if (selectedProxy.getCurrWaypoint() == null) {
+                System.out.println("Generating new path");
                 generatePathFor(selectedProxy);
+            } else {
+                System.out.println("Not complete");
             }
         } else if (allAutonomous) {
+            System.out.println("Generating for all");
             for (BoatProxy boatProxy : proxies) {
                 if (boatProxy.getCurrWaypoint() == null) {
                     generatePathFor(boatProxy);
                 }
             }
         }
+        System.out.println("Done");
     }
 
     private void generatePathFor(BoatProxy bp) {
