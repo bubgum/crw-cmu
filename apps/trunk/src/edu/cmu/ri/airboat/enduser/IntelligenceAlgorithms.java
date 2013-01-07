@@ -35,8 +35,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     };
     private static Algorithm currAlg = Algorithm.Grid;
     private static ArrayList<BoatProxy> proxies = new ArrayList<BoatProxy>();
-    private static ArrayList<int []> destLocations = new ArrayList<int []>();
-    
+    private static ArrayList<Position> destLocations = new ArrayList<Position>();
     private static Polygon area = null;
     private static Angle minLat = Angle.ZERO, maxLat = Angle.ZERO, minLon = Angle.ZERO, maxLon = Angle.ZERO;
     private static Angle currLat = Angle.ZERO;
@@ -64,7 +63,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
                         for (int i = 0; i < sd.data.length; i++) {
                             Position p = bp.getCurrLoc();
                             UTMCoord c = UTMCoord.fromLatLon(p.latitude, p.longitude);
-                            Observation obs = new Observation(sd.type.toString(), sd.data[i], new double [] {c.getEasting(), c.getNorthing()}, c.getZone(), c.getHemisphere().equalsIgnoreCase("N"));
+                            Observation obs = new Observation(sd.type.toString(), sd.data[i], new double[]{c.getEasting(), c.getNorthing()}, c.getZone(), c.getHemisphere().equalsIgnoreCase("N"));
                             data.newObservation(obs, i);
                         }
                     }
@@ -151,24 +150,39 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
 
     public void poseUpdated() {
         // @todo IntelligenceAlgorithms got a pose update
-    }   
+    }
+
+    public void stop() {
+        currLat = minLat;
+        
+        if (autonomous && !allAutonomous) {
+            autonomous = false;
+            selectedProxy.stopBoat();
+        } else {
+            autonomous = false;
+            allAutonomous = false;
+            for (BoatProxy boatProxy : proxies) {
+                boatProxy.stopBoat();
+            }
+        }
+    }
 
     // 
     // Path planning stuff
     // 
     public void waypointsComplete() {
         // IntelligenceAlgorithms got a waypoint complete
-        
-        System.out.println("Waypoint complete!!!!!!!!!!!!!!!!!!!!");
+
+        // System.out.println("Waypoint complete!!!!!!!!!!!!!!!!!!!!");
         if (autonomous && !allAutonomous) {
             if (selectedProxy.getCurrWaypoint() == null) {
-                System.out.println("Generating new path");
+                // System.out.println("Generating new path");
                 generatePathFor(selectedProxy);
             } else {
-                System.out.println("Not complete");
+                // System.out.println("Not complete");
             }
         } else if (allAutonomous) {
-            System.out.println("Generating for all");
+            // System.out.println("Generating for all");
             for (BoatProxy boatProxy : proxies) {
                 if (boatProxy.getCurrWaypoint() == null) {
                     generatePathFor(boatProxy);
@@ -187,9 +201,17 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
                     break;
 
                 case Entropy:
-                    // @todo Handle entropy autonomy case
-                    data.getxCount();
+                    ArrayList<Position> path = new ArrayList<Position>();
+                    path.add(data.getMaxuncertaintyPoint(bp.getCurrLoc(), destLocations));
+                    bp.setWaypoints(path);
                     
+                    // Keep track of where each has been sent
+                    int index = proxies.indexOf(bp);
+                    if (destLocations.size() > index) {
+                        destLocations.remove(index);
+                    }
+                    destLocations.add(index, path.get(0));
+                                        
                     break;
             }
         } else {
@@ -308,5 +330,17 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     void showDataDisplay() {
         DataDisplayPopup popup = new DataDisplayPopup(data);
         popup.setVisible(true);
+    }
+
+    public static Polygon getArea() {
+        return area;
+    }
+    
+    public LatLon getMinLatLon() {
+        return new LatLon(minLat, minLon);
+    }
+    
+    public LatLon getMaxLatLon() {
+        return new LatLon(maxLat, maxLon);
     }
 }

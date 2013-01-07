@@ -4,6 +4,7 @@
  */
 package edu.cmu.ri.airboat.enduser;
 
+import edu.cmu.ri.airboat.general.ProxyManager;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -13,13 +14,14 @@ import javax.swing.DefaultComboBoxModel;
 public class IntelligencePanel extends javax.swing.JPanel {
 
     boolean running = false;
-    
+    DataManager dm = null;
+
     /**
      * Creates new form IntelligencePanel
      */
     public IntelligencePanel() {
         initComponents();
-        
+
         algC.setModel(new DefaultComboBoxModel(IntelligenceAlgorithms.Algorithm.values()));
     }
 
@@ -36,6 +38,7 @@ public class IntelligencePanel extends javax.swing.JPanel {
         startB = new javax.swing.JButton();
         allCB = new javax.swing.JCheckBox();
         liveB = new javax.swing.JButton();
+        modelB = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Intelligence"));
 
@@ -69,6 +72,13 @@ public class IntelligencePanel extends javax.swing.JPanel {
             }
         });
 
+        modelB.setText("Model");
+        modelB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modelBActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,13 +88,14 @@ public class IntelligencePanel extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(algC, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 158, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 64, Short.MAX_VALUE)
                         .add(startB, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
+                    .add(layout.createSequentialGroup()
                         .add(allCB, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 74, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(62, 62, 62)
-                        .add(liveB)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(liveB)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(modelB, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -97,29 +108,40 @@ public class IntelligencePanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(allCB)
-                    .add(liveB))
+                    .add(liveB)
+                    .add(modelB))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void startBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBActionPerformed
-        
+
         // @todo Enable startB at the right moment
         running = !running;
         if (running) {
             startB.setText("Stop");
-  
+
             if (allCB.isSelected()) {
                 (new IntelligenceAlgorithms()).startAutonomyAll();
             } else {
                 (new IntelligenceAlgorithms()).startAutonomyProxy();
             }
+
         } else {
             startB.setText("Start");
-            
-            // @todo Implement stop
+
+            (new IntelligenceAlgorithms()).stop();
         }
     }//GEN-LAST:event_startBActionPerformed
+
+    public void configureAdvanced() {
+
+        // Set up the advanced display
+        dm = new DataManager();
+        IntelligenceAlgorithms algs = new IntelligenceAlgorithms();
+        dm.setExtent(algs.getMinLatLon(), algs.getMaxLatLon());
+
+    }
 
     private void allCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allCBActionPerformed
         // @todo Implement allChecked
@@ -129,7 +151,7 @@ public class IntelligencePanel extends javax.swing.JPanel {
                 (new IntelligenceAlgorithms()).startAutonomyAll();
             }
         } else {
-            // @todo Stop all autonomy
+            (new IntelligenceAlgorithms()).stop();
         }
     }//GEN-LAST:event_allCBActionPerformed
 
@@ -138,13 +160,18 @@ public class IntelligencePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_liveBActionPerformed
 
     private void algCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algCActionPerformed
-        (new IntelligenceAlgorithms()).setCurrAlg((IntelligenceAlgorithms.Algorithm)algC.getSelectedItem());
+        (new IntelligenceAlgorithms()).setCurrAlg((IntelligenceAlgorithms.Algorithm) algC.getSelectedItem());
     }//GEN-LAST:event_algCActionPerformed
 
+    private void modelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modelBActionPerformed
+        System.out.println("Setting model visible");
+        (new AdvancedDataDisplay(dm)).setVisible(true);
+    }//GEN-LAST:event_modelBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox algC;
     private javax.swing.JCheckBox allCB;
     public javax.swing.JButton liveB;
+    private javax.swing.JButton modelB;
     public javax.swing.JButton startB;
     // End of variables declaration//GEN-END:variables
 }

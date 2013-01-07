@@ -126,7 +126,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
     public OperatorConsole() {
 
         // Created to make sure listeners are started
-        new IntelligenceAlgorithms();
+        new IntelligenceAlgorithms();        
         
         // System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Airboat Control");
 
@@ -456,6 +456,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                     (new IntelligenceAlgorithms()).setArea(pgon);
                                     autoPanel.liveB.setEnabled(true);
                                     autoPanel.startB.setEnabled(true);
+                                    autoPanel.configureAdvanced();
                                 } else if (assigningBuoyDetectionArea) {
                                     System.out.println("Set buoy detection area");
                                     normalAttributes = new BasicShapeAttributes();
