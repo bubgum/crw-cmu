@@ -116,7 +116,6 @@ public class IntelligencePanel extends javax.swing.JPanel {
 
     private void startBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startBActionPerformed
 
-        // @todo Enable startB at the right moment
         running = !running;
         if (running) {
             startB.setText("Stop");
@@ -144,7 +143,6 @@ public class IntelligencePanel extends javax.swing.JPanel {
     }
 
     private void allCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allCBActionPerformed
-        // @todo Implement allChecked
         System.out.println("All checked");
         if (running) {
             if (allCB.isSelected()) {

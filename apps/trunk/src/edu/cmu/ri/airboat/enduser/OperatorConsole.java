@@ -232,7 +232,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
             final USGSDigitalOrtho usgslayer = new USGSDigitalOrtho();
             final USGSTopoHighRes usgsTopo = new USGSTopoHighRes();
 
-            // @todo Make this an option (e.g., a combobox)
+            // @todo Make layer an option (e.g., a combobox)
             wwd.getModel().getLayers().add(usgslayer);
             // wwd.getModel().getLayers().add(usgsTopo);
 
@@ -541,7 +541,6 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
 
     public void proxyAdded(BoatProxy bp) {
 
-        // @todo Get the appropriate color for the boat
         final BoatMarker bm = new BoatMarker(bp, bp.getCurrLoc(), new BasicMarkerAttributes(new Material(bp.getColor()), BasicMarkerShape.ORIENTED_SPHERE, 0.9));
         bm.setPosition(bp.getCurrLoc());
         bp.addListener(new BoatProxyListener() {

@@ -12,7 +12,6 @@ import gov.nasa.worldwind.render.markers.BasicMarker;
 import gov.nasa.worldwind.render.markers.BasicMarkerAttributes;
 
 /**
- * @todo Directional
  * 
  * @author pscerri 
  */

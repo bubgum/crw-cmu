@@ -21,7 +21,6 @@ import java.util.ArrayList;
 /**
  * Singleton
  *
- * @todo Stop the autonomy
  *
  * @author pscerri
  */
@@ -149,7 +148,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     }
 
     public void poseUpdated() {
-        // @todo IntelligenceAlgorithms got a pose update
+        // Don't care that IntelligenceAlgorithms got a pose update
     }
 
     public void stop() {
@@ -236,9 +235,6 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     static double lonDiff = 1.0 / 90000.0 * 10.0;
     static double latDiff = 1.0 / 110000.0 * 10.0;
 
-    // @todo Need to stay in area
-    // @todo Grid width needs to be configurable
-    // @todo Watch out for maximimum path length
     private ArrayList<Position> getLawnmowerPath(int no, int of) {
 
         ArrayList<Position> path = new ArrayList<Position>();
