@@ -37,7 +37,6 @@ public class IntelligencePanel extends javax.swing.JPanel {
         algC = new javax.swing.JComboBox();
         startB = new javax.swing.JButton();
         allCB = new javax.swing.JCheckBox();
-        liveB = new javax.swing.JButton();
         modelB = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Intelligence"));
@@ -64,14 +63,6 @@ public class IntelligencePanel extends javax.swing.JPanel {
             }
         });
 
-        liveB.setText("Live Data");
-        liveB.setEnabled(false);
-        liveB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                liveBActionPerformed(evt);
-            }
-        });
-
         modelB.setText("Model");
         modelB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,9 +83,7 @@ public class IntelligencePanel extends javax.swing.JPanel {
                         .add(startB, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
                         .add(allCB, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 74, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(liveB)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(114, 114, 114)
                         .add(modelB, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -108,7 +97,6 @@ public class IntelligencePanel extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(allCB)
-                    .add(liveB)
                     .add(modelB))
                 .addContainerGap())
         );
@@ -153,10 +141,6 @@ public class IntelligencePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_allCBActionPerformed
 
-    private void liveBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_liveBActionPerformed
-        (new IntelligenceAlgorithms()).showDataDisplay();
-    }//GEN-LAST:event_liveBActionPerformed
-
     private void algCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algCActionPerformed
         (new IntelligenceAlgorithms()).setCurrAlg((IntelligenceAlgorithms.Algorithm) algC.getSelectedItem());
     }//GEN-LAST:event_algCActionPerformed
@@ -168,7 +152,6 @@ public class IntelligencePanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox algC;
     private javax.swing.JCheckBox allCB;
-    public javax.swing.JButton liveB;
     private javax.swing.JButton modelB;
     public javax.swing.JButton startB;
     // End of variables declaration//GEN-END:variables

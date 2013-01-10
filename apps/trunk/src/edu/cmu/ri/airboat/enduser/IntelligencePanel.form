@@ -33,9 +33,7 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="allCB" min="-2" pref="74" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="liveB" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
                       <Component id="modelB" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -54,7 +52,6 @@
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="allCB" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="liveB" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="modelB" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -97,18 +94,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="allCBActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="liveB">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Live Data"/>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="liveBActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="modelB">
       <Properties>

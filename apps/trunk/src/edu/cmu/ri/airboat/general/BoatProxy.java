@@ -65,9 +65,7 @@ public class BoatProxy extends Thread {
     PoseListener _stateListener;
     SensorListener _sensorListener;
     WaypointListener _waypointListener;
-    
     ArrayList<BoatProxyListener> listeners = new ArrayList<BoatProxyListener>();
-    
     int _boatNo;
     UtmPose _pose;
     volatile boolean _isShutdown = false;
@@ -157,11 +155,10 @@ public class BoatProxy extends Thread {
         _server = new UdpVehicleServer(addr);
 
         _stateListener = new PoseListener() {
-
             public void receivedPose(UtmPose upwcs) {
-                
+
                 // Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Boat pose update", this);
-                
+
                 _pose = upwcs.clone();
 
                 if (home == null && USE_SOFTWARE_FAIL_SAFE) {
@@ -184,7 +181,7 @@ public class BoatProxy extends Thread {
                     LatLon latlon = new LatLon(boatPos.getLatitude(), boatPos.getLongitude());
 
                     // System.out.println("boatPos " + boatPos.getLatitude() + " " +  boatPos.getLongitude() + " latlon " + latlon.latitude.degrees + " " + latlon.longitude.degrees + " " + latlon);
-                    
+
                     Position p = new Position(latlon, 0.0);
 
                     // Update state variables
@@ -193,7 +190,7 @@ public class BoatProxy extends Thread {
                     for (BoatProxyListener boatProxyListener : listeners) {
                         boatProxyListener.poseUpdated();
                     }
-                    
+
                 } catch (Exception e) {
                     System.err.println("BoatSimpleProxy: Invalid pose received: " + e + " Pose: [" + _pose.pose.getX() + ", " + _pose.pose.getY() + "], zone = " + _pose.origin.zone);
                 }
@@ -205,16 +202,16 @@ public class BoatProxy extends Thread {
 
         //add Listeners
         _server.addPoseListener(_stateListener, null);
-        
+
         _server.addWaypointListener(new WaypointListener() {
             public void waypointUpdate(WaypointState ws) {
 
                 if (ws.equals(WaypointState.DONE)) {
                     for (BoatProxyListener boatProxyListener : listeners) {
                         boatProxyListener.waypointsComplete();
-                    }                    
-                }                                
-                
+                    }
+                }
+
             }
         }, null);
 
@@ -224,94 +221,96 @@ public class BoatProxy extends Thread {
         // @todo Only should be on for simulation
 
         // ABHINAV COMMENT OUT THIS THREAD BEFORE RUNNING ON THE REAL BOATS!!
-        (new Thread() {
+        if (addr.getHostName().equalsIgnoreCase("localhost")) {
+            (new Thread() {
+                Random rand = new Random();
 
-            Random rand = new Random();
+                public void run() {
 
-            public void run() {
+                    System.out.println("\n\n\nGENERATING FAKE SENSOR DATA -- Abhinav, comment this out\n\n\n");
 
-                System.out.println("\n\n\nGENERATING FAKE SENSOR DATA -- Abhinav, comment this out\n\n\n");
+                    while (true) {
 
-                while (true) {
+                        double[] prev = null;
 
-                    double[] prev = null;
+                        if (currLoc != null) {
+                            SensorData sd = new SensorData();
 
-                    if (currLoc != null) {
-                        SensorData sd = new SensorData();
-
-                        // @todo Observation
-                        if (rand.nextBoolean()) {
-                            sd.type = SensorType.TE;
-                        } else {
-                            sd.type = SensorType.UNKNOWN;
-                        }
-
-                        sd.data = new double[4];
-
-                        if (simpleData) {
-                            for (int i = 0; i < sd.data.length; i++) {
-                                if (prev == null || !hysteresis) {
-                                    sd.data[i] = Math.abs(currLoc.longitude.degrees); //  + rand.nextDouble();
-                                } else {
-                                    sd.data[i] = (Math.abs(currLoc.longitude.degrees) + prev[i]) / 2.0;
-                                }
-                            }
-                        } else {
-                            double v = computeGTValue(currLoc.latitude.degrees, currLoc.longitude.degrees);
-                            // System.out.println("Created data = " + v);
-                            for (int i = 0; i < sd.data.length; i++) {
-                                sd.data[i] = v;
+                            // @todo Observation
+                            if (rand.nextBoolean()) {
+                                sd.type = SensorType.TE;
+                            } else {
+                                sd.type = SensorType.UNKNOWN;
                             }
 
-                            synchronized (xs) {
-                                // Possibly add another
-                                if ((rand.nextDouble() < addRate && xs.size() < 20) || (xs.size() == 0)) {
-                                    System.out.println(">>>>>>>>>>>>>> Creating");
-                                    double lon = currLoc.longitude.degrees + (distFactor * (rand.nextDouble() - 0.5));
-                                    double lat = currLoc.latitude.degrees + (distFactor * (rand.nextDouble() - 0.5));
-                                    double value = rand.nextDouble() * valueFactor;
-                                    if (rand.nextBoolean()) value = -value;
+                            sd.data = new double[4];
 
-                                    xs.add(lon);
-                                    ys.add(lat);
-                                    vs.add(value);
-                                    sigmas.add(0.01);
+                            if (simpleData) {
+                                for (int i = 0; i < sd.data.length; i++) {
+                                    if (prev == null || !hysteresis) {
+                                        sd.data[i] = Math.abs(currLoc.longitude.degrees); //  + rand.nextDouble();
+                                    } else {
+                                        sd.data[i] = (Math.abs(currLoc.longitude.degrees) + prev[i]) / 2.0;
+                                    }
+                                }
+                            } else {
+                                double v = computeGTValue(currLoc.latitude.degrees, currLoc.longitude.degrees);
+                                // System.out.println("Created data = " + v);
+                                for (int i = 0; i < sd.data.length; i++) {
+                                    sd.data[i] = v;
                                 }
 
-                                // Decay 
-                                for (int i = 0; i < xs.size(); i++) {
-                                    sigmas.set(i, sigmas.get(i) + sigmaIncreaseRate);
-                                    vs.set(i, vs.get(i) * valueDecreaseRate);
-                                    if (Math.abs(vs.get(i)) <= 0.001) {
-                                        System.out.println("xxxxxxxxxxxxxxxxxxxxxxx Removing");
-                                        xs.remove(i);
-                                        ys.remove(i);
-                                        vs.remove(i);
-                                        sigmas.remove(i);
-                                        i--;
+                                synchronized (xs) {
+                                    // Possibly add another
+                                    if ((rand.nextDouble() < addRate && xs.size() < 20) || (xs.size() == 0)) {
+                                        System.out.println(">>>>>>>>>>>>>> Creating");
+                                        double lon = currLoc.longitude.degrees + (distFactor * (rand.nextDouble() - 0.5));
+                                        double lat = currLoc.latitude.degrees + (distFactor * (rand.nextDouble() - 0.5));
+                                        double value = rand.nextDouble() * valueFactor;
+                                        if (rand.nextBoolean()) {
+                                            value = -value;
+                                        }
+
+                                        xs.add(lon);
+                                        ys.add(lat);
+                                        vs.add(value);
+                                        sigmas.add(0.01);
+                                    }
+
+                                    // Decay 
+                                    for (int i = 0; i < xs.size(); i++) {
+                                        sigmas.set(i, sigmas.get(i) + sigmaIncreaseRate);
+                                        vs.set(i, vs.get(i) * valueDecreaseRate);
+                                        if (Math.abs(vs.get(i)) <= 0.001) {
+                                            System.out.println("xxxxxxxxxxxxxxxxxxxxxxx Removing");
+                                            xs.remove(i);
+                                            ys.remove(i);
+                                            vs.remove(i);
+                                            sigmas.remove(i);
+                                            i--;
+                                        }
                                     }
                                 }
                             }
+
+                            if (_sensorListener != null) {
+                                // System.out.println("SENDING Data");
+                                _sensorListener.receivedSensor(sd);
+                            } else {
+                                // System.out.println("NO SENSOR LISTENER");
+                            }
+                            prev = sd.data;
                         }
 
-                        if (_sensorListener != null) {
-                            // System.out.println("SENDING Data");
-                            _sensorListener.receivedSensor(sd);
-                        } else {
-                            // System.out.println("NO SENSOR LISTENER");
+                        try {
+                            sleep(500L);
+                        } catch (InterruptedException e) {
                         }
-                        prev = sd.data;
-                    }
 
-                    try {
-                        sleep(500L);
-                    } catch (InterruptedException e) {
                     }
-
                 }
-            }
-        }).start();
-
+            }).start();
+        }
     }
 
     public int getBoatNo() {
@@ -329,11 +328,11 @@ public class BoatProxy extends Thread {
     public Queue<UtmPose> getWaypoints() {
         return _waypoints;
     }
-    
+
     public Iterable<Position> getWaypointsAsPositions() {
         return _waypointsPos;
     }
-    
+
     public Position getCurrLoc() {
         return currLoc;
     }
@@ -347,7 +346,7 @@ public class BoatProxy extends Thread {
 
         // @todo This only allows one sensor, generalize (but I think this is only for the fake data ...)
         _sensorListener = l;
-        
+
         // System.out.println("Setting SENSOR LISTENER TO: " + l);
     }
 
@@ -362,15 +361,14 @@ public class BoatProxy extends Thread {
     public void addListener(BoatProxyListener l) {
         listeners.add(l);
     }
-    
+
     public void removeListener(BoatProxyListener l) {
         listeners.remove(l);
     }
-    
+
     private void startCamera() {
 
         (new Thread() {
-
             public void run() {
 
                 try {
@@ -412,7 +410,6 @@ public class BoatProxy extends Thread {
 
     public void setExternalVelocity(Twist t) {
         _server.setVelocity(t, new FunctionObserver<Void>() {
-
             public void completed(Void v) {
                 System.out.println("Set velocity succeeded");
             }
@@ -422,7 +419,7 @@ public class BoatProxy extends Thread {
             }
         });
     }
-    
+
     public void setWaypoints(Polyline pLine) {
         currentPath = pLine;
         pLine.setColor(color);
@@ -439,7 +436,7 @@ public class BoatProxy extends Thread {
 
         // Stored to help out the OperatorConsole (i.e., save a couple of translations)
         _waypointsPos = ps;
-        
+
         for (Position position : ps) {
             UTMCoord utm = UTMCoord.fromLatLon(position.latitude, position.longitude);
             UtmPose pose = new UtmPose(new Pose3D(utm.getEasting(), utm.getNorthing(), 0.0, 0.0, 0.0, 0.0), new Utm(utm.getZone(), utm.getHemisphere().contains("North")));
@@ -450,7 +447,6 @@ public class BoatProxy extends Thread {
 
         _server.setAutonomous(true, null);
         _server.startWaypoints(_waypoints.toArray(new UtmPose[_waypoints.size()]), "POINT_AND_SHOOT", new FunctionObserver() {
-
             public void completed(Object v) {
 
                 System.out.println("Completed called");
@@ -461,7 +457,7 @@ public class BoatProxy extends Thread {
                 System.out.println("START WAYPOINTS FAILED");
             }
         });
-                
+
     }
 
     public void setWaypoint(Position p) {
@@ -483,7 +479,6 @@ public class BoatProxy extends Thread {
         // @todo Register a waypoint listener to get the same status updates (and know at the end of the waypoints)
         _server.setAutonomous(true, null);
         _server.startWaypoints(new UtmPose[]{wputm}, "POINT_AND_SHOOT", new FunctionObserver() {
-
             public void completed(Object v) {
                 System.out.println("Waypoint call completed");
             }
@@ -611,6 +606,6 @@ public class BoatProxy extends Thread {
     @Override
     public String toString() {
         return name + "@" + _server.getVehicleService();
-                // (masterURI == null ? "Unknown" : masterURI.toString());
+        // (masterURI == null ? "Unknown" : masterURI.toString());
     }
 }
