@@ -54,6 +54,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -162,6 +164,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
 
                 } catch (Exception e) {
                     System.out.println("Problem getting local IP " + e);
+                    JOptionPane.showMessageDialog(frame, "A network error occurred, please restart", "Error", JOptionPane.OK_OPTION);                    
                 }
             }
         });

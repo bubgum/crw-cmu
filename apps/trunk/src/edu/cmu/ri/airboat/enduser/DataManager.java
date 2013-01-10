@@ -60,7 +60,8 @@ public class DataManager extends JPanel implements ProxyManagerListener {
         Graphics2D g = (Graphics2D) grphcs;
 
         g.clearRect(0, 0, getWidth(), getHeight());
-        g.drawImage(repo.makeBufferedImage(0), 0, 0, getWidth(), getHeight(), null, null);
+        // @todo Set index of interest
+        g.drawImage(repo.makeBufferedImage(), 0, 0, getWidth(), getHeight(), null, null);
 
         /*
          for (BoatProxy bp : proxies) {

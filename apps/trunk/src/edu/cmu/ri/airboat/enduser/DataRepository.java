@@ -15,12 +15,12 @@ import gov.nasa.worldwind.geom.coords.UTMCoord;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import javax.swing.DefaultComboBoxModel;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -56,7 +56,7 @@ public class DataRepository {
     int indexOfInterest = 0;
     private DecimalFormat df = new DecimalFormat("#.###");
     private Random rand = new Random();
-    private JTextPane latestTP = null;
+    private JTextPane latestTP = null;    
 
     public enum ImageType {
 
@@ -98,6 +98,15 @@ public class DataRepository {
         setds();
     }
 
+    public ImageType getImageType() {
+        return imgType;
+    }
+    
+    private DefaultComboBoxModel cbModel = new DefaultComboBoxModel();
+    public DefaultComboBoxModel getCBModel() {
+        return cbModel;
+    }
+    
     public Position getPositionFor(double dx, double dy) {
 
         double lat = mins.latitude.degrees + (dy * (maxs.latitude.degrees - mins.latitude.degrees));
@@ -238,10 +247,19 @@ public class DataRepository {
     public void setIndexOfInterest(int index) {
         indexOfInterest = index;
     }
+    
+    public void setIndexOfInterest(String s) {
+        String var = s.substring(0, s.indexOf(":"));
+        // System.out.println("Var is " + var);
+        int index = Integer.parseInt(s.substring(s.indexOf(":") + 1));
+        
+        // System.out.println("Index is " + index);
+        int base = baseIndicies.get(var);
+        indexOfInterest = base+index;
+    }
+    
     private static Hashtable<String, ArrayList<Double>> prevValues = new Hashtable<String, ArrayList<Double>>();
     private static Hashtable<String, MedianFilterSlidingWindow> filterHash = new Hashtable<String, MedianFilterSlidingWindow>();
-    private String sensorToDisplay = "TE";
-    private int indexToDisplay = 0;
     private int filterWindow = 30;
     int count = 0;
 
@@ -483,6 +501,8 @@ public class DataRepository {
         if (baseI == null) {
             baseI = locInfo.size();
             baseIndicies.put(o.variable, baseI);
+            
+            //System.out.println("Put " + o.variable + " " + baseI);
         }
         index += baseI;
 
@@ -496,6 +516,7 @@ public class DataRepository {
         if (li == null) {
             while (locInfo.size() <= index) {
                 locInfo.add(initLocInfo());
+                cbModel.addElement(o.variable + ":" + (index-baseI));
                 // FishFarmF.indexCDataModel.addElement(o.index);
             }
             li = locInfo.get(index);
@@ -850,23 +871,23 @@ public class DataRepository {
         return new Position(ll, 0.0);
     }
 
-    public synchronized BufferedImage makeBufferedImage(int index) {
-
+    public synchronized BufferedImage makeBufferedImage() {
+        
         switch (imgType) {
             case Grid:
-                return makeGridBufferedImage(index, true, false);
+                return makeGridBufferedImage(indexOfInterest, true, false);
 
             case Uncertainty:
-                return makeGridBufferedImage(index, false, false);
+                return makeGridBufferedImage(indexOfInterest, false, false);
 
             case Bounds:
-                return makeGridBufferedImage(index, false, true);
+                return makeGridBufferedImage(indexOfInterest, false, true);
 
             case Interpolated:
-                return makeInterpolatedBufferedImage(index);
+                return makeInterpolatedBufferedImage(indexOfInterest);
 
             case Point:
-                return makePointBufferedImage(index);
+                return makePointBufferedImage(indexOfInterest);
 
             case GT:
                 return makeGTImage();

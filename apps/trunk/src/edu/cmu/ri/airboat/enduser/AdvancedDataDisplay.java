@@ -5,6 +5,7 @@
 package edu.cmu.ri.airboat.enduser;
 
 import java.awt.BorderLayout;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -12,14 +13,30 @@ import java.awt.BorderLayout;
  */
 public class AdvancedDataDisplay extends javax.swing.JFrame {
         
+    DataManager dm = null;
+    
     /**
      * Creates new form AdvancedDataDisplay
      */
     public AdvancedDataDisplay(DataManager dm) {
         initComponents();
+    
+        this.dm = dm;
         
         dataP.setLayout(new BorderLayout());
-        dataP.add(dm, BorderLayout.CENTER);        
+        dataP.add(dm, BorderLayout.CENTER);    
+        
+        DataRepository.ImageType [] imageTypes = new DataRepository.ImageType[] {
+            DataRepository.ImageType.Grid,
+            DataRepository.ImageType.Interpolated,
+            DataRepository.ImageType.Point,
+            DataRepository.ImageType.Uncertainty
+        };
+        
+        viewC.setModel(new DefaultComboBoxModel(imageTypes));        
+        viewC.setSelectedItem(dm.repo.getImageType());
+        
+        indexC.setModel(dm.repo.getCBModel());
     }
 
     /**
@@ -32,6 +49,8 @@ public class AdvancedDataDisplay extends javax.swing.JFrame {
     private void initComponents() {
 
         dataP = new javax.swing.JPanel();
+        indexC = new javax.swing.JComboBox();
+        viewC = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,23 +67,57 @@ public class AdvancedDataDisplay extends javax.swing.JFrame {
             .add(0, 406, Short.MAX_VALUE)
         );
 
+        indexC.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        indexC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                indexCActionPerformed(evt);
+            }
+        });
+
+        viewC.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        viewC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewCActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(dataP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(indexC, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(viewC, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(dataP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 118, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 85, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(indexC, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(viewC, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void viewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCActionPerformed
+        dm.repo.setImgType((DataRepository.ImageType)viewC.getSelectedItem());
+    }//GEN-LAST:event_viewCActionPerformed
+
+    private void indexCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indexCActionPerformed
+        dm.repo.setIndexOfInterest((String)indexC.getSelectedItem());
+    }//GEN-LAST:event_indexCActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel dataP;
+    private javax.swing.JComboBox indexC;
+    private javax.swing.JComboBox viewC;
     // End of variables declaration//GEN-END:variables
 }
