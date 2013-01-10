@@ -227,7 +227,7 @@ public class BoatProxy extends Thread {
 
                 public void run() {
 
-                    System.out.println("\n\n\nGENERATING FAKE SENSOR DATA -- Abhinav, comment this out\n\n\n");
+                    System.out.println("\n\n\nGENERATING FAKE SENSOR DATA for simulated boat\n\n\n");
 
                     while (true) {
 
