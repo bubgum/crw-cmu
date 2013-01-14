@@ -77,7 +77,7 @@ class SerialHW : public Serial
     // Set mode of operation
     // (async, no parity, 8 bit data, 1 stop bit)
     _serial.uart->CTRLA = 0; // no interrupts enabled
-    _serial.uart->CTRLC = USART_CHSIZE_8BIT_gc | USART_PMODE_DISABLED_gc; 
+    _serial.uart->CTRLC = USART_CMODE_ASYNCHRONOUS_gc | USART_CHSIZE_8BIT_gc | USART_PMODE_DISABLED_gc; 
     
     // Enable transmitter and receiver
     _serial.uart->CTRLB = USART_TXEN_bm | USART_RXEN_bm;
@@ -108,11 +108,7 @@ class SerialHW : public Serial
     
     // Put our character into the transmit buffer
     _serial.uart->DATA = c;
-    
-    // Wait for the transmission to complete
-    while ( !(_serial.uart->STATUS & USART_TXCIF_bm) );
-    _serial.uart->STATUS |= USART_TXCIF_bm;
-    
+
     return 0;
   }
 
@@ -127,13 +123,14 @@ class SerialHW : public Serial
     // Wait for the receive buffer is filled
     while( !( _serial.uart->STATUS & USART_RXCIF_bm) );
   
-    // Read the receive buffer
+    // Read the receive buffer and clear the read complete flag
+    _serial.uart->STATUS = USART_RXCIF_bm;
     return _serial.uart->DATA;
   }
 
   bool available()
   {
-    return (_serial.uart->STATUS & USART_RXCIF_bm);
+    return (_serial.uart->STATUS & USART_RXCIF_bm) ? true : false;
   }
 };
 
