@@ -101,27 +101,25 @@ public enum AirboatController {
 				// Define PID constants and boundary pos constants
 				AirboatImpl server_impl = (AirboatImpl) server;
 				double[] rudder_pids = server_impl.getGains(5);
-				double[] rudder_consts = server_impl.getRudderConstants();
 				
-				double pre_pos = rudder_pids[0]*(angle_between) + rudder_pids[2]*(angle_destination_change - drz) + rudder_pids[1]*bSum;
-				double pos = pre_pos;
-				// ensure values are within bounds
-				if (pos < rudder_consts[0])
-					pos = rudder_consts[0];
-				else if (pos > rudder_consts[1])
-					pos = rudder_consts[1];
+				double pos = rudder_pids[0]*(angle_between) + rudder_pids[2]*(angle_destination_change - drz) + rudder_pids[1]*bSum;
 				
-				pos = AirboatImpl.map(pos, rudder_consts[0], rudder_consts[1], rudder_consts[2], rudder_consts[3]);
+				// Ensure values are within bounds
+				if (pos < -1.0)
+					pos = -1.0;
+				else if (pos > 1.0)
+					pos = 1.0;
 				
 				// THRUST CONTROL SEGMENT
 				double thrust = AirboatImpl.CONST_THRUST;
+				
 				// update twist
 				twist.dx(thrust);
 				twist.drz(pos);
 				// log relevant variables 
 				logger_osman.info("Waypoint: " + waypoint);
 				logger_osman.info("DEBUG: " + distanceSq + " " + angle_destination + " " + angle_boat + " " + drz + " " +
-						prev_angle_destination + " " + angle_destination_change + " " + pre_pos + " " + pos + " " + thrust
+						prev_angle_destination + " " + angle_destination_change + " " + pos + " " + thrust
 						+ " " + bSum + " " + rudder_pids[0] + " " + rudder_pids[1] + " " + rudder_pids[2]);
 				// update angle error
 				prev_angle_destination = angle_destination;

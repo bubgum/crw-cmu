@@ -46,9 +46,9 @@ public class AirboatControlActivity extends Activity {
 	
 	// Ranges for thrust and rudder signals
 	public static final double THRUST_MIN = 0.0;
-	public static final double THRUST_MAX = 10.0;
-	public static final double RUDDER_MIN = -10.0; // Reversed to match +Z rotation. UPDATE: switched back
-	public static final double RUDDER_MAX = 10.0;
+	public static final double THRUST_MAX = 1.0;
+	public static final double RUDDER_MIN = -1.0; // Reversed to match +Z rotation. UPDATE: switched back
+	public static final double RUDDER_MAX = 1.0;
 	
 	// Contains a reference to the airboat service, or null if service is not running 
 	private AirboatService _airboatService = null;
@@ -122,7 +122,7 @@ public class AirboatControlActivity extends Activity {
         setContentView(R.layout.control);
 
         // Get references to all the GUI elements
-        final CheckBox connectedBox = (CheckBox)findViewById(R.id.AutonomousBox);
+        final CheckBox connectedBox = (CheckBox)findViewById(R.id.ConnectedBox);
         final CheckBox autonomousBox = (CheckBox)findViewById(R.id.AutonomousBox);
         
         final TextView rudderValue = (TextView)findViewById(R.id.RudderValue);
@@ -178,11 +178,8 @@ public class AirboatControlActivity extends Activity {
 				
 				// Send a new velocity command
 				Twist twist = _airboatService.getServer().getVelocity();
-				// updated code
-				double[] rudder_constants = _airboatService.getServer().getRudderConstants();
-				double new_position = fromProgressToRange(rudderSlider.getProgress(), RUDDER_MIN, RUDDER_MAX);
-				double new_yaw = AirboatImpl.map(new_position, RUDDER_MIN, RUDDER_MAX, rudder_constants[3], rudder_constants[2]);
-				twist.drz(new_yaw);
+				double yaw = fromProgressToRange(rudderSlider.getProgress(), RUDDER_MIN, RUDDER_MAX);
+				twist.drz(yaw);
 				_airboatService.getServer().setVelocity(twist);
 			}
 		});
@@ -204,11 +201,8 @@ public class AirboatControlActivity extends Activity {
 				
 				// Send a new velocity command
 				Twist twist = _airboatService.getServer().getVelocity();
-				// new code
-				double[] thruster_constants = _airboatService.getServer().getThrusterConstants();
-				double new_position = fromProgressToRange(thrustSlider.getProgress(), THRUST_MIN, THRUST_MAX);
-				double new_thrust = AirboatImpl.map(new_position, THRUST_MIN, THRUST_MAX, thruster_constants[2], thruster_constants[3]);
-				twist.dx(new_thrust);
+				double thrust = fromProgressToRange(thrustSlider.getProgress(), THRUST_MIN, THRUST_MAX);
+				twist.dx(thrust);
 				_airboatService.getServer().setVelocity(twist);
 			}
 		});
@@ -232,10 +226,10 @@ public class AirboatControlActivity extends Activity {
 				// Update the velocities
 				_velocities = _airboatService.getServer().getVelocity();
 
-				thrustValue.setText(velFormatter.format(_velocities.dx()) + " m/s");
+				thrustValue.setText(velFormatter.format(_velocities.dx() * 100.0) + " %");
 				thrustValue.invalidate();
 	
-				rudderValue.setText(velFormatter.format(_velocities.drz()) + " rad/s");
+				rudderValue.setText(velFormatter.format(_velocities.drz() * 100.0) + " %");
 				rudderValue.invalidate();
 	
 				// Reschedule the next iteration of this update
