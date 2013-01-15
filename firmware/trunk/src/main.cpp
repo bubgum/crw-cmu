@@ -126,7 +126,7 @@ void setPID(uint8_t flag, uint8_t numOfValues)
   pid.Ki[axis] = args[2];
   pid.Kd[axis] = args[3];
 
-  eeprom_update_block(&pidEeprom, &pid, sizeof(pidConstants_t));
+  eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 }
 
 /**
@@ -142,7 +142,7 @@ void getPID(uint8_t flag, uint8_t numOfValues)
   
   // Get the axis that is being set
   int axis = (int)axisRaw;
-  if (axis < 0 || axis >=6) return;
+  if (axis < 0 || axis >= 6) return;
   
   // Return the appropriate values to Amarino
   amarino.send(GET_PID_FN);
@@ -159,6 +159,10 @@ void getPID(uint8_t flag, uint8_t numOfValues)
 void resetPID()
 {
   memset(&pid, 0, sizeof(pid));
+
+  pid.Kp[0] = 1.0;
+  pid.Kp[5] = 1.0;
+
   eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 }
 
@@ -175,7 +179,7 @@ void setup()
   //  thruster.arm();
 
   // Reset all PID values to zero
-  //resetPID();
+  resetPID();
 
   // Load PID constants in from EEPROM
   eeprom_read_block(&pid, &pidEeprom, sizeof(pidConstants_t));
