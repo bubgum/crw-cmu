@@ -90,7 +90,7 @@ void decayVelocity()
 {
   // Slow the vehicle down by reducing velocity in every direction
   for (int i = 0; i < 6; ++i)
-    desiredVelocity[i] *= 0.9;
+    desiredVelocity[i] *= 0.95;
 }
 
 /**
@@ -176,7 +176,7 @@ void setup()
   initBoard();
 
   // Arm thruster
-  //  thruster.arm();
+  thruster.arm();
 
   // Reset all PID values to zero
   resetPID();
@@ -224,7 +224,7 @@ void update(void *)
   //  depthSensor.update();
 
   // Decay the desired velocities slightly
-  //  decayVelocity();
+  decayVelocity();
 }
 
 int main(void)
