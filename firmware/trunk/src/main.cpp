@@ -53,7 +53,7 @@ pidConstants_t EEMEM pidEeprom;
 #define SET_SAMPLER_FN 'q'
 
 // Defines update interval in milliseconds
-#define UPDATE_INTERVAL 250
+#define UPDATE_INTERVAL 100
 
 // Arrays to store the actual and desired velocity of the vehicle in 6D
 float desiredVelocity[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -160,8 +160,8 @@ void resetPID()
 {
   memset(&pid, 0, sizeof(pid));
 
-  pid.Kp[0] = 1.0;
-  pid.Kp[5] = 1.0;
+  pid.Kp[0] = 32000.0;
+  pid.Kp[5] = -32000.0;
 
   eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 }
