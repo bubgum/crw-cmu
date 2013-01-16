@@ -29,10 +29,10 @@ public class DrivePanel extends AbstractAirboatPanel {
     public static final int DEFAULT_COMMAND_MS = 200;
 
     // Ranges for thrust and rudder signals
-    public static final double THRUST_MIN = 0.0;
-    public static final double THRUST_MAX = 2.0;
-    public static final double RUDDER_MIN = 2.5;
-    public static final double RUDDER_MAX = -2.5;
+    public static final double THRUST_MIN =  0.0;
+    public static final double THRUST_MAX =  1.0;
+    public static final double RUDDER_MIN =  1.0;
+    public static final double RUDDER_MAX = -1.0;
 
     // Sets up a flag limiting the rate of velocity command transmission
     public AtomicBoolean _sentVelCommand = new AtomicBoolean(false);
