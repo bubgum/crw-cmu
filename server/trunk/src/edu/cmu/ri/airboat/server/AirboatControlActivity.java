@@ -45,10 +45,10 @@ public class AirboatControlActivity extends Activity {
 	public static final long PID_UPDATE_MS = 1000;
 	
 	// Ranges for thrust and rudder signals
-	public static final double THRUST_MIN = 0.0;
-	public static final double THRUST_MAX = 1.0;
-	public static final double RUDDER_MIN = -1.0; // Reversed to match +Z rotation. UPDATE: switched back
-	public static final double RUDDER_MAX = 1.0;
+	public static final double THRUST_MIN =  0.0;
+	public static final double THRUST_MAX =  1.0;
+	public static final double RUDDER_MIN =  1.0; // Reversed to match +Z rotation.
+	public static final double RUDDER_MAX = -1.0;
 	
 	// Contains a reference to the airboat service, or null if service is not running 
 	private AirboatService _airboatService = null;
@@ -65,6 +65,7 @@ public class AirboatControlActivity extends Activity {
 	
 	private Handler _pidHandler = null;
 	private Runnable _pidCallback = null;
+	
 	private AsyncTaskFactory<Void, Void, double[][]> _updatePid = null;
 	
 	// Create a factory interface that generates the necessary TimerTasks
