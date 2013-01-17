@@ -4,8 +4,6 @@
  */
 package edu.cmu.ri.airboat.enduser;
 
-import com.sun.xml.internal.rngom.util.Utf16;
-import edu.cmu.ri.airboat.client.UtmUtils;
 import edu.cmu.ri.airboat.general.BoatProxy;
 import edu.cmu.ri.airboat.general.BoatProxyListener;
 import edu.cmu.ri.airboat.general.OperatorConsoleInterface;
@@ -13,8 +11,6 @@ import edu.cmu.ri.airboat.general.ConfigureBoatsFrame;
 import edu.cmu.ri.airboat.general.ProxyManager;
 import edu.cmu.ri.airboat.general.ProxyManagerListener;
 import edu.cmu.ri.crw.CrwSecurityManager;
-import edu.cmu.ri.crw.PoseListener;
-import edu.cmu.ri.crw.data.UtmPose;
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.Configuration;
 import gov.nasa.worldwind.WorldWind;
@@ -24,14 +20,10 @@ import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.Intersection;
-import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Line;
 import gov.nasa.worldwind.geom.Position;
-import gov.nasa.worldwind.geom.coords.UTMCoord;
-import gov.nasa.worldwind.layers.Earth.USGSDigitalOrtho;
-import gov.nasa.worldwind.layers.Earth.USGSTopoHighRes;
-import gov.nasa.worldwind.layers.Earth.USGSTopographicMaps;
 import gov.nasa.worldwind.layers.MarkerLayer;
+import gov.nasa.worldwind.layers.Mercator.examples.VirtualEarthLayer;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.layers.SurfaceImageLayer;
 import gov.nasa.worldwind.pick.PickedObject;
@@ -54,7 +46,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -224,22 +215,40 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
 
             wwd.getModel().getLayers().add(ml);
 
-            final USGSTopographicMaps m2 = new USGSTopographicMaps();
-
             /*
              for (Layer l: wwd.getModel().getLayers()) {
              System.out.println("Layer type: " + l.getName() + " " + l.getClass());
              }
              */
 
-            final USGSDigitalOrtho usgslayer = new USGSDigitalOrtho();
-            final USGSTopoHighRes usgsTopo = new USGSTopoHighRes();
-
             // @todo Make layer an option (e.g., a combobox)
-            wwd.getModel().getLayers().add(usgslayer);
-            // wwd.getModel().getLayers().add(usgsTopo);
+            // Virtual Earth
+            final VirtualEarthLayer ve = new VirtualEarthLayer();
+            wwd.getModel().getLayers().add(ve);
 
-            // wwd.getModel().getLayers().add(m2);
+//             // Yahoo imagergy
+//            final YahooMapsLayer ya = new YahooMapsLayer();
+//            wwd.getModel().getLayers().add(ya);
+//            
+//             // Open maps
+//            final OSMMapnikLayer ol = new OSMMapnikLayer();
+//            wwd.getModel().getLayers().add(ol);
+//    
+//            final OSMCycleMapLayer  ol2 = new OSMCycleMapLayer();
+//            wwd.getModel().getLayers().add(ol2);
+//            
+//            final OSMMapnikTransparentLayer  ol3 = new OSMMapnikTransparentLayer();
+//            wwd.getModel().getLayers().add(ol3);
+//    
+//             // USGS
+//            final USGSDigitalOrtho usgslayer = new USGSDigitalOrtho();
+//            wwd.getModel().getLayers().add(usgslayer);
+//            
+//            final USGSTopographicMaps usgsTopoLow = new USGSTopographicMaps();
+//            wwd.getModel().getLayers().add(usgsTopoLow);
+//            
+//            final USGSTopoHighRes usgsTopoHigh = new USGSTopoHighRes();
+//            wwd.getModel().getLayers().add(usgsTopoHigh);
 
             wwd.getModel().getLayers().add(polyLayer);
             wwd.getModel().getLayers().add(imageLayer);
@@ -458,7 +467,6 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                     setAssigningArea(false);
                                     (new IntelligenceAlgorithms()).setArea(pgon);                                    
                                     autoPanel.startB.setEnabled(true);
-                                    autoPanel.modelB.setEnabled(true);
                                     autoPanel.configureAdvanced();
                                 } else if (assigningBuoyDetectionArea) {
                                     System.out.println("Set buoy detection area");
