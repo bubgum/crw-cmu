@@ -139,7 +139,7 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
 
         jLabel6.setText("Server");
 
-        createPhysicalB.setText("Create");
+        createPhysicalB.setText("Initialize Real");
         createPhysicalB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createPhysicalBActionPerformed(evt);
@@ -232,7 +232,7 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
 
         lonSim.setText("-80.014");
 
-        createSimB.setText("Create");
+        createSimB.setText("Create Simulated");
         createSimB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createSimBActionPerformed(evt);
@@ -260,22 +260,25 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
                     .add(jLabel10))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(lonSim, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                    .add(latSim, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
-                .add(189, 189, 189)
+                    .add(lonSim)
+                    .add(latSim))
+                .add(119, 119, 119)
                 .add(createSimB)
-                .add(112, 112, 112))
+                .add(182, 182, 182))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(latSim, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(jLabel9))
-                    .add(simNoS, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel7))
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                                .add(latSim, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(jLabel9))
+                            .add(simNoS, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel7)))
+                    .add(createSimB))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel3Layout.createSequentialGroup()
@@ -286,11 +289,8 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
                     .add(jPanel3Layout.createSequentialGroup()
                         .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(simPortNo)
-                            .add(jLabel8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                            .add(jLabel8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .add(92, 92, 92))))
-            .add(jPanel3Layout.createSequentialGroup()
-                .add(createSimB)
-                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         jLabel11.setText("Name");
@@ -303,7 +303,7 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
         });
 
         colorB.setBackground(new java.awt.Color(0, 0, 0));
-        colorB.setFont(new java.awt.Font("Lucida Grande", 1, 13));
+        colorB.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         colorB.setText("Color");
         colorB.setOpaque(true);
         colorB.addActionListener(new java.awt.event.ActionListener() {
@@ -335,7 +335,7 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
                         .add(jLabel11)
                         .add(18, 18, 18)
                         .add(nameF, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 124, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 192, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jPanel4Layout.createSequentialGroup()
                         .add(jLabel14)
