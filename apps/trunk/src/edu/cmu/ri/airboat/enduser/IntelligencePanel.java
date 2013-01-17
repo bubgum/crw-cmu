@@ -64,6 +64,7 @@ public class IntelligencePanel extends javax.swing.JPanel {
         });
 
         modelB.setText("Model");
+        modelB.setEnabled(false);
         modelB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 modelBActionPerformed(evt);
@@ -152,7 +153,7 @@ public class IntelligencePanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox algC;
     private javax.swing.JCheckBox allCB;
-    private javax.swing.JButton modelB;
+    public javax.swing.JButton modelB;
     public javax.swing.JButton startB;
     // End of variables declaration//GEN-END:variables
 }

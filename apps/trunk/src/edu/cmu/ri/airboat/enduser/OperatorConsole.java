@@ -458,6 +458,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                     setAssigningArea(false);
                                     (new IntelligenceAlgorithms()).setArea(pgon);                                    
                                     autoPanel.startB.setEnabled(true);
+                                    autoPanel.modelB.setEnabled(true);
                                     autoPanel.configureAdvanced();
                                 } else if (assigningBuoyDetectionArea) {
                                     System.out.println("Set buoy detection area");
