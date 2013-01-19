@@ -161,7 +161,7 @@ void resetPID()
   memset(&pid, 0, sizeof(pid));
 
   pid.Kp[0] = 32000.0;
-  pid.Kp[5] = 32000.0;
+  pid.Kp[5] = -32000.0; // We invert the rudder so +-100% is positive RHS angle
 
   eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 }
