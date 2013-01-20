@@ -4,8 +4,6 @@
  */
 package edu.cmu.ri.airboat.general;
 
-import com.sun.xml.internal.rngom.digested.DXMLPrinter;
-import edu.cmu.ri.airboat.client.UtmUtils;
 import edu.cmu.ri.crw.FunctionObserver;
 import edu.cmu.ri.crw.FunctionObserver.FunctionError;
 import edu.cmu.ri.crw.ImageListener;
@@ -26,16 +24,17 @@ import gov.nasa.worldwind.render.Polygon;
 import gov.nasa.worldwind.render.Polyline;
 import gov.nasa.worldwind.render.markers.Marker;
 import java.awt.Color;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import robotutils.Pose3D;
 
 /**
@@ -215,6 +214,39 @@ public class BoatProxy extends Thread {
             }
         }, null);
 
+        _server.addImageListener(new ImageListener() {
+            public void receivedImage(byte[] ci) {
+                // Take a picture, and put the resulting image into the panel
+                try {
+                    BufferedImage image = ImageIO.read(new java.io.ByteArrayInputStream(ci));
+                    System.out.println("Got image ... ");
+
+                    if (image != null) {
+                        // Flip the image vertically
+                        AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+                        tx.translate(0, -image.getHeight(null));
+                        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                        image = op.filter(image, null);
+
+                        if (image == null) {
+                            System.err.println("Failed to decode image.");
+                        }
+
+                        // ImagePanel.addImage(image, _pose);
+                        
+                        latestImg = image;
+                    } else {
+                        System.out.println("Image was null in receivedImage");
+                    }
+                } catch (IOException ex) {
+                    System.err.println("Failed to decode image: " + ex);
+                }
+
+            }
+        }, null);
+        
+        // startCamera();
+        
         // Cheating dummy data, another version of this is in SimpleBoatSimulator, 
         // effectively overridden by overridding addSensorListener in FastSimpleBoatSimulator
         // because no access to that code from here.
@@ -366,7 +398,7 @@ public class BoatProxy extends Thread {
         listeners.remove(l);
     }
 
-    private void startCamera() {
+    public void startCamera() {
 
         (new Thread() {
             public void run() {

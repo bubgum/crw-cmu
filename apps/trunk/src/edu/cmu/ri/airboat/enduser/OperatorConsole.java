@@ -11,6 +11,9 @@ import edu.cmu.ri.airboat.general.ConfigureBoatsFrame;
 import edu.cmu.ri.airboat.general.ProxyManager;
 import edu.cmu.ri.airboat.general.ProxyManagerListener;
 import edu.cmu.ri.crw.CrwSecurityManager;
+import edu.cmu.ri.crw.ImageListener;
+import edu.cmu.ri.crw.PoseListener;
+import edu.cmu.ri.crw.data.UtmPose;
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.Configuration;
 import gov.nasa.worldwind.WorldWind;
@@ -44,8 +47,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -119,8 +128,8 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
     public OperatorConsole() {
 
         // Created to make sure listeners are started
-        new IntelligenceAlgorithms();        
-        
+        new IntelligenceAlgorithms();
+
         // System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Airboat Control");
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -155,7 +164,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
 
                 } catch (Exception e) {
                     System.out.println("Problem getting local IP " + e);
-                    JOptionPane.showMessageDialog(frame, "A network error occurred, please restart", "Error", JOptionPane.OK_OPTION);                    
+                    JOptionPane.showMessageDialog(frame, "A network error occurred, please restart", "Error", JOptionPane.OK_OPTION);
                 }
             }
         });
@@ -456,7 +465,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                 Polygon pgon = new Polygon(shapeParams);
                                 pgon.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND); //Change this to absolute and set it to 716ft (from google earth)
                                 ShapeAttributes normalAttributes = new BasicShapeAttributes();
-                                normalAttributes.setInteriorOpacity(0.5);                               
+                                normalAttributes.setInteriorOpacity(0.5);
                                 pgon.setAttributes(normalAttributes);
                                 polyLayer.addRenderable(pgon);
 
@@ -465,7 +474,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                 if (assigningArea) {
                                     selectedProxy.setArea(pgon);
                                     setAssigningArea(false);
-                                    (new IntelligenceAlgorithms()).setArea(pgon);                                    
+                                    (new IntelligenceAlgorithms()).setArea(pgon);
                                     autoPanel.startB.setEnabled(true);
                                     autoPanel.configureAdvanced();
                                 } else if (assigningBuoyDetectionArea) {
@@ -550,7 +559,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
         }
     }
 
-    public void proxyAdded(BoatProxy bp) {
+    public void proxyAdded(final BoatProxy bp) {
 
         final BoatMarker bm = new BoatMarker(bp, bp.getCurrLoc(), new BasicMarkerAttributes(new Material(bp.getColor()), BasicMarkerShape.ORIENTED_SPHERE, 0.9));
         bm.setPosition(bp.getCurrLoc());
@@ -571,20 +580,22 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                 if (bm.getProxy().getWaypointsAsPositions() != null) {
                     shapeParams.clear();
                     // System.out.println("HERE ");
-                                        
+
                     for (Position position : bm.getProxy().getWaypointsAsPositions()) {
                         shapeParams.add(position);
                     }
-                    
-                    if (shapeParams.size() < 2) shapeParams.add(0, bm.getProxy().getCurrLoc());
-                    
+
+                    if (shapeParams.size() < 2) {
+                        shapeParams.add(0, bm.getProxy().getCurrLoc());
+                    }
+
                     line = new Polyline(shapeParams);
                     line.setFollowTerrain(true);
                     line.setOffset(10.0);
                     line.setLineWidth(3.0);
                     line.setColor(bm.getProxy().getColor());
                     polyLayer.addRenderable(line);
-                    
+
                 } else {
                     // System.out.println("No current waypoint");
                 }
@@ -600,7 +611,41 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                 // @todo Operator console ignores waypoint complete
             }
         });
-        
+
+        bp.addImageListener(new ImageListener() {
+            public void receivedImage(byte[] ci) {
+                // Take a picture, and put the resulting image into the panel
+                try {
+                    BufferedImage image = ImageIO.read(new java.io.ByteArrayInputStream(ci));
+                    System.out.println("Got image ... ");
+
+                    // @todo Image processing is getting done twice
+                    if (image != null) {
+                        // Flip the image vertically
+                        AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+                        tx.translate(0, -image.getHeight(null));
+                        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                        image = op.filter(image, null);
+
+                        if (image == null) {
+                            System.err.println("Failed to decode image.");
+                        }
+
+                        ImagePanel.addImage(image, bp.getPose());
+
+                    } else {
+                        System.out.println("Image was null in receivedImage");
+                    }
+                } catch (IOException ex) {
+                    System.err.println("Failed to decode image: " + ex);
+                }
+
+            }
+        });
+
+        bp.startCamera();
+
+
         if (selectedProxy == null) {
             setSelected(bp);
         }

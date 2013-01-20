@@ -457,7 +457,7 @@ public class BoatSimpleProxy extends Thread {
     @Override
     public void run() {
 
-        startCamera();
+        // startCamera();
     }
 
     public void setWaypoints(Polyline pLine) {
