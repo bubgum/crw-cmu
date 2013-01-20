@@ -12,8 +12,6 @@ import edu.cmu.ri.airboat.general.ProxyManager;
 import edu.cmu.ri.airboat.general.ProxyManagerListener;
 import edu.cmu.ri.crw.CrwSecurityManager;
 import edu.cmu.ri.crw.ImageListener;
-import edu.cmu.ri.crw.PoseListener;
-import edu.cmu.ri.crw.data.UtmPose;
 import gov.nasa.worldwind.BasicModel;
 import gov.nasa.worldwind.Configuration;
 import gov.nasa.worldwind.WorldWind;
@@ -26,7 +24,6 @@ import gov.nasa.worldwind.geom.Intersection;
 import gov.nasa.worldwind.geom.Line;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.MarkerLayer;
-import gov.nasa.worldwind.layers.Mercator.examples.VirtualEarthLayer;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.layers.SurfaceImageLayer;
 import gov.nasa.worldwind.pick.PickedObject;
@@ -52,9 +49,11 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.JDialog;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -162,8 +161,11 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                         }
                     });
 
+                } catch (java.security.AccessControlException e) {
+                    System.out.println("No DNS available, setting offline mode");
+                    Configuration.setValue(AVKey.OFFLINE_MODE, "true");
                 } catch (Exception e) {
-                    System.out.println("Problem getting local IP " + e);
+                    System.out.println("Problem getting local IP address " + e);
                     JOptionPane.showMessageDialog(frame, "A network error occurred, please restart", "Error", JOptionPane.OK_OPTION);
                 }
             }
@@ -199,7 +201,16 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
             Configuration.setValue(AVKey.INITIAL_ALTITUDE, 3000.0);
 
             // Set this when offline
-            Configuration.setValue(AVKey.OFFLINE_MODE, "false");
+            try {
+                if (InetAddress.getByName("google.com").isReachable(1000)) {
+                    Configuration.setValue(AVKey.OFFLINE_MODE, "false");
+                } else {
+                    Configuration.setValue(AVKey.OFFLINE_MODE, "true");
+                }
+            } catch (Exception e) {
+                System.out.println("No network: " + e);
+                Configuration.setValue(AVKey.OFFLINE_MODE, "true");
+            }
 
             wwd = new WorldWindowGLJPanel();
             wwd.setPreferredSize(new java.awt.Dimension(1000, 800));
@@ -229,7 +240,14 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
              System.out.println("Layer type: " + l.getName() + " " + l.getClass());
              }
              */
+            
+            URL url = getClass().getResource("logo_msve.png");
+            if (url == null) {
+                System.out.println("FAILED! for " + url);
+            }
+            Icon bug = new ImageIcon(url);   
 
+            
             // @todo Make layer an option (e.g., a combobox)
             // Virtual Earth
             final VirtualEarthLayer ve = new VirtualEarthLayer();
