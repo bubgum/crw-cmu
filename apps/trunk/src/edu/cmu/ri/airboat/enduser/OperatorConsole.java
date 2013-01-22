@@ -165,8 +165,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                     System.out.println("No DNS available, setting offline mode");
                     Configuration.setValue(AVKey.OFFLINE_MODE, "true");
                 } catch (Exception e) {
-                    System.out.println("Problem getting local IP address " + e);
-                    JOptionPane.showMessageDialog(frame, "A network error occurred, please restart", "Error", JOptionPane.OK_OPTION);
+                    System.out.println("Problem getting local IP address " + e);                    
                 }
             }
         });

@@ -3,6 +3,8 @@ Copyright (C) 2001, 2009 United States Government
 as represented by the Administrator of the
 National Aeronautics and Space Administration.
 All Rights Reserved.
+* 
+* Modified from http://code.google.com/p/yecolsworldwind/source/browse/trunk/worldwind-0.6.358.13015/experimental/gov/nasa/worldwind/layers/Mercator/examples/VirtualEarthLayer.java?r=10
 */
 package edu.cmu.ri.airboat.enduser;
 

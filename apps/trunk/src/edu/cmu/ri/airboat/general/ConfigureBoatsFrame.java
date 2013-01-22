@@ -10,8 +10,6 @@
  */
 package edu.cmu.ri.airboat.general;
 
-import edu.cmu.ri.airboat.fishfarm.FishFarmBoatProxy;
-import edu.cmu.ri.airboat.fishfarm.FishFarmF;
 import edu.cmu.ri.airboat.floodtest.ImagePanel;
 import edu.cmu.ri.airboat.generalAlmost.FastSimpleBoatSimulator;
 import edu.cmu.ri.crw.VehicleServer;
@@ -23,10 +21,14 @@ import gov.nasa.worldwind.geom.coords.UTMCoord;
 import java.awt.Color;
 import java.net.InetSocketAddress;
 import java.security.AccessControlException;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.Random;
 import java.util.prefs.Preferences;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import robotutils.Pose3D;
 
 /**
@@ -52,47 +54,53 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
         colorB.setForeground(color);
 
         try {
+            
+            System.out.println("SecurityManager: " + System.getSecurityManager());
+            
             physicalServer.setText(Preferences.userRoot().get(LAST_URI_KEY, "http://168.192.1.X:11411"));
             imagesF.setText(Preferences.userRoot().get(LAST_IMG_DIR_KEY, "/tmp"));
             latSim.setText(Preferences.userRoot().get(LAT_SIM, "40.04"));
             lonSim.setText(Preferences.userRoot().get(LON_SIM, "80.04"));
         } catch (AccessControlException e) {
-            System.out.println("Failed to access preferences");
+            System.out.println("Failed to access preferences: " + e);
+            
+            JOptionPane.showMessageDialog(this, "A network error occurred, please restart", "Error", JOptionPane.OK_OPTION);
             physicalServer.setText("http://168.192.1.X:11411");
             imagesF.setText("/tmp");
+
         }
-        
+
         /*
-        (new Thread() {
-            public void run() {
-                try {
-                    sleep(10000);
-                } catch (InterruptedException e) {}
+         (new Thread() {
+         public void run() {
+         try {
+         sleep(10000);
+         } catch (InterruptedException e) {}
     
-                simNoS.setValue(10);
-                createSimBActionPerformed(null);
-                FishFarmF.algC.setSelectedIndex(3);
-                FishFarmF.allAutoCB.setSelected(true);
+         simNoS.setValue(10);
+         createSimBActionPerformed(null);
+         FishFarmF.algC.setSelectedIndex(3);
+         FishFarmF.allAutoCB.setSelected(true);
                 
-                try {
-                    sleep(3000);
-                } catch (InterruptedException e) {}
+         try {
+         sleep(3000);
+         } catch (InterruptedException e) {}
                 
-                for (FishFarmBoatProxy p : FishFarmF.proxies) {
-                    p.setAutonomous(true);
-                }
+         for (FishFarmBoatProxy p : FishFarmF.proxies) {
+         p.setAutonomous(true);
+         }
                 
-                try {
-                    sleep(15*60*1000);
-                } catch (InterruptedException e) {}
+         try {
+         sleep(15*60*1000);
+         } catch (InterruptedException e) {}
                 
-                System.out.println("Successfully finished");
+         System.out.println("Successfully finished");
                 
-                System.exit(0);
+         System.exit(0);
                 
-            }
-        }).start();
-        */
+         }
+         }).start();
+         */
     }
 
     /**
@@ -426,7 +434,7 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
         double lat = Double.parseDouble(latSim.getText());
         double lon = Double.parseDouble(lonSim.getText());
 
-        int port = (Integer) simPortNo.getValue();
+        final int port = (Integer) simPortNo.getValue();
         int count = (Integer) simNoS.getValue();
 
         for (int i = 0; i < count; i++) {
@@ -458,7 +466,7 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
         try {
             Preferences p = Preferences.userRoot();
             p.put(LAT_SIM, latSim.getText());
-            p.put(LON_SIM, lonSim.getText());            
+            p.put(LON_SIM, lonSim.getText());
         } catch (AccessControlException e) {
             System.out.println("Failed to save preferences");
         }
@@ -502,7 +510,6 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
-
             public void run() {
                 new ConfigureBoatsFrame().setVisible(true);
             }

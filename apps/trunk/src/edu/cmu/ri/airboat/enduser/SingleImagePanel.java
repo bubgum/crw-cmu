@@ -10,13 +10,10 @@
  */
 package edu.cmu.ri.airboat.enduser;
 
-import edu.cmu.ri.airboat.floodtest.*;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
 /**
  *
@@ -38,7 +35,16 @@ public class SingleImagePanel extends javax.swing.JPanel {
 
     }
 
+    AtomicBoolean in = new AtomicBoolean(false);
+    
     private void getImage() {
+        
+        if (in.get()) return;
+        
+        in.set(true);
+        if (ImagePanel.willBlock()) {
+            imgL.setIcon(null);
+        }
         img = ImagePanel.getImage();
         if (img != null) {
             Image scaledImage = img.getScaledInstance(imgL.getWidth(), imgL.getHeight(), Image.SCALE_DEFAULT);
@@ -46,6 +52,7 @@ public class SingleImagePanel extends javax.swing.JPanel {
         } else {
             getImage();
         }
+        in.set(false);
     }
 
     /** This method is called from within the constructor to
@@ -58,7 +65,6 @@ public class SingleImagePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         doneB = new javax.swing.JButton();
-        buoyB = new javax.swing.JButton();
         enlargeB = new javax.swing.JButton();
         imgL = new javax.swing.JLabel();
 
@@ -66,14 +72,6 @@ public class SingleImagePanel extends javax.swing.JPanel {
         doneB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doneBActionPerformed(evt);
-            }
-        });
-
-        buoyB.setText("Buoy");
-        buoyB.setEnabled(false);
-        buoyB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buoyBActionPerformed(evt);
             }
         });
 
@@ -92,38 +90,19 @@ public class SingleImagePanel extends javax.swing.JPanel {
                 .add(doneB)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(enlargeB)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(buoyB, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
-            .add(imgL, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .add(0, 53, Short.MAX_VALUE))
+            .add(imgL, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .add(imgL, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                .add(imgL, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(doneB)
-                    .add(enlargeB)
-                    .add(buoyB)))
+                    .add(enlargeB)))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buoyBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buoyBActionPerformed
-
-        final JPanel panel = this;
-        this.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                super.mouseClicked(me);
-                
-                System.out.println("Got click: " + me);
-                panel.removeMouseListener(this);
-            }
-            
-        });
-        
-    }//GEN-LAST:event_buoyBActionPerformed
 
     // @todo make this a proper semaphore
     boolean lock = false;    
@@ -149,7 +128,6 @@ public class SingleImagePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_enlargeBActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buoyB;
     private javax.swing.JButton doneB;
     private javax.swing.JButton enlargeB;
     private javax.swing.JLabel imgL;

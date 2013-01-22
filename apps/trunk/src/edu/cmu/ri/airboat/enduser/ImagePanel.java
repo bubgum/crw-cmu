@@ -84,6 +84,10 @@ public class ImagePanel extends javax.swing.JPanel {
         }
     }
 
+    public static boolean willBlock() {
+        return queue.peek() == null;
+    }
+    
     public static BufferedImage getImage() {
         try {
             BufferedImage b = queue.take().img;
@@ -107,8 +111,8 @@ public class ImagePanel extends javax.swing.JPanel {
 
         imagesP = new javax.swing.JPanel();
         controlsP = new javax.swing.JPanel();
-        queueP = new javax.swing.JProgressBar();
         rateS = new javax.swing.JSlider();
+        queueP = new javax.swing.JProgressBar();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Images"));
 
@@ -120,7 +124,18 @@ public class ImagePanel extends javax.swing.JPanel {
         );
         imagesPLayout.setVerticalGroup(
             imagesPLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 738, Short.MAX_VALUE)
+            .add(0, 517, Short.MAX_VALUE)
+        );
+
+        org.jdesktop.layout.GroupLayout controlsPLayout = new org.jdesktop.layout.GroupLayout(controlsP);
+        controlsP.setLayout(controlsPLayout);
+        controlsPLayout.setHorizontalGroup(
+            controlsPLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 242, Short.MAX_VALUE)
+        );
+        controlsPLayout.setVerticalGroup(
+            controlsPLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 0, Short.MAX_VALUE)
         );
 
         rateS.setMinimum(1);
@@ -132,41 +147,32 @@ public class ImagePanel extends javax.swing.JPanel {
             }
         });
 
-        org.jdesktop.layout.GroupLayout controlsPLayout = new org.jdesktop.layout.GroupLayout(controlsP);
-        controlsP.setLayout(controlsPLayout);
-        controlsPLayout.setHorizontalGroup(
-            controlsPLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, queueP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-            .add(controlsPLayout.createSequentialGroup()
-                .add(4, 4, 4)
-                .add(rateS, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        controlsPLayout.setVerticalGroup(
-            controlsPLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, controlsPLayout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
-                .add(rateS, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(queueP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-        );
-
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, rateS, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, controlsP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, imagesP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(controlsP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(imagesP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .add(queueP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .add(imagesP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(rateS, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(queueP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(172, 172, 172)
                 .add(controlsP, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
