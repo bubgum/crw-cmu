@@ -51,10 +51,10 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -240,12 +240,13 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
              }
              */
 
+            /*
             URL url = getClass().getResource("logo_msve.png");
             if (url == null) {
                 System.out.println("FAILED! for " + url);
             }
             Icon bug = new ImageIcon(url);
-
+            */
 
             // @todo Make layer an option (e.g., a combobox)
             // Virtual Earth
@@ -328,6 +329,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                 Polyline pLine = null;
                 Polyline tempLine = null;
                 gov.nasa.worldwind.render.Ellipsoid ellipsoid = null;
+                Hashtable<BoatProxy, Renderable> lastRender = new Hashtable<BoatProxy, Renderable>();
 
                 @Override
                 public void mousePressed(java.awt.event.MouseEvent e) {
@@ -418,7 +420,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                             if (shapeParams.size() == 1) {
                                 // ellipsoid = new Ellipsoid(pickPos, 50, 150, 150);
                                 // polyLayer.addRenderable(ellipsoid);
-                                
+
                                 wwd.addMouseMotionListener(motionListener);
                             } else if (shapeParams.size() > 1) {
 
@@ -431,6 +433,13 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                             me.consume();
 
                             if (me.getClickCount() > 1) {
+                                Renderable prev = lastRender.get(selectedProxy);
+                                if (prev != null) {
+                                    polyLayer.removeRenderable(prev);
+                                }
+                                lastRender.put(selectedProxy, pLine);
+
+
                                 System.out.println("FINISHED!");
                                 selectedProxy.setWaypoints(pLine);
                                 setAssigningPath(false);
@@ -441,6 +450,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                 if (tempLine != null) {
                                     polyLayer.removeRenderable(tempLine);
                                 }
+
 
                             }
                         }
@@ -526,6 +536,12 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                     setAssigningSensingArea(false);
                                     AutonomyPanel.setSensorArea(pgon);
                                 }
+
+                                Renderable prev = lastRender.get(selectedProxy);
+                                if (prev != null) {
+                                    polyLayer.removeRenderable(prev);
+                                }
+                                lastRender.put(selectedProxy, pgon);
                             }
                         }
                     } else if (settingWaterLevel) {
