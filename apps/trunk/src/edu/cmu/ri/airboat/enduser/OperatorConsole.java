@@ -165,7 +165,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                     System.out.println("No DNS available, setting offline mode");
                     Configuration.setValue(AVKey.OFFLINE_MODE, "true");
                 } catch (Exception e) {
-                    System.out.println("Problem getting local IP address " + e);                    
+                    System.out.println("Problem getting local IP address " + e);
                 }
             }
         });
@@ -239,14 +239,14 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
              System.out.println("Layer type: " + l.getName() + " " + l.getClass());
              }
              */
-            
+
             URL url = getClass().getResource("logo_msve.png");
             if (url == null) {
                 System.out.println("FAILED! for " + url);
             }
-            Icon bug = new ImageIcon(url);   
+            Icon bug = new ImageIcon(url);
 
-            
+
             // @todo Make layer an option (e.g., a combobox)
             // Virtual Earth
             final VirtualEarthLayer ve = new VirtualEarthLayer();
@@ -326,6 +326,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
             wwd.addMouseListener(new MouseAdapter() {
                 ArrayList<Position> shapeParams = new ArrayList<Position>();
                 Polyline pLine = null;
+                Polyline tempLine = null;
                 gov.nasa.worldwind.render.Ellipsoid ellipsoid = null;
 
                 @Override
@@ -340,16 +341,16 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                     @Override
                     public void mouseMoved(MouseEvent me) {
                         // System.out.println("Movement");
-                        if (pLine != null) {
-                            polyLayer.removeRenderable(pLine);
+                        if (tempLine != null) {
+                            polyLayer.removeRenderable(tempLine);
                         }
                         ArrayList<Position> tempShapeParams = new ArrayList<Position>();
-                        tempShapeParams.add(shapeParams.get(0));
+                        tempShapeParams.add(shapeParams.get(shapeParams.size() - 1));
                         tempShapeParams.add(getPickPosition());
-                        pLine = new Polyline(tempShapeParams);
-                        pLine.setFollowTerrain(true);
-                        pLine.setLineWidth(4.0);
-                        polyLayer.addRenderable(pLine);
+                        tempLine = new Polyline(tempShapeParams);
+                        tempLine.setFollowTerrain(true);
+                        tempLine.setLineWidth(4.0);
+                        polyLayer.addRenderable(tempLine);
 
                         // System.out.println("Added line from " + tempShapeParams.get(0) + " " + tempShapeParams.get(1) + " " + polyLayer.getNumRenderables());
                     }
@@ -417,6 +418,8 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                             if (shapeParams.size() == 1) {
                                 // ellipsoid = new Ellipsoid(pickPos, 50, 150, 150);
                                 // polyLayer.addRenderable(ellipsoid);
+                                
+                                wwd.addMouseMotionListener(motionListener);
                             } else if (shapeParams.size() > 1) {
 
                                 pLine = new Polyline(shapeParams);
@@ -433,6 +436,12 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                 setAssigningPath(false);
                                 shapeParams.clear();
                                 pLine = null;
+
+                                wwd.removeMouseMotionListener(motionListener);
+                                if (tempLine != null) {
+                                    polyLayer.removeRenderable(tempLine);
+                                }
+
                             }
                         }
                     } else if (assigningArea || assigningBuoyDetectionArea || assigningSensingArea) {
@@ -457,9 +466,11 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
 
                             } else if (shapeParams.size() > 1) {
 
-                                if (shapeParams.size() == 2) {
-                                    wwd.removeMouseMotionListener(motionListener);
-                                }
+                                /*
+                                 if (shapeParams.size() == 2) {
+                                 wwd.removeMouseMotionListener(motionListener);
+                                 }
+                                 */
 
                                 pLine = new Polyline(shapeParams);
                                 pLine.setFollowTerrain(true);
@@ -472,6 +483,11 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                         } else {
                             System.out.println("FINISHED!");
                             me.consume();
+
+                            wwd.removeMouseMotionListener(motionListener);
+                            if (tempLine != null) {
+                                polyLayer.removeRenderable(tempLine);
+                            }
 
                             if (shapeParams.size() > 2) {
 
