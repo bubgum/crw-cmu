@@ -78,6 +78,8 @@ public class BoatPanel extends javax.swing.JPanel {
             debuggerB.setEnabled(true);
             disconnectB.setEnabled(true);
             sampleB.setEnabled(true);
+            goSlowCB.setEnabled(true);
+            goSlowCB.setSelected(proxy.isGoSlow());
             setBorder(new MatteBorder(new Insets(5, 5, 5, 5), proxy.getColor()));
 
             update();
@@ -91,6 +93,7 @@ public class BoatPanel extends javax.swing.JPanel {
             debuggerB.setEnabled(true);
             disconnectB.setEnabled(false);
             sampleB.setEnabled(false);
+            goSlowCB.setEnabled(false);
             modeL.setText("Unknown");
             
             setBorder(null);
@@ -121,6 +124,7 @@ public class BoatPanel extends javax.swing.JPanel {
         disconnectB = new javax.swing.JButton();
         latestImgP = new javax.swing.JPanel();
         sampleB = new javax.swing.JButton();
+        goSlowCB = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(0, 0, 0)));
 
@@ -217,6 +221,13 @@ public class BoatPanel extends javax.swing.JPanel {
             }
         });
 
+        goSlowCB.setText("Go slow");
+        goSlowCB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goSlowCBActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -244,19 +255,18 @@ public class BoatPanel extends javax.swing.JPanel {
                                 .add(debuggerB)))
                         .add(99, 99, 99))
                     .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(27, 27, 27)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(goSlowCB)
                             .add(layout.createSequentialGroup()
-                                .add(5, 5, 5)
-                                .add(jLabel1))
-                            .add(layout.createSequentialGroup()
-                                .add(27, 27, 27)
-                                .add(noteWriteB)))
-                        .add(28, 28, 28)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 268, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                    .add(noteWriteB)
+                                    .add(jLabel1))
+                                .add(28, 28, 28)
+                                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 268, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                         .add(47, 47, 47)
                         .add(modeL, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 157, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(38, 38, 38)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(latestImgP, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -275,7 +285,9 @@ public class BoatPanel extends javax.swing.JPanel {
                                     .add(teleopB))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(debuggerB))
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, cancelB))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                                .add(cancelB)
+                                .add(goSlowCB)))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(assignAreaB)
@@ -284,12 +296,15 @@ public class BoatPanel extends javax.swing.JPanel {
                             .add(sampleB))
                         .add(18, 18, 18)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(modeL, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(modeL, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(layout.createSequentialGroup()
-                                .add(jLabel1)
-                                .add(18, 18, 18)
-                                .add(noteWriteB)))))
+                                .add(0, 0, Short.MAX_VALUE)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 70, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(layout.createSequentialGroup()
+                                        .add(jLabel1)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(noteWriteB)))))))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -364,6 +379,12 @@ public class BoatPanel extends javax.swing.JPanel {
         proxy.sample();
     }//GEN-LAST:event_sampleBActionPerformed
 
+    private void goSlowCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goSlowCBActionPerformed
+        if (proxy != null) {
+            proxy.setGoSlow(true);
+        }
+    }//GEN-LAST:event_goSlowCBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField addressF;
     private javax.swing.JButton assignAreaB;
@@ -371,6 +392,7 @@ public class BoatPanel extends javax.swing.JPanel {
     private javax.swing.JButton cancelB;
     private javax.swing.JButton debuggerB;
     private javax.swing.JButton disconnectB;
+    private javax.swing.JCheckBox goSlowCB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel latestImgP;

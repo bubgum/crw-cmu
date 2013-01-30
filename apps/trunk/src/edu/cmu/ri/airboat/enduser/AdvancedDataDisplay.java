@@ -6,6 +6,7 @@ package edu.cmu.ri.airboat.enduser;
 
 import java.awt.BorderLayout;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 
 /**
  *
@@ -37,6 +38,8 @@ public class AdvancedDataDisplay extends javax.swing.JFrame {
         viewC.setSelectedItem(dm.repo.getImageType());
         
         indexC.setModel(dm.repo.getCBModel());
+        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**

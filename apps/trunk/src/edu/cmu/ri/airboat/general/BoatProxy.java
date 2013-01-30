@@ -30,7 +30,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -70,6 +72,9 @@ public class BoatProxy extends Thread {
     volatile boolean _isShutdown = false;
     // Latest image returned from this boat
     private BufferedImage latestImg = null;
+    // Tell the boat to go slowly
+    private boolean goSlow = false;
+    private boolean goSlowExecuting = false;
 
     public void sample() {
         System.out.println("Calling sample on server");
@@ -185,6 +190,7 @@ public class BoatProxy extends Thread {
 
                     // Update state variables
                     currLoc = p;
+                    currUtm = boatPos;
 
                     for (BoatProxyListener boatProxyListener : listeners) {
                         boatProxyListener.poseUpdated();
@@ -206,8 +212,18 @@ public class BoatProxy extends Thread {
             public void waypointUpdate(WaypointState ws) {
 
                 if (ws.equals(WaypointState.DONE)) {
-                    for (BoatProxyListener boatProxyListener : listeners) {
-                        boatProxyListener.waypointsComplete();
+                    // Handle the go slow
+                    if (goSlowExecuting) {
+                        timeLastGoSlowDone = System.currentTimeMillis();
+                        goSlowRun();
+                    }
+                    // This is intentionally rechecking, because goSlowRun() will change the boolean
+                    // if it is done
+                    if (!goSlowExecuting) {
+                        // Notify listeners
+                        for (BoatProxyListener boatProxyListener : listeners) {
+                            boatProxyListener.waypointsComplete();
+                        }
                     }
                 }
 
@@ -233,7 +249,7 @@ public class BoatProxy extends Thread {
                         }
 
                         // ImagePanel.addImage(image, _pose);
-                        
+
                         latestImg = image;
                     } else {
                         System.out.println("Image was null in receivedImage");
@@ -244,9 +260,9 @@ public class BoatProxy extends Thread {
 
             }
         }, null);
-        
+
         // startCamera();
-        
+
         // Cheating dummy data, another version of this is in SimpleBoatSimulator, 
         // effectively overridden by overridding addSensorListener in FastSimpleBoatSimulator
         // because no access to that code from here.
@@ -373,6 +389,14 @@ public class BoatProxy extends Thread {
         return isConnected;
     }
 
+    public boolean isGoSlow() {
+        return goSlow;
+    }
+
+    public void setGoSlow(boolean goSlow) {
+        this.goSlow = goSlow;
+    }
+
     public void addSensorListener(int channel, SensorListener l) {
         _server.addSensorListener(channel, l, null);
 
@@ -464,6 +488,13 @@ public class BoatProxy extends Thread {
     }
 
     public void setWaypoints(Iterable<Position> ps) {
+
+        if (goSlow && ps.iterator().hasNext()) {
+            System.out.println("GO SLOW MODE");
+            setWaypointsGoSlow(ps);
+            return;
+        }
+
         _waypoints.clear();
 
         // Stored to help out the OperatorConsole (i.e., save a couple of translations)
@@ -489,6 +520,123 @@ public class BoatProxy extends Thread {
                 System.out.println("START WAYPOINTS FAILED");
             }
         });
+
+    }
+    Iterator<Position> goSlowWPs = null;
+    UtmPose lastSentGoSlowPose = null;
+    long timeLastGoSlowSent = 0L;
+    long timeLastGoSlowDone = 0L;
+    UtmPose goSlowCurrentTarget = null;
+    
+    // TO CHANGE
+    long goSlowRestTime = 20000L;
+    long goSlowToWaypointTime = 20000L;
+    double maxWPDist = 30.0;
+    // END TO CHANGE
+    
+
+    private void setWaypointsGoSlow(Iterable<Position> ps) {
+
+        // Stored to help out the OperatorConsole (i.e., save a couple of translations)
+        _waypointsPos = ps;
+
+        goSlowWPs = ps.iterator();
+        goSlowExecuting = true;
+        goSlowRun();
+    }
+
+    private void goSlowRun() {
+
+        if (System.currentTimeMillis() - timeLastGoSlowSent > goSlowRestTime
+                && System.currentTimeMillis() - timeLastGoSlowDone > goSlowRestTime) {
+
+            _waypoints.clear();
+
+            try {
+
+                // Get a new target point, if we don't have one
+                if (goSlowCurrentTarget == null) {
+                    Position position = goSlowWPs.next();
+                    UTMCoord utm = UTMCoord.fromLatLon(position.latitude, position.longitude);
+                    goSlowCurrentTarget = new UtmPose(new Pose3D(utm.getEasting(), utm.getNorthing(), 0.0, 0.0, 0.0, 0.0), new Utm(utm.getZone(), utm.getHemisphere().contains("North")));
+                }
+
+                // If we are too far from that target point, pick some intermediate point
+                double dist = _pose.pose.getEuclideanDistance(goSlowCurrentTarget.pose);
+                System.out.println("DISTANCE IS " + dist);
+                UtmPose realTarget = null;
+
+                if (dist > maxWPDist) {
+                    System.out.println("Creating an intermediate point in go slow");
+                    double x = _pose.pose.getX() + (maxWPDist / dist) * (goSlowCurrentTarget.pose.getX() - _pose.pose.getX());
+                    double y = _pose.pose.getY() + (maxWPDist / dist) * (goSlowCurrentTarget.pose.getY() - _pose.pose.getY());
+                    realTarget = new UtmPose(new Pose3D(x, y, _pose.pose.getZ(), _pose.pose.getRotation()), new Utm(currUtm.getZone(), currUtm.getHemisphere().contains("North")));
+                    _waypoints.add(realTarget);
+                } else {
+                    // We are done with this point
+                    _waypoints.add(goSlowCurrentTarget);
+                    goSlowCurrentTarget = null;
+                }
+
+                timeLastGoSlowSent = System.currentTimeMillis();
+                
+                // This thread monitors whether it took too long to get to the waypoint
+                (new Thread() {
+                    public void run() {
+                        try {
+                            sleep(goSlowToWaypointTime);                            
+                        } catch (InterruptedException e) {}
+                        if (System.currentTimeMillis() - timeLastGoSlowSent > goSlowToWaypointTime) {
+                            System.out.println("Failed to reach waypoint in time, " + goSlowRestTime + " resting");
+                            
+                            _server.stopWaypoints(new FunctionObserver<Void>() {
+
+                                public void completed(Void v) {
+                                    System.out.println("Resting waypoints due to too long");
+                                }
+
+                                public void failed(FunctionError fe) {
+                                    System.out.println("Failed to rest: " + fe);
+                                }
+                            });
+                            
+                            goSlowRun();
+                        }
+                    }
+                }).start();
+
+                _server.setAutonomous(true, null);
+                _server.startWaypoints(_waypoints.toArray(new UtmPose[_waypoints.size()]), "POINT_AND_SHOOT", new FunctionObserver() {
+                    public void completed(Object v) {
+                        System.out.println("Successfully sent a waypoint in Go Slow: " + _waypoints.peek());
+                    }
+
+                    public void failed(FunctionError fe) {
+                        // @todo Do something when start waypoints fails
+                        System.out.println("START WAYPOINTS FAILED");
+                    }
+                });
+
+            } catch (NoSuchElementException e) {
+                System.out.println("Go slow is done! " + e);
+                goSlowExecuting = false;
+            }
+
+        } else {
+
+            System.out.println("Too soon to send next waypoint");
+
+            (new Thread() {
+                public void run() {
+                    try {
+                        sleep(goSlowRestTime / 2);
+                        System.out.println("Thread awoke");
+                    } catch (InterruptedException e) {
+                    }
+                    goSlowRun();
+                }
+            }).start();
+        }
 
     }
 

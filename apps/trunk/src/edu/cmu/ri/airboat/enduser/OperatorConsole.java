@@ -412,6 +412,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                             if (pLine != null) {
                                 polyLayer.removeRenderable(pLine);
                             }
+                            
                             if (ellipsoid != null) {
                                 polyLayer.removeRenderable(ellipsoid);
                                 ellipsoid = null;
@@ -433,14 +434,15 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                             me.consume();
 
                             if (me.getClickCount() > 1) {
+                                
+                                // Remove previous
                                 Renderable prev = lastRender.get(selectedProxy);
                                 if (prev != null) {
                                     polyLayer.removeRenderable(prev);
                                 }
                                 lastRender.put(selectedProxy, pLine);
 
-
-                                System.out.println("FINISHED!");
+                                System.out.println("Finished creating path!");
                                 selectedProxy.setWaypoints(pLine);
                                 setAssigningPath(false);
                                 shapeParams.clear();
@@ -450,7 +452,6 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                 if (tempLine != null) {
                                     polyLayer.removeRenderable(tempLine);
                                 }
-
 
                             }
                         }
@@ -519,6 +520,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                                     setAssigningArea(false);
                                     (new IntelligenceAlgorithms()).setArea(pgon);
                                     autoPanel.startB.setEnabled(true);
+                                    autoPanel.modelB.setEnabled(true);
                                     autoPanel.configureAdvanced();
                                 } else if (assigningBuoyDetectionArea) {
                                     System.out.println("Set buoy detection area");
@@ -587,7 +589,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
 
                 @Override
                 public void mouseDragged(MouseEvent me) {
-                    System.out.println("Dragged");
+                    //System.out.println("Dragged");
                 }
             });
 
