@@ -115,8 +115,13 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
         lr[0] = utmLr.getEasting();
         lr[1] = utmLr.getNorthing();
 
-        System.out.println("DATA DISPLAY IS CREATED");
+        System.out.println("DATA DISPLAY IS CREATED: " + ul[0] + " " + ul[1] + " " + lr[0] + " " + lr[1]);        
         data = new DataDisplay(ul, lr, pgon);
+        
+        lonDiff = Math.min((1.0 / 90000.0) * 10.0, (maxLon.degrees - minLon.degrees)/10.0);
+        latDiff = Math.min((1.0 / 110000.0) * 10.0, (maxLat.degrees - minLat.degrees) / 10.0);
+        
+        System.out.println("Set lonDiff = " + lonDiff + ", latDiff " + latDiff);
 
     }
 
@@ -245,6 +250,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
 
             if (currLat.degrees > maxLat.degrees) {
                 currLat = minLat;
+                currLat = currLat.addDegrees(latDiff);                
             }
 
             path.add(new Position(new LatLon(currLat, getMinLonAt(minLon, currLat)), 0.0));
@@ -254,16 +260,13 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
 
             if (currLat.degrees > maxLat.degrees) {
                 currLat = minLat;
+                currLat = currLat.addDegrees(latDiff);
             }
 
             path.add(new Position(new LatLon(currLat, getMaxLonAt(maxLon, currLat)), 0.0));
             path.add(new Position(new LatLon(currLat, getMinLonAt(minLon, currLat)), 0.0));
+            
         }
-
-        /*
-         path.add(new Position(new LatLon(minLat, minLon), 0.0));
-         path.add(new Position(new LatLon(maxLat, maxLon), 0.0));
-         */
 
         return path;
     }
@@ -273,6 +276,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
         LatLon l1 = new LatLon(lat, mL);
         while (!isLocationInside(l1, (ArrayList<LatLon>) area.getOuterBoundary())) {
             mL = mL.addDegrees(lonDiff);
+            //System.out.println("min lon now " + mL);
             l1 = new LatLon(lat, mL);
         }
         return mL;
@@ -283,6 +287,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
         LatLon l1 = new LatLon(lat, mL);
         while (!isLocationInside(l1, (ArrayList<LatLon>) area.getOuterBoundary())) {
             mL = mL.addDegrees(-lonDiff);
+            //System.out.println("max lon now " + mL);
             l1 = new LatLon(lat, mL);
         }
         return mL;
@@ -297,7 +302,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
         for (int i = 1; i < positions.size(); i++) {
             LatLon p2 = positions.get(i);
 
-// Developped for clarity
+// Developed for clarity
 //            double lat = point.getLatitude().degrees;
 //            double lon = point.getLongitude().degrees;
 //            double lat1 = p1.getLatitude().degrees;

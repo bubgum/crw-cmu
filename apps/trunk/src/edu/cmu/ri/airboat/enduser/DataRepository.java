@@ -584,7 +584,8 @@ public class DataRepository {
 
 
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("OUT OF EXTENT: " + bx + " " + li.length + " " + by + " " + li[0].length);
+            // System.out.println("OUT OF EXTENT: " + bx + " " + li.length + " " + by + " " + li[0].length);
+            System.out.print("-");
         }
     }
 

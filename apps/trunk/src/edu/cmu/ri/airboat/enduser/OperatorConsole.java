@@ -195,8 +195,14 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
         public AppFrame() {
 
             // @todo Make initial position configurable            
-            Configuration.setValue(AVKey.INITIAL_LATITUDE, 40.44515205369163);
-            Configuration.setValue(AVKey.INITIAL_LONGITUDE, -80.01877404355538);
+            // Pittsburgh
+            // Configuration.setValue(AVKey.INITIAL_LATITUDE, 40.44515205369163);
+            // Configuration.setValue(AVKey.INITIAL_LONGITUDE, -80.01877404355538);
+            
+            // Doha
+            Configuration.setValue(AVKey.INITIAL_LATITUDE, 25.3);            
+            Configuration.setValue(AVKey.INITIAL_LONGITUDE, 51.5333);
+            
             Configuration.setValue(AVKey.INITIAL_ALTITUDE, 3000.0);
 
             // Set this when offline
