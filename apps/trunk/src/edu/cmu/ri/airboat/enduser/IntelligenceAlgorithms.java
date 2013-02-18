@@ -177,7 +177,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     public void waypointsComplete() {
         // IntelligenceAlgorithms got a waypoint complete
 
-        // System.out.println("Waypoint complete!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("Waypoint complete!!!!!!!!!!!!!!!!!!!!");
         if (autonomous && !allAutonomous) {
             if (selectedProxy.getCurrWaypoint() == null) {
                 // System.out.println("Generating new path");
@@ -274,10 +274,11 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     private static Angle getMinLonAt(Angle minLon, Angle lat) {
         Angle mL = minLon;
         LatLon l1 = new LatLon(lat, mL);
-        while (!isLocationInside(l1, (ArrayList<LatLon>) area.getOuterBoundary())) {
+        while (!isLocationInside(l1, (ArrayList<LatLon>) area.getOuterBoundary()) && mL.degrees < maxLon.degrees) {
             mL = mL.addDegrees(lonDiff);
             //System.out.println("min lon now " + mL);
             l1 = new LatLon(lat, mL);
+            System.out.println("M");
         }
         return mL;
     }
@@ -285,10 +286,11 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     private static Angle getMaxLonAt(Angle minLon, Angle lat) {
         Angle mL = minLon;
         LatLon l1 = new LatLon(lat, mL);
-        while (!isLocationInside(l1, (ArrayList<LatLon>) area.getOuterBoundary())) {
+        while (!isLocationInside(l1, (ArrayList<LatLon>) area.getOuterBoundary()) && mL.degrees > minLon.degrees) {
             mL = mL.addDegrees(-lonDiff);
             //System.out.println("max lon now " + mL);
             l1 = new LatLon(lat, mL);
+            System.out.println("P");
         }
         return mL;
     }
