@@ -240,7 +240,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     static double lonDiff = 1.0 / 90000.0 * 10.0;
     static double latDiff = 1.0 / 110000.0 * 10.0;
 
-    private ArrayList<Position> getLawnmowerPath(int no, int of) {
+    private synchronized ArrayList<Position> getLawnmowerPath(int no, int of) {
 
         ArrayList<Position> path = new ArrayList<Position>();
 
