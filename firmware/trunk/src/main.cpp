@@ -80,7 +80,7 @@ Rudder rudder(&amarino, &servo1);
 //DOSensor<Serial3> doSensor(&amarino);
 
 //#warning TE5 pinout needs to be verified!
-//TE5Config teConfig = { &PORTD, PIN1, &PORTD, PIN0};
+//TE5Config teConfig = { &PORTD, PIN1 };
 //TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
 /**

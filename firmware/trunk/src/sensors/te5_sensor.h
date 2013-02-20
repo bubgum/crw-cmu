@@ -25,8 +25,6 @@ struct TE5Config
 {
   PORT_t * const pwr_port;
   const uint8_t pwr_pin;
-  PORT_t * const rx_port;
-  const uint8_t rx_pin;
 };
 
 
@@ -52,7 +50,7 @@ class TE5Sensor : public Sensor
    : serial(BAUD_1200), stream(serial.stream()), amarino(a), teCount(0) {
   
     // Turn off sensor
-    _teConfig.rx_port->DIRCLR = _BV(_teConfig.rx_pin);
+    _serialConfig.port->DIRCLR = _BV(_serialConfig.rxPin);
     _teConfig.pwr_port->OUTCLR = _BV(_teConfig.pwr_pin);
     _teConfig.pwr_port->DIRSET = _BV(_teConfig.pwr_pin);
   }
@@ -81,12 +79,13 @@ class TE5Sensor : public Sensor
 
     // Did the initialization sequence start yet?
     if (!wasInitialized) {
-      wasInitialized = (_teConfig.rx_port->IN & _BV(_teConfig.rx_pin));
+      wasInitialized = !(_serialConfig.port->IN & _BV(_serialConfig.rxPin));
+      while(serial.available()) { fgetc(stream); }
       return;
     }
 
     // Did the initialization sequence end yet?
-    if (_teConfig.rx_port->IN & _BV(_teConfig.rx_pin)) {
+    if (_serialConfig.port->IN & _BV(_serialConfig.rxPin)) {
       return;
     }
 
@@ -148,12 +147,14 @@ class TE5Sensor : public Sensor
     if (teCount < TE_SENSOR_INTERVAL) {
       teCount++;
       return;
+    } else {
+      teCount = 0;
     }
 
     // Turn off sensor (if it was on this whole time)
     if (_teConfig.pwr_port->OUT & _BV(_teConfig.pwr_pin)) {
       _teConfig.pwr_port->OUTCLR = _BV(_teConfig.pwr_pin);
-      _delay_ms(10); // TODO: how long do we wait?
+      _delay_ms(20); // TODO: how long do we wait?
     }
 
     // Turn on sensor

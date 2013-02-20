@@ -4,6 +4,9 @@
  * author: Pras Velagapudi <pras@senseplatypus.com>
  */
 
+#ifndef _BOARD_H_
+#define _BOARD_H_
+
 #include "led.h"
 #include "serial.h"
 #include "servo.h"
@@ -54,3 +57,5 @@ void initBoard()
   PORTF.DIRSET = PIN5_bm;
   PORTF.OUTCLR = PIN5_bm;
 }
+
+#endif /* _BOARD_H_ */
