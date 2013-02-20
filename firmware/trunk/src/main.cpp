@@ -33,6 +33,7 @@ pidConstants_t EEMEM pidEeprom;
 #include "depth_sensor.h"
 #include "do_sensor.h"
 #include "te5_sensor.h"
+#include "es2_sensor.h"
 
 // Define indices for specific coordinates
 // Assumes X is forward, Y is left, Z is up, frame is right-handed
@@ -81,6 +82,9 @@ Rudder rudder(&amarino, &servo1);
 
 //TE5Config teConfig = { &PORTD, PIN1 };
 //TE5Sensor<teConfig, Serial4> teSensor(&amarino);
+
+//ES2Config esConfig = { &PORTD, PIN1 };
+//ES2Sensor<esConfig, Serial4> esSensor(&amarino);
 
 /**
  * Gradually transition the boat to a safe state.
@@ -202,6 +206,7 @@ void loop()
   //  depthSensor.loop();
   //  doSensor.loop();
   //  teSensor.loop();
+  //  esSensor.loop();
 }
 
 /**
@@ -221,6 +226,7 @@ void update(void *)
   //  teSensor.update();
   //  doSensor.update();
   //  depthSensor.update();
+  //  esSensor.update();
 
   // Decay the desired velocities slightly
   decayVelocity();
