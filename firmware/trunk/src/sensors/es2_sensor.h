@@ -21,17 +21,15 @@
 #define ES_SENSOR_INTERVAL (10)
 
 // Define the pins used to interface with the sensor
-struct ES2Config
-{
+
+struct ES2Config {
   PORT_t * const pwr_port;
   const uint8_t pwr_pin;
 };
 
-
 template<const ES2Config &_esConfig, const SerialConfig &_serialConfig>
-class ES2Sensor : public Sensor
-{
- private:
+class ES2Sensor : public Sensor {
+private:
   SerialHW<_serialConfig> serial;
   FILE *stream;
   MeetAndroid *amarino;
@@ -45,10 +43,11 @@ class ES2Sensor : public Sensor
   bool wasInitialized;
   bool messageIsDone;
 
- public:
- ES2Sensor(MeetAndroid * const a) 
-   : serial(BAUD_1200), stream(serial.stream()), amarino(a), esCount(0) {
-  
+public:
+
+  ES2Sensor(MeetAndroid * const a)
+  : serial(BAUD_1200), stream(serial.stream()), amarino(a), esCount(0) {
+
     // Turn off sensor
     _serialConfig.port->DIRCLR = _BV(_serialConfig.rxPin);
     _esConfig.pwr_port->OUTCLR = _BV(_esConfig.pwr_pin);
@@ -56,31 +55,37 @@ class ES2Sensor : public Sensor
   }
 
   // Converts from raw ES2 sensor value to a floating point in Celsius.
+
   float toTemp(const int &rawTemp) {
-    return (float)(rawTemp - 400)/10.0;
+    return (float) rawTemp; // (rawTemp - 400) / 10.0;
   }
-  
+
   // Converts from raw ES2 sensor value to a floating point mS/cm (dS/m).
+
   float toConductivity(const int &rawCond) {
-    return ((float)rawCond) / 100.0;
+    return ((float) rawCond); // / 100.0;
   }
-  
+
   // Converts from raw ES2 sensor value to dieletric spec in datasheet.
+
   float toDielectric(const int &rawDielectric) {
     return ((float) rawDielectric) / 50.0;
   }
 
-  void loop()
-  {
+  void loop() {
     // Do nothing if we aren't reading sensor
     if (!isReading) {
       return;
     }
 
+
     // Did the initialization sequence start yet?
     if (!wasInitialized) {
       wasInitialized = !(_serialConfig.port->IN & _BV(_serialConfig.rxPin));
-      while(serial.available()) { fgetc(stream); }
+      while (serial.available()) {
+        fgetc(stream);
+      }
+
       return;
     }
 
@@ -90,56 +95,62 @@ class ES2Sensor : public Sensor
     }
 
     // If all this is satisfied, read the serial port
-    while(serial.available()) {
-      
+    while (serial.available()) {
+
       // Read in next available character
       char c = fgetc(stream);
-      esReading[esIndex++] = c;
-      
+      esReading[esIndex++] = c;      
+
       // If this indicates sensor type, the next byte is checksum
       // So if we see a sensor type, activate a flag saying the next
       // byte is the last one.
+
+      // Empirical evidence suggests 13 ... 
       if (!messageIsDone) {
-	messageIsDone = (c == 'z' || c == 'x' || esIndex >= ES_BUFFER_SIZE);
-	crc += c;
+        messageIsDone = (c == 'z' || c == 'q' || esIndex == 13 || esIndex >= ES_BUFFER_SIZE);        
+        crc += c;
 
-      } else {
-	uint16_t dielectric = 0;
-	uint16_t conductivity = 0;
-	uint16_t temperature = 0;
-	char type = '\0';
+        if (messageIsDone) {
+          // uint16_t dielectric = 0;
+          uint16_t conductivity = 0;
+          uint16_t temperature = 0;
+          char type = '\0';
 
-	// Turn off sensor (we are done reading)
-	_esConfig.pwr_port->OUTCLR = _BV(_esConfig.pwr_pin);
-	isReading = false;
+          // Turn off sensor (we are done reading)
+          _esConfig.pwr_port->OUTCLR = _BV(_esConfig.pwr_pin);
+          isReading = false;
 
-	// TODO: Normally we would verify sensor checksum here
-        
-        // Null-terminate the string 
-        esReading[esIndex] = '\0';
-        
-        // Look for ES2 reading
-        sscanf(esReading, "%d %d %d %c", 
-               &dielectric, &conductivity, &temperature, &type);
+          // TODO: Normally we would verify sensor checksum here
 
-	// Convert and output the returned values
-	amarino->send(RECV_ES_FN);
-	amarino->send(toDielectric(dielectric));
-	amarino->send(toConductivity(conductivity));
-	amarino->send(toTemp(temperature));
-	amarino->sendln();
-	
-	// Clear the buffer
-	esIndex = 0;
+          // Null-terminate the string 
+          esReading[esIndex] = '\0';
+
+          // Look for ES2 reading
+          //sscanf(esReading, "%d %d %d %c",
+          //        &dielectric, &conductivity, &temperature, &type);
+
+          sscanf(esReading, "%d %d %c",
+                  &conductivity, &temperature, &type);
+                  
+          // Convert and output the returned values
+          amarino->send(RECV_ES_FN);
+          // amarino->send(toDielectric(dielectric));
+          amarino->send(toConductivity(conductivity));
+          amarino->send(toTemp(temperature));
+          amarino->sendln();
+
+          // Clear the buffer
+          esIndex = 0;
+        }
       }
     }
   }
-  
+
   // Powers up and reads the sensor values from a ES2 environmental sensor, 
-  // and checks the resulting checksum for validity.  If data is invalid,
+  // and checks the resultiFng checksum for validity.  If data is invalid,
   // all values will return zero.
-  void update()
-  {
+
+  void update() {
     // Only take measurements every ES_SENSOR_INTERVAL times
     if (esCount < ES_SENSOR_INTERVAL) {
       esCount++;
@@ -156,7 +167,7 @@ class ES2Sensor : public Sensor
 
     // Turn on sensor
     _esConfig.pwr_port->OUTSET = _BV(_esConfig.pwr_pin);
-    
+
     // Wait for power-up sequence (15ms high)  
     _delay_ms(1);
 

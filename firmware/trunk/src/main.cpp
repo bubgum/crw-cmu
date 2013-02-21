@@ -78,17 +78,17 @@ Rudder rudder(&amarino, &servo1);
 //DepthConfig depthConfig = { &PORTK, PIN4 };
 //DepthSensor<depthConfig, Serial2> depthSensor(&amarino);
 
-//DOSensor<Serial3> doSensor(&amarino);
+DOSensor<Serial3> doSensor(&amarino);
 
 //TE5Config teConfig = { &PORTD, PIN1 };
 //TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
-//ES2Config esConfig = { &PORTD, PIN1 };
-//ES2Sensor<esConfig, Serial4> esSensor(&amarino);
+ES2Config esConfig = { &PORTD, PIN1 };
+ES2Sensor<esConfig, Serial4> esSensor(&amarino);
 
 /**
  * Gradually transition the boat to a safe state.
- */
+ */ 
 void decayVelocity()
 {
   // Slow the vehicle down by reducing velocity in every direction
@@ -128,7 +128,7 @@ void setPID(uint8_t flag, uint8_t numOfValues)
   pid.Kp[axis] = args[1];
   pid.Ki[axis] = args[2];
   pid.Kd[axis] = args[3];
-
+ 
   eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 }
 
@@ -204,9 +204,9 @@ void loop()
 
   // Process the sensors
   //  depthSensor.loop();
-  //  doSensor.loop();
-  //  teSensor.loop();
-  //  esSensor.loop();
+  // doSensor.loop();
+  // teSensor.loop();
+  esSensor.loop();
 }
 
 /**
@@ -223,10 +223,10 @@ void update(void *)
   thruster.update();
 
   // Perform periodic updates for sensors
-  //  teSensor.update();
-  //  doSensor.update();
+  // teSensor.update();
+  // doSensor.update();
   //  depthSensor.update();
-  //  esSensor.update();
+  esSensor.update();
 
   // Decay the desired velocities slightly
   decayVelocity();
