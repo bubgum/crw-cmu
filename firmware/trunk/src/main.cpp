@@ -204,7 +204,7 @@ void loop()
 
   // Process the sensors
   //  depthSensor.loop();
-  // doSensor.loop();
+  doSensor.loop();
   // teSensor.loop();
   esSensor.loop();
 }
@@ -224,7 +224,7 @@ void update(void *)
 
   // Perform periodic updates for sensors
   // teSensor.update();
-  // doSensor.update();
+  doSensor.update();
   //  depthSensor.update();
   esSensor.update();
 

@@ -13,7 +13,7 @@
 #include <util/delay.h>
 
 // Define the char code for the Amarino callback
-#define RECV_ES_FN 's'
+#define RECV_ES_FN 'e'
 
 #define ES_BUFFER_SIZE (32)
 
