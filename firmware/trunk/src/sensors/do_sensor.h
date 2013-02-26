@@ -29,15 +29,16 @@ public:
       doReading[doIndex++] = c; // Add it to the inputString
 
       // if Atlas Scientific reading has been received in its entirety      
-      // Paul inserted '-1' here, seems required to avoid buffer overflow     
-      if (c == '\r' || doIndex >= DO_BUFFER_SIZE - 1) {
+      if (c == '\r' || doIndex >= DO_BUFFER_SIZE) {
 
         // Null-terminate current reading 
         doReading[doIndex] = '\0';
         
+        float v = atof(doReading);
+        
         // Send to server
-        amarino->send(RECV_DO_FN);
-        amarino->send(doReading);
+        amarino->send(RECV_DO_FN);        
+        amarino->send(v);
         amarino->sendln();
 
         // Move to beginning of buffer
