@@ -18,6 +18,7 @@
       <df name="sensors">
         <in>depth_sensor.h</in>
         <in>do_sensor.h</in>
+        <in>es2_sensor.h</in>
         <in>sampler.cpp</in>
         <in>sampler.h</in>
         <in>sensor.h</in>

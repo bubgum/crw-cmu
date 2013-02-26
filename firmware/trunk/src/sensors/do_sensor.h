@@ -34,7 +34,7 @@ public:
 
         // Null-terminate current reading 
         doReading[doIndex] = '\0';
-
+        
         // Send to server
         amarino->send(RECV_DO_FN);
         amarino->send(doReading);
