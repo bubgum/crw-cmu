@@ -68,6 +68,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	public static final char GET_RUDDER_FN = 'r';
 	public static final char GET_THRUST_FN = 't';
 	public static final char GET_TE_FN = 's';
+	public static final char GET_ES_FN = 'e';
 	public static final char SET_VELOCITY_FN = 'v';
 	public static final char GET_DEPTH_FN = 'd';
 	public static final char SET_SAMPLER_FN = 'q';
@@ -85,7 +86,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	final Context _context;
 	final String _arduinoAddr;
 	final List<String> _partialCommand = new ArrayList<String>(10);
-	public static final double[] DEFAULT_TWIST = {0, 0, 0, 0, 0, 0}; 
+	public static final double[] DEFAULT_TWIST = {1000, 0, 0, 0, 0, 90}; 
 
 	/**
 	 * Inertial state vector, currently containing a 6D pose estimate:
@@ -113,7 +114,10 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 */
 	double[] r_PID = {400, 0, 600}; // Kp, Ki, Kd
 	double [] t_PID = {5, 5, 5};
-	public static final double CONST_THRUST = 5000.0;
+	final double[] R_CONSTANTS = {-300, 300, 150, 30};
+	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
+	public static final double CONST_THRUST = 1325;
+	
 
 	/**
 	 * Creates a new instance of the vehicle implementation. This function
@@ -220,7 +224,21 @@ public class AirboatImpl extends AbstractVehicleServer {
 	{
 	  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
-
+	/**
+	 * Accessor method for rudder constants
+	 * 
+	 */
+	public double[] getRudderConstants()
+	{
+		return R_CONSTANTS.clone();
+	}
+	/**
+	 * Accessor method for thruster constants
+	 */
+	public double[] getThrusterConstants()
+	{
+		return T_CONSTANTS.clone();
+	}
 	public void setPhoneGyro(float[] gyroValues)
 	{
 		for (int i = 0; i < gyroValues.length; i++)
@@ -273,6 +291,29 @@ public class AirboatImpl extends AbstractVehicleServer {
 					reading.data[i] = Double.parseDouble(cmd.get(i + 1));
 				sendSensor(reading.channel, reading);
 				logger.info("TE: " + cmd);
+			} catch (NumberFormatException e) {
+				Log.w(logTag, "Received corrupt sensor reading: " + cmd);
+			}
+
+			break;
+			
+		case GET_ES_FN:
+			// Check size of function
+			if (cmd.size() != 3) {
+				Log.w(logTag, "Received corrupt sensor function: " + cmd);
+				return;
+			}
+
+			// Broadcast the sensor reading
+			try {
+				SensorData reading = new SensorData();
+				reading.channel = 0;
+				reading.data = new double[2];
+				reading.type = SensorType.TE;
+				for (int i = 0; i < 2; i++)
+					reading.data[i] = Double.parseDouble(cmd.get(i + 1));
+				sendSensor(reading.channel, reading);
+				logger.info("ES2: " + cmd);
 			} catch (NumberFormatException e) {
 				Log.w(logTag, "Received corrupt sensor reading: " + cmd);
 			}
