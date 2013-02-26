@@ -86,7 +86,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	final Context _context;
 	final String _arduinoAddr;
 	final List<String> _partialCommand = new ArrayList<String>(10);
-	public static final double[] DEFAULT_TWIST = {1000, 0, 0, 0, 0, 90}; 
+	public static final double[] DEFAULT_TWIST = {0, 0, 0, 0, 0, 0}; 
 
 	/**
 	 * Inertial state vector, currently containing a 6D pose estimate:
@@ -112,12 +112,9 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 * Hard-coded constants used in Yunde's controller and for new implementation of Arduino code.
 	 * CONSTANTS FORMAT: range_min, range_max, servo_min, servo_max
 	 */
-	double[] r_PID = {400, 0, 600}; // Kp, Ki, Kd
+	double[] r_PID = {2, 0, 3}; // Kp, Ki, Kd
 	double [] t_PID = {5, 5, 5};
-	final double[] R_CONSTANTS = {-300, 300, 150, 30};
-	final double[] T_CONSTANTS = {0, 1000, 1000, 2200};
-	public static final double CONST_THRUST = 1325;
-	
+	public static final double CONST_THRUST = 0.5;
 
 	/**
 	 * Creates a new instance of the vehicle implementation. This function
@@ -224,26 +221,13 @@ public class AirboatImpl extends AbstractVehicleServer {
 	{
 	  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 	}
-	/**
-	 * Accessor method for rudder constants
-	 * 
-	 */
-	public double[] getRudderConstants()
-	{
-		return R_CONSTANTS.clone();
-	}
-	/**
-	 * Accessor method for thruster constants
-	 */
-	public double[] getThrusterConstants()
-	{
-		return T_CONSTANTS.clone();
-	}
+	
 	public void setPhoneGyro(float[] gyroValues)
 	{
 		for (int i = 0; i < gyroValues.length; i++)
 			_gyroPhone[i] =  (double) gyroValues[i];
 	}
+	
 	/**
 	 * @see AirboatCommand#isConnected()
 	 */
