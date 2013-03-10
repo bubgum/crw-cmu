@@ -93,14 +93,14 @@ class DepthSensor : public Sensor
   // Calculate nmea checksum and return if it is correct or not
   static bool nmeaChecksum(const char *depth) {
     char checksum = 0;
-    char cs[2];
+    char cs[3];
 
     const char *indx = depth + 1;
     for (int i = 1; i < 33; i++, indx++)
       checksum ^= *indx;
     
-    sprintf(cs, "%02x", checksum);    
-    return (!strncmp(cs, &depth[34], 3));
+    sprintf(cs, "%02X", checksum);
+    return (!strncmp(cs, &depth[34], 2));
   }
 
   void clearNMEA(void)
