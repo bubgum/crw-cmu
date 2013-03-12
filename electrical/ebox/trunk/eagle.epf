@@ -1,6 +1,6 @@
 [Eagle]
 Version="06 03 00"
-Platform="Windows"
+Platform="Linux"
 Serial="62191E841E-LSR-WLM-1EL"
 Globals="Globals"
 Desktop="Desktop"
@@ -11,8 +11,8 @@ UsedLibrary="crw.lbr"
 
 [Win_1]
 Type="Control Panel"
-Loc="412 231 1011 630"
-State=2
+Loc="684 188 1283 587"
+State=1
 Number=0
 
 [Desktop]
