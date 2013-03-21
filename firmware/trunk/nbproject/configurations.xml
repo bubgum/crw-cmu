@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="84">
+<configurationDescriptor version="88">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <df name="src" root="src">
+    <df root="src" name="src">
       <df name="hardware">
         <in>analog.c</in>
         <in>analog.h</in>
@@ -71,9 +71,12 @@
             <incDir>
               <pElem>src</pElem>
               <pElem>src/hardware</pElem>
+              <pElem>src/sensors</pElem>
+              <pElem>src/system</pElem>
               <pElem>/usr/lib/avr/include</pElem>
             </incDir>
             <preprocessorList>
+              <Elem>F_CPU 32000000UL</Elem>
               <Elem>__AVR_ATxmega128A1__</Elem>
             </preprocessorList>
           </cTool>
@@ -81,9 +84,12 @@
             <incDir>
               <pElem>src</pElem>
               <pElem>src/hardware</pElem>
+              <pElem>src/sensors</pElem>
+              <pElem>src/system</pElem>
               <pElem>/usr/lib/avr/include</pElem>
             </incDir>
             <preprocessorList>
+              <Elem>F_CPU 32000000UL</Elem>
               <Elem>__AVR_ATxmega128A1__</Elem>
             </preprocessorList>
           </ccTool>
