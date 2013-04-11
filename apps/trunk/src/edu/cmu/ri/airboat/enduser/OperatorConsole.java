@@ -23,6 +23,7 @@ import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.Intersection;
 import gov.nasa.worldwind.geom.Line;
 import gov.nasa.worldwind.geom.Position;
+import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.MarkerLayer;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.layers.SurfaceImageLayer;
@@ -255,9 +256,13 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
             */
 
             // @todo Make layer an option (e.g., a combobox)
+            
             // Virtual Earth
-            final VirtualEarthLayer ve = new VirtualEarthLayer();
-            wwd.getModel().getLayers().add(ve);
+            for (Layer layer : wwd.getModel().getLayers()) {
+                if (layer.getName().equals("MS Virtual Earth Aerial")) {
+                    layer.setEnabled(true);
+                }
+            }
 
 //             // Yahoo imagergy
 //            final YahooMapsLayer ya = new YahooMapsLayer();
@@ -614,6 +619,10 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
              * 
              */
         }
+        
+        public void redraw() {
+            wwd.redraw();
+        }
     }
 
     public void proxyAdded(final BoatProxy bp) {
@@ -661,7 +670,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                     boatMarkers.add(bm);
                     first = false;
                 }
-
+                frame.redraw();
             }
 
             public void waypointsComplete() {
