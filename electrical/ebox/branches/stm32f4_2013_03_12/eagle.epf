@@ -7,14 +7,16 @@ Desktop="Desktop"
 
 [Globals]
 AutoSaveProject=1
+UsedLibrary="/opt/eagle-6.4.0/lbr/frames.lbr"
 UsedLibrary="/opt/eagle-6.4.0/lbr/pinhead.lbr"
 UsedLibrary="/opt/eagle-6.4.0/lbr/rcl.lbr"
 UsedLibrary="/opt/eagle-6.4.0/lbr/supply1.lbr"
 UsedLibrary="/opt/eagle-6.4.0/lbr/supply2.lbr"
+UsedLibrary="platypus.lbr"
 
 [Win_1]
 Type="Control Panel"
-Loc="684 188 1283 587"
+Loc="0 40 599 439"
 State=1
 Number=0
 

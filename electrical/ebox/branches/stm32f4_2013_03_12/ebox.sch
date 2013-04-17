@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -129,9 +129,9 @@
 <wire x1="172.72" y1="116.84" x2="172.72" y2="0" width="0.1524" layer="94"/>
 <wire x1="172.72" y1="0" x2="0" y2="0" width="0.1524" layer="94"/>
 <text x="10.16" y="109.22" size="3.81" layer="94" font="vector">STM32F4 Discovery</text>
-<text x="10.16" y="101.6" size="3.81" layer="94" font="vector">Infineon ProFET High Side Switches</text>
+<text x="10.16" y="101.6" size="3.81" layer="94" font="vector">Infineon ProFET High Side Switches, BTS50080‑1TMC for mains, BTS712N1 for periphs</text>
 <text x="10.16" y="93.98" size="3.81" layer="94" font="vector">2x clamping diode array (through-pass)</text>
-<text x="10.16" y="86.36" size="3.81" layer="94" font="vector">Anderson Powerpole batter inputs</text>
+<text x="10.16" y="86.36" size="3.81" layer="94" font="vector">Anderson Powerpole battery inputs</text>
 <text x="10.16" y="78.74" size="3.81" layer="94" font="vector">Mini-Con-X and Multi-Con-X connectors</text>
 <text x="10.16" y="71.12" size="3.81" layer="94" font="vector">Power Button IC</text>
 <text x="10.16" y="63.5" size="3.81" layer="94" font="vector">Smaller reed switch</text>
