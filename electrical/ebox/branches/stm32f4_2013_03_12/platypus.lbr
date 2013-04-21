@@ -143,39 +143,41 @@
 <wire x1="-4.5" y1="3" x2="-4.5" y2="-2" width="0.127" layer="21"/>
 <wire x1="4.5" y1="3" x2="4.5" y2="-2" width="0.127" layer="21"/>
 </package>
-<package name="TO252">
-<description>&lt;b&gt;SMALL OUTLINE TRANSISTOR&lt;/b&gt;&lt;p&gt;
-TS-003</description>
-<wire x1="3.2766" y1="3.8354" x2="3.277" y2="-2.159" width="0.2032" layer="21"/>
-<wire x1="3.277" y1="-2.159" x2="-3.277" y2="-2.159" width="0.2032" layer="21"/>
-<wire x1="-3.277" y1="-2.159" x2="-3.2766" y2="3.8354" width="0.2032" layer="21"/>
-<wire x1="-3.277" y1="3.835" x2="3.2774" y2="3.8346" width="0.2032" layer="51"/>
-<wire x1="-3.973" y1="5.983" x2="3.973" y2="5.983" width="0.0508" layer="39"/>
-<wire x1="3.973" y1="-5.983" x2="-3.973" y2="-5.983" width="0.0508" layer="39"/>
-<wire x1="-3.973" y1="-5.983" x2="-3.973" y2="5.983" width="0.0508" layer="39"/>
-<wire x1="3.973" y1="5.983" x2="3.973" y2="-5.983" width="0.0508" layer="39"/>
-<wire x1="-2.5654" y1="3.937" x2="-2.5654" y2="4.6482" width="0.2032" layer="51"/>
-<wire x1="-2.5654" y1="4.6482" x2="-2.1082" y2="5.1054" width="0.2032" layer="51"/>
-<wire x1="-2.1082" y1="5.1054" x2="2.1082" y2="5.1054" width="0.2032" layer="51"/>
-<wire x1="2.1082" y1="5.1054" x2="2.5654" y2="4.6482" width="0.2032" layer="51"/>
-<wire x1="2.5654" y1="4.6482" x2="2.5654" y2="3.937" width="0.2032" layer="51"/>
-<wire x1="2.5654" y1="3.937" x2="-2.5654" y2="3.937" width="0.2032" layer="51"/>
-<smd name="3" x="0" y="2.5" dx="5.4" dy="6.2" layer="1"/>
-<smd name="1" x="-2.28" y="-4.8" dx="1" dy="1.6" layer="1"/>
-<smd name="2" x="2.28" y="-4.8" dx="1" dy="1.6" layer="1"/>
-<text x="-3.81" y="-2.54" size="1.27" layer="25" rot="R90">&gt;NAME</text>
-<text x="5.08" y="-2.54" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
-<rectangle x1="-2.7178" y1="-5.1562" x2="-1.8542" y2="-2.2606" layer="51"/>
-<rectangle x1="1.8542" y1="-5.1562" x2="2.7178" y2="-2.2606" layer="51"/>
-<rectangle x1="-0.4318" y1="-3.0226" x2="0.4318" y2="-2.2606" layer="21"/>
-<polygon width="0.1998" layer="51">
-<vertex x="-2.5654" y="3.937"/>
-<vertex x="-2.5654" y="4.6482"/>
-<vertex x="-2.1082" y="5.1054"/>
-<vertex x="2.1082" y="5.1054"/>
-<vertex x="2.5654" y="4.6482"/>
-<vertex x="2.5654" y="3.937"/>
-</polygon>
+<package name="PG-DSO-20">
+<smd name="1" x="-4.865" y="5.715" dx="1.67" dy="0.65" layer="1"/>
+<smd name="2" x="-4.865" y="4.445" dx="1.67" dy="0.65" layer="1"/>
+<smd name="3" x="-4.865" y="3.175" dx="1.67" dy="0.65" layer="1"/>
+<smd name="4" x="-4.865" y="1.905" dx="1.67" dy="0.65" layer="1"/>
+<smd name="5" x="-4.865" y="0.635" dx="1.67" dy="0.65" layer="1"/>
+<smd name="6" x="-4.865" y="-0.635" dx="1.67" dy="0.65" layer="1"/>
+<smd name="7" x="-4.865" y="-1.905" dx="1.67" dy="0.65" layer="1"/>
+<smd name="8" x="-4.865" y="-3.175" dx="1.67" dy="0.65" layer="1"/>
+<smd name="9" x="-4.865" y="-4.445" dx="1.67" dy="0.65" layer="1"/>
+<smd name="10" x="-4.865" y="-5.715" dx="1.67" dy="0.65" layer="1"/>
+<smd name="20" x="4.865" y="5.715" dx="1.67" dy="0.65" layer="1"/>
+<smd name="19" x="4.865" y="4.445" dx="1.67" dy="0.65" layer="1"/>
+<smd name="18" x="4.865" y="3.175" dx="1.67" dy="0.65" layer="1"/>
+<smd name="17" x="4.865" y="1.905" dx="1.67" dy="0.65" layer="1"/>
+<smd name="16" x="4.865" y="0.635" dx="1.67" dy="0.65" layer="1"/>
+<smd name="15" x="4.865" y="-0.635" dx="1.67" dy="0.65" layer="1"/>
+<smd name="14" x="4.865" y="-1.905" dx="1.67" dy="0.65" layer="1"/>
+<smd name="13" x="4.865" y="-3.175" dx="1.67" dy="0.65" layer="1"/>
+<smd name="12" x="4.865" y="-4.445" dx="1.67" dy="0.65" layer="1"/>
+<smd name="11" x="4.865" y="-5.715" dx="1.67" dy="0.65" layer="1"/>
+<wire x1="-3.5" y1="6.4" x2="-3.5" y2="-6.4" width="0.127" layer="21"/>
+<wire x1="-3.5" y1="-6.4" x2="-3" y2="-6.4" width="0.127" layer="21"/>
+<wire x1="-3" y1="-6.4" x2="3.5" y2="-6.4" width="0.127" layer="21"/>
+<wire x1="3.5" y1="-6.4" x2="3.5" y2="6.4" width="0.127" layer="21"/>
+<wire x1="3.5" y1="6.4" x2="-3" y2="6.4" width="0.127" layer="21"/>
+<wire x1="-3" y1="6.4" x2="-3.5" y2="6.4" width="0.127" layer="21"/>
+<wire x1="-3" y1="6.4" x2="-3" y2="-6.4" width="0.127" layer="21"/>
+<circle x="-2" y="5" radius="0.5" width="0" layer="21"/>
+<text x="-3" y="7" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3" y="-8" size="1.27" layer="27">&gt;VALUE</text>
+<wire x1="-5.25" y1="6.5" x2="-5.25" y2="-6.5" width="0.127" layer="39"/>
+<wire x1="-5.25" y1="-6.5" x2="5.25" y2="-6.5" width="0.127" layer="39"/>
+<wire x1="5.25" y1="-6.5" x2="5.25" y2="6.5" width="0.127" layer="39"/>
+<wire x1="5.25" y1="6.5" x2="-5.25" y2="6.5" width="0.127" layer="39"/>
 </package>
 </packages>
 <symbols>
@@ -202,6 +204,22 @@ TS-003</description>
 <wire x1="10.16" y1="10.16" x2="-10.16" y2="10.16" width="0.254" layer="94"/>
 <text x="-10.16" y="11.43" size="1.27" layer="95">&gt;NAME</text>
 <text x="3.81" y="-12.7" size="1.27" layer="95">&gt;VALUE</text>
+</symbol>
+<symbol name="BTS712N1">
+<description>&lt;b&gt;Smart Four Channel Highside Power Switch&lt;/b&gt;</description>
+<pin name="IN1" x="-17.78" y="5.08" length="middle" direction="in"/>
+<pin name="IN2" x="-17.78" y="0" length="middle" direction="in"/>
+<pin name="ST" x="-17.78" y="-5.08" length="middle"/>
+<pin name="GND" x="0" y="-15.24" length="middle" direction="pwr" rot="R90"/>
+<pin name="VBB" x="0" y="15.24" length="middle" direction="pwr" rot="R270"/>
+<pin name="OUT1" x="17.78" y="5.08" length="middle" direction="out" rot="R180"/>
+<pin name="OUT2" x="17.78" y="-5.08" length="middle" direction="out" rot="R180"/>
+<wire x1="-12.7" y1="10.16" x2="-12.7" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-10.16" x2="12.7" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-10.16" x2="12.7" y2="10.16" width="0.254" layer="94"/>
+<wire x1="12.7" y1="10.16" x2="-12.7" y2="10.16" width="0.254" layer="94"/>
+<text x="-3.81" y="12.7" size="1.778" layer="95" rot="R180">&gt;NAME</text>
+<text x="3.81" y="-12.7" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -331,8 +349,44 @@ current sense, integrated in Smart SIPMOS chip on chip technology. Providing 
 <technologies>
 <technology name="">
 <attribute name="MF" value="Infineon" constant="no"/>
-<attribute name="MPN" value="BTS50055-1TMA
-" constant="no"/>
+<attribute name="MPN" value="BTS50055-1TMA " constant="no"/>
+<attribute name="OC_DIGIKEY" value="" constant="no"/>
+<attribute name="OC_MOUSER" value="" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="BTS712N1" prefix="IC">
+<description>&lt;b&gt;Smart Four Channel Highside Power Switch&lt;/b&gt;
+&lt;br&gt;
+N channel vertical power FET with charge pump, ground referenced CMOS compatible input and diagnostic feedback, monolithically integrated in Smart SIPMOS technology. Providing embedded protective functions.</description>
+<gates>
+<gate name="G$1" symbol="BTS712N1" x="0" y="0"/>
+<gate name="G$2" symbol="BTS712N1" x="0" y="-40.64"/>
+</gates>
+<devices>
+<device name="" package="PG-DSO-20">
+<connects>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="IN1" pad="3"/>
+<connect gate="G$1" pin="IN2" pad="5"/>
+<connect gate="G$1" pin="OUT1" pad="18"/>
+<connect gate="G$1" pin="OUT2" pad="17"/>
+<connect gate="G$1" pin="ST" pad="4"/>
+<connect gate="G$1" pin="VBB" pad="1 16 19 20"/>
+<connect gate="G$2" pin="GND" pad="6"/>
+<connect gate="G$2" pin="IN1" pad="7"/>
+<connect gate="G$2" pin="IN2" pad="9"/>
+<connect gate="G$2" pin="OUT1" pad="14"/>
+<connect gate="G$2" pin="OUT2" pad="13"/>
+<connect gate="G$2" pin="ST" pad="8"/>
+<connect gate="G$2" pin="VBB" pad="10 11 12 15"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="MF" value="Infineon"/>
+<attribute name="MPN" value="BTS712N1" constant="no"/>
 <attribute name="OC_DIGIKEY" value="" constant="no"/>
 <attribute name="OC_MOUSER" value="" constant="no"/>
 </technology>
