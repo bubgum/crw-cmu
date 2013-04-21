@@ -56,26 +56,57 @@
 </layers>
 <library>
 <packages>
-<package name="7281-8PG-3ES">
-<description>Mini-Con-X 8-position Panel Mount connector; #20 gold plated P/C tail .187 style Pins; standard panel mount backshell with epoxy</description>
-<pad name="8" x="0" y="0" drill="1.016"/>
-<pad name="1" x="1.8288" y="3.1242" drill="1.016"/>
-<pad name="2" x="3.556" y="0.635" drill="1.016"/>
-<pad name="3" x="2.7432" y="-2.286" drill="1.016"/>
-<pad name="4" x="0" y="-3.556" drill="1.016"/>
-<pad name="5" x="-2.7432" y="-2.286" drill="1.016"/>
-<pad name="6" x="-3.556" y="0.635" drill="1.016"/>
-<pad name="7" x="-1.8288" y="3.1242" drill="1.016"/>
-<circle x="0" y="0" radius="11.7348" width="0.127" layer="21"/>
+<package name="7281-8PG">
+<description>Mini-Con-X 8-position Panel Mount connector; #20 gold plated P/C tail .187 style Pins; standard panel mount backshell</description>
+<pad name="8" x="0" y="0" drill="1.016" diameter="1.778"/>
+<pad name="1" x="1.8288" y="3.1242" drill="1.016" diameter="1.778"/>
+<pad name="2" x="3.556" y="0.635" drill="1.016" diameter="1.778"/>
+<pad name="3" x="2.7432" y="-2.286" drill="1.016" diameter="1.778"/>
+<pad name="4" x="0" y="-3.556" drill="1.016" diameter="1.778"/>
+<pad name="5" x="-2.7432" y="-2.286" drill="1.016" diameter="1.778"/>
+<pad name="6" x="-3.556" y="0.635" drill="1.016" diameter="1.778"/>
+<pad name="7" x="-1.8288" y="3.1242" drill="1.016" diameter="1.778"/>
+<circle x="0" y="0" radius="11.7348" width="0.127" layer="39"/>
 <wire x1="-7.0358" y1="3.2258" x2="-7.0358" y2="-3.2258" width="0.127" layer="21"/>
 <wire x1="-6.985" y1="3.302" x2="-6.985" y2="-3.302" width="0.127" layer="21" curve="-309.397243"/>
-<wire x1="-10.31875" y1="5.49275" x2="-10.31875" y2="-5.49275" width="0.127" layer="21"/>
-<wire x1="10.31875" y1="-5.49275" x2="10.31875" y2="5.49275" width="0.127" layer="21"/>
-<wire x1="-10.287" y1="5.461" x2="0" y2="11.684" width="0.127" layer="21"/>
-<wire x1="0" y1="11.684" x2="10.287" y2="5.461" width="0.127" layer="21"/>
-<wire x1="10.287" y1="-5.461" x2="0" y2="-11.684" width="0.127" layer="21"/>
-<wire x1="0" y1="-11.684" x2="-10.287" y2="-5.461" width="0.127" layer="21"/>
+<wire x1="-10.1092" y1="5.842" x2="-10.1092" y2="-5.842" width="0.127" layer="21"/>
+<wire x1="10.1092" y1="-5.842" x2="10.1092" y2="5.842" width="0.127" layer="21"/>
+<wire x1="-10.1092" y1="5.842" x2="0" y2="11.684" width="0.127" layer="21"/>
+<wire x1="0" y1="11.684" x2="10.1092" y2="5.842" width="0.127" layer="21"/>
+<wire x1="10.1092" y1="-5.842" x2="0" y2="-11.684" width="0.127" layer="21"/>
+<wire x1="0" y1="-11.684" x2="-10.1092" y2="-5.842" width="0.127" layer="21"/>
 <text x="-5.08" y="12.7" size="1.27" layer="25" rot="R180">&gt;NAME</text>
+</package>
+<package name="4181-3PG">
+<description>Multi-Con-X 3-position Panel Mount connector; #12 (2-4 contacts) gold plated P/C tail .187 style Pins; standard panel mount backshell</description>
+<pad name="1" x="2.413" y="1.397" drill="1.4478" diameter="2.54"/>
+<pad name="2" x="-2.413" y="1.397" drill="1.4478" diameter="2.54"/>
+<pad name="3" x="0" y="-2.794" drill="1.4478" diameter="2.54"/>
+<wire x1="-9.017" y1="4.3942" x2="-9.017" y2="-4.3942" width="0.127" layer="21"/>
+<wire x1="-9.017" y1="4.4196" x2="-9.017" y2="-4.3942" width="0.127" layer="21" curve="-307.907484"/>
+<wire x1="0" y1="14.6685" x2="12.7" y2="7.33425" width="0.127" layer="21"/>
+<wire x1="12.7" y1="7.33425" x2="12.7" y2="-7.33425" width="0.127" layer="21"/>
+<wire x1="12.7" y1="-7.33425" x2="0" y2="-14.6685" width="0.127" layer="21"/>
+<wire x1="0" y1="-14.6685" x2="-12.7" y2="-7.33425" width="0.127" layer="21"/>
+<wire x1="-12.7" y1="-7.33425" x2="-12.7" y2="7.33425" width="0.127" layer="21"/>
+<wire x1="-12.7" y1="7.33425" x2="0" y2="14.6685" width="0.127" layer="21"/>
+<circle x="0" y="0" radius="14.6685" width="0.127" layer="39"/>
+<text x="-7.62" y="15.24" size="1.27" layer="25" rot="R180">&gt;NAME</text>
+</package>
+<package name="4181-2PG">
+<description>Multi-Con-X 2-position Panel Mount connector; #12 (2-4 contacts) gold plated P/C tail .187 style Pins; standard panel mount backshell</description>
+<pad name="1" x="2.54" y="0" drill="1.4478" diameter="2.54"/>
+<pad name="2" x="-2.54" y="0" drill="1.4478" diameter="2.54"/>
+<wire x1="-9.017" y1="4.3942" x2="-9.017" y2="-4.3942" width="0.127" layer="21"/>
+<wire x1="-9.017" y1="4.4196" x2="-9.017" y2="-4.3942" width="0.127" layer="21" curve="-307.907484"/>
+<wire x1="0" y1="14.6685" x2="12.7" y2="7.33425" width="0.127" layer="21"/>
+<wire x1="12.7" y1="7.33425" x2="12.7" y2="-7.33425" width="0.127" layer="21"/>
+<wire x1="12.7" y1="-7.33425" x2="0" y2="-14.6685" width="0.127" layer="21"/>
+<wire x1="0" y1="-14.6685" x2="-12.7" y2="-7.33425" width="0.127" layer="21"/>
+<wire x1="-12.7" y1="-7.33425" x2="-12.7" y2="7.33425" width="0.127" layer="21"/>
+<wire x1="-12.7" y1="7.33425" x2="0" y2="14.6685" width="0.127" layer="21"/>
+<circle x="0" y="0" radius="14.6685" width="0.127" layer="39"/>
+<text x="-7.62" y="15.24" size="1.27" layer="25" rot="R180">&gt;NAME</text>
 </package>
 </packages>
 <symbols>
@@ -92,7 +123,7 @@
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="7281-8PG-3ES">
+<deviceset name="7281-8PG">
 <description>&lt;b&gt;Mini-Con-X 8-position Panel Mount connector&lt;/b&gt;
 &lt;br&gt;
 #20 gold plated P/C tail .187 style Pins; standard panel mount backshell</description>
@@ -107,7 +138,7 @@
 <gate name="-8" symbol="M" x="2.54" y="-17.78"/>
 </gates>
 <devices>
-<device name="" package="7281-8PG-3ES">
+<device name="" package="7281-8PG">
 <connects>
 <connect gate="-1" pin="S" pad="1"/>
 <connect gate="-2" pin="S" pad="2"/>
@@ -119,9 +150,79 @@
 <connect gate="-8" pin="S" pad="8"/>
 </connects>
 <technologies>
-<technology name="">
+<technology name="-300">
+<attribute name="MF" value="Conxall"/>
+<attribute name="MPN" value="7281-8PG-300" constant="no"/>
+<attribute name="OC_DIGIKEY" value="" constant="no"/>
+<attribute name="OC_MOUSER" value="" constant="no"/>
+</technology>
+<technology name="-3ES">
 <attribute name="MF" value="Conxall"/>
 <attribute name="MPN" value="7281-8PG-3ES" constant="no"/>
+<attribute name="OC_DIGIKEY" value="" constant="no"/>
+<attribute name="OC_MOUSER" value="" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="4181-3PG">
+<description>&lt;b&gt;Multi-Con-X 3-position Panel Mount connector&lt;/b&gt;
+&lt;br&gt;
+#12 (2-4 contacts) gold plated P/C tail .187 style Pins; standard panel mount backshell</description>
+<gates>
+<gate name="-1" symbol="MV" x="2.54" y="0"/>
+<gate name="-2" symbol="M" x="2.54" y="-2.54"/>
+<gate name="-3" symbol="M" x="2.54" y="-5.08"/>
+</gates>
+<devices>
+<device name="" package="4181-3PG">
+<connects>
+<connect gate="-1" pin="S" pad="1"/>
+<connect gate="-2" pin="S" pad="2"/>
+<connect gate="-3" pin="S" pad="3"/>
+</connects>
+<technologies>
+<technology name="-300">
+<attribute name="MF" value="Conxall"/>
+<attribute name="MPN" value="4181-3PG-300" constant="no"/>
+<attribute name="OC_DIGIKEY" value="" constant="no"/>
+<attribute name="OC_MOUSER" value="" constant="no"/>
+</technology>
+<technology name="-3ES">
+<attribute name="MF" value="Conxall"/>
+<attribute name="MPN" value="4181-3PG-3ES" constant="no"/>
+<attribute name="OC_DIGIKEY" value="" constant="no"/>
+<attribute name="OC_MOUSER" value="" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="4181-2PG">
+<description>&lt;b&gt;Multi-Con-X 2-position Panel Mount connector&lt;/b&gt;
+&lt;br&gt;
+#12 (2-4 contacts) gold plated P/C tail .187 style Pins; standard panel mount backshell</description>
+<gates>
+<gate name="-1" symbol="MV" x="2.54" y="0"/>
+<gate name="-2" symbol="M" x="2.54" y="-2.54"/>
+</gates>
+<devices>
+<device name="" package="4181-2PG">
+<connects>
+<connect gate="-1" pin="S" pad="1"/>
+<connect gate="-2" pin="S" pad="2"/>
+</connects>
+<technologies>
+<technology name="-300">
+<attribute name="MF" value="Conxall"/>
+<attribute name="MPN" value="4181-2PG-300" constant="no"/>
+<attribute name="OC_DIGIKEY" value="" constant="no"/>
+<attribute name="OC_MOUSER" value="" constant="no"/>
+</technology>
+<technology name="-3ES">
+<attribute name="MF" value="Conxall"/>
+<attribute name="MPN" value="4181-2PG-3ES" constant="no"/>
 <attribute name="OC_DIGIKEY" value="" constant="no"/>
 <attribute name="OC_MOUSER" value="" constant="no"/>
 </technology>
