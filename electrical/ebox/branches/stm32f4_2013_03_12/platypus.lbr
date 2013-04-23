@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -179,6 +179,62 @@
 <wire x1="5.25" y1="-6.5" x2="5.25" y2="6.5" width="0.127" layer="39"/>
 <wire x1="5.25" y1="6.5" x2="-5.25" y2="6.5" width="0.127" layer="39"/>
 </package>
+<package name="LTC-UHF">
+<description>&lt;b&gt;UHF Package&lt;/b&gt;
+&lt;br&gt;
+38-Lead Plastic QFN (5mm × 7mm)
+(Reference LTC DWG # 05-08-1701 Rev C)</description>
+<smd name="26" x="-0.25" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="25" x="0.25" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="27" x="-0.75" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="28" x="-1.25" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="29" x="-1.75" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="24" x="0.75" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="23" x="1.25" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="22" x="1.75" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="21" x="2.25" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="30" x="-2.25" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="31" x="-2.75" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="20" x="2.75" y="2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="16" x="3.4" y="0" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="17" x="3.4" y="0.5" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="18" x="3.4" y="1" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="19" x="3.4" y="1.5" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="15" x="3.4" y="-0.5" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="14" x="3.4" y="-1" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="13" x="3.4" y="-1.5" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="35" x="-3.4" y="0" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="34" x="-3.4" y="0.5" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="33" x="-3.4" y="1" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="32" x="-3.4" y="1.5" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="36" x="-3.4" y="-0.5" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="37" x="-3.4" y="-1" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="38" x="-3.4" y="-1.5" dx="0.7" dy="0.25" layer="1" rot="R180"/>
+<smd name="6" x="-0.25" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="7" x="0.25" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="5" x="-0.75" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="4" x="-1.25" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="3" x="-1.75" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="8" x="0.75" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="9" x="1.25" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="10" x="1.75" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="11" x="2.25" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="2" x="-2.25" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="1" x="-2.75" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="12" x="2.75" y="-2.4" dx="0.7" dy="0.25" layer="1" rot="R90"/>
+<smd name="39" x="0" y="0" dx="5.15" dy="3.15" layer="1" roundness="25"/>
+<wire x1="-3.5" y1="1.9" x2="-3.5" y2="2.5" width="0.127" layer="21"/>
+<wire x1="-3.5" y1="2.5" x2="-3.1" y2="2.5" width="0.127" layer="21"/>
+<wire x1="3.1" y1="2.5" x2="3.5" y2="2.5" width="0.127" layer="21"/>
+<wire x1="3.5" y1="2.5" x2="3.5" y2="1.9" width="0.127" layer="21"/>
+<wire x1="3.5" y1="-1.9" x2="3.5" y2="-2.5" width="0.127" layer="21"/>
+<wire x1="3.5" y1="-2.5" x2="3.1" y2="-2.5" width="0.127" layer="21"/>
+<wire x1="-3.1" y1="-2.5" x2="-3.5" y2="-2.5" width="0.127" layer="21"/>
+<wire x1="-3.5" y1="-2.5" x2="-3.5" y2="-1.9" width="0.127" layer="21"/>
+<circle x="-3.2" y="-2.1" radius="0.15" width="0" layer="21"/>
+<text x="-3" y="3" size="1.27" layer="25">&gt;NAME</text>
+<text x="3" y="-3" size="1.27" layer="25" rot="R180">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="MV">
@@ -220,6 +276,46 @@
 <wire x1="12.7" y1="10.16" x2="-12.7" y2="10.16" width="0.254" layer="94"/>
 <text x="-3.81" y="12.7" size="1.778" layer="95" rot="R180">&gt;NAME</text>
 <text x="3.81" y="-12.7" size="1.778" layer="96">&gt;VALUE</text>
+</symbol>
+<symbol name="LTC2872_XCV">
+<description>RS232/RS485 Dual Multiprotocol Transceiver with Integrated Termination</description>
+<pin name="DXEN" x="-15.24" y="10.16" length="middle" direction="in"/>
+<pin name="!RXEN" x="-15.24" y="7.62" length="middle" direction="in"/>
+<pin name="TE485" x="-15.24" y="5.08" length="middle" direction="in"/>
+<pin name="485/!232" x="-15.24" y="2.54" length="middle" direction="in"/>
+<pin name="DY" x="-15.24" y="-2.54" length="middle" direction="in"/>
+<pin name="DZ" x="-15.24" y="-5.08" length="middle" direction="in"/>
+<pin name="RA" x="-15.24" y="-10.16" length="middle" direction="out"/>
+<pin name="RB" x="-15.24" y="-12.7" length="middle" direction="out"/>
+<pin name="Y" x="15.24" y="-2.54" length="middle" direction="out" rot="R180"/>
+<pin name="Z" x="15.24" y="-5.08" length="middle" direction="out" rot="R180"/>
+<pin name="A" x="15.24" y="-10.16" length="middle" direction="in" rot="R180"/>
+<pin name="B" x="15.24" y="-12.7" length="middle" direction="in" rot="R180"/>
+<wire x1="-10.16" y1="12.7" x2="-10.16" y2="-15.24" width="0.254" layer="94"/>
+<wire x1="-10.16" y1="-15.24" x2="10.16" y2="-15.24" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-15.24" x2="10.16" y2="12.7" width="0.254" layer="94"/>
+<wire x1="10.16" y1="12.7" x2="-10.16" y2="12.7" width="0.254" layer="94"/>
+<text x="-10.16" y="13.97" size="1.778" layer="95">&gt;NAME</text>
+<text x="0" y="-17.78" size="1.778" layer="96">&gt;VALUE</text>
+</symbol>
+<symbol name="LTC2872_PWR">
+<description>RS232/RS485 Dual Multiprotocol Transceiver with Integrated Termination</description>
+<pin name="H/!F" x="-15.24" y="0" length="middle" direction="in"/>
+<pin name="FEN" x="-15.24" y="-5.08" length="middle" direction="in"/>
+<pin name="LB" x="-15.24" y="-10.16" length="middle" direction="in"/>
+<pin name="VL" x="-7.62" y="15.24" length="middle" direction="pas" rot="R270"/>
+<pin name="VCC" x="-2.54" y="15.24" length="middle" direction="pwr" rot="R270"/>
+<pin name="SW" x="2.54" y="15.24" length="middle" direction="pas" rot="R270"/>
+<pin name="CAP" x="7.62" y="15.24" length="middle" direction="pas" rot="R270"/>
+<pin name="VDD" x="15.24" y="0" length="middle" direction="out" rot="R180"/>
+<pin name="VEE" x="15.24" y="-5.08" length="middle" direction="out" rot="R180"/>
+<pin name="GND" x="15.24" y="-10.16" length="middle" direction="pwr" rot="R180"/>
+<wire x1="-10.16" y1="10.16" x2="-10.16" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="-10.16" y1="-12.7" x2="10.16" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-12.7" x2="10.16" y2="10.16" width="0.254" layer="94"/>
+<wire x1="10.16" y1="10.16" x2="-10.16" y2="10.16" width="0.254" layer="94"/>
+<text x="-10.16" y="-15.24" size="1.778" layer="95">&gt;NAME</text>
+<text x="2.54" y="-15.24" size="1.778" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -387,6 +483,64 @@ N channel vertical power FET with charge pump, ground referenced CMOS compatible
 <technology name="">
 <attribute name="MF" value="Infineon"/>
 <attribute name="MPN" value="BTS712N1" constant="no"/>
+<attribute name="OC_DIGIKEY" value="" constant="no"/>
+<attribute name="OC_MOUSER" value="" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="LTC2872" prefix="IC">
+<description>&lt;b&gt;RS232/RS485 Dual Multiprotocol Transceiver with Integrated Termination&lt;/b&gt;
+&lt;br&gt;
+Robust pin-configurable transceiver that supports RS232, RS485, and RS422 standards while operating on a single 3V to 5.5V supply.</description>
+<gates>
+<gate name="G$1" symbol="LTC2872_PWR" x="0" y="0" addlevel="must"/>
+<gate name="G$2" symbol="LTC2872_XCV" x="0" y="-35.56" swaplevel="1"/>
+<gate name="G$3" symbol="LTC2872_XCV" x="0" y="-71.12" swaplevel="1"/>
+</gates>
+<devices>
+<device name="" package="LTC-UHF">
+<connects>
+<connect gate="G$1" pin="CAP" pad="17"/>
+<connect gate="G$1" pin="FEN" pad="16"/>
+<connect gate="G$1" pin="GND" pad="5 18 27 34"/>
+<connect gate="G$1" pin="H/!F" pad="15"/>
+<connect gate="G$1" pin="LB" pad="36"/>
+<connect gate="G$1" pin="SW" pad="19"/>
+<connect gate="G$1" pin="VCC" pad="1 21 31"/>
+<connect gate="G$1" pin="VDD" pad="20"/>
+<connect gate="G$1" pin="VEE" pad="39"/>
+<connect gate="G$1" pin="VL" pad="35"/>
+<connect gate="G$2" pin="!RXEN" pad="9"/>
+<connect gate="G$2" pin="485/!232" pad="13"/>
+<connect gate="G$2" pin="A" pad="2"/>
+<connect gate="G$2" pin="B" pad="3"/>
+<connect gate="G$2" pin="DXEN" pad="10"/>
+<connect gate="G$2" pin="DY" pad="7"/>
+<connect gate="G$2" pin="DZ" pad="8"/>
+<connect gate="G$2" pin="RA" pad="37"/>
+<connect gate="G$2" pin="RB" pad="38"/>
+<connect gate="G$2" pin="TE485" pad="11"/>
+<connect gate="G$2" pin="Y" pad="4"/>
+<connect gate="G$2" pin="Z" pad="6"/>
+<connect gate="G$3" pin="!RXEN" pad="23"/>
+<connect gate="G$3" pin="485/!232" pad="14"/>
+<connect gate="G$3" pin="A" pad="30"/>
+<connect gate="G$3" pin="B" pad="29"/>
+<connect gate="G$3" pin="DXEN" pad="22"/>
+<connect gate="G$3" pin="DY" pad="25"/>
+<connect gate="G$3" pin="DZ" pad="24"/>
+<connect gate="G$3" pin="RA" pad="33"/>
+<connect gate="G$3" pin="RB" pad="32"/>
+<connect gate="G$3" pin="TE485" pad="12"/>
+<connect gate="G$3" pin="Y" pad="28"/>
+<connect gate="G$3" pin="Z" pad="26"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="MF" value="Linear"/>
+<attribute name="MPN" value="LTC2872" constant="no"/>
 <attribute name="OC_DIGIKEY" value="" constant="no"/>
 <attribute name="OC_MOUSER" value="" constant="no"/>
 </technology>
