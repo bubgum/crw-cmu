@@ -74,6 +74,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	public static final char SET_SAMPLER_FN = 'q';
 	public static final char GET_WATERCANARY_FN = 'w';
 	public static final char GET_DO_FN = 'o';
+	public static final char GET_MONITOR_FN = 'm';
 
 	// Set timeout for asynchronous Amarino calls
 	public static final int RESPONSE_TIMEOUT_MS = 250; // was 200 earlier
@@ -367,6 +368,30 @@ public class AirboatImpl extends AbstractVehicleServer {
 			}
 
 			break;
+		case GET_MONITOR_FN:
+			// Check size of function
+			if (cmd.size() != 2) {
+				Log.w(logTag, "Received corrupt depth function: " + cmd);
+				return;
+			}
+			
+			// Broadcast the sensor reading
+			String[] payload = cmd.get(1).split(",");
+			double[] data = new double[payload.length];
+			for (int i = 0; i < payload.length; ++i) {
+				try {
+					data[i] = Double.parseDouble(payload[i]);
+				} catch (NumberFormatException e) {
+				}
+			}
+			
+			SensorData reading = new SensorData();
+			reading.channel = 4;
+			reading.data = data;
+			reading.type = SensorType.UNKNOWN;
+			sendSensor(reading.channel, reading);
+			logger.info("MONITOR: " + cmd);
+			
 		default:
 			Log.w(logTag, "Received unknown function type: " + cmd);
 			break;
