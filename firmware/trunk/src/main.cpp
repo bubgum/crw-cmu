@@ -34,6 +34,7 @@ pidConstants_t EEMEM pidEeprom;
 #include "do_sensor.h"
 #include "te5_sensor.h"
 #include "es2_sensor.h"
+#include "monitor_sensor.h"
 
 // Define indices for specific coordinates
 // Assumes X is forward, Y is left, Z is up, frame is right-handed
@@ -74,21 +75,23 @@ Thruster thruster(&amarino, &motor);
 ServoHW1<Servo1> servo1;
 Rudder rudder(&amarino, &servo1);
 
-//#warning Be careful powering the DepthSensor!
+MonitorConfig monitorConfig = { &PORTK, PIN4 };
+MonitorSensor<monitorConfig, Serial2> monitorSensor(&amarino);
+
 //DepthConfig depthConfig = { &PORTK, PIN4 };
 //DepthSensor<depthConfig, Serial2> depthSensor(&amarino);
 
-DOSensor<Serial3> doSensor(&amarino);
+//DOSensor<Serial3> doSensor(&amarino);
 
 //TE5Config teConfig = { &PORTD, PIN1 };
 //TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
-ES2Config esConfig = { &PORTD, PIN1 };
-ES2Sensor<esConfig, Serial4> esSensor(&amarino);
+//ES2Config esConfig = { &PORTD, PIN1 };
+//ES2Sensor<esConfig, Serial4> esSensor(&amarino);
 
 /**
  * Gradually transition the boat to a safe state.
- */ 
+ */
 void decayVelocity()
 {
   // Slow the vehicle down by reducing velocity in every direction
@@ -115,20 +118,20 @@ void setPID(uint8_t flag, uint8_t numOfValues)
 {
   // Ignore if wrong number of arguments
   if (numOfValues != 4) return;
-  
+
   // Load all the arguments into memory
   float args[numOfValues];
   amarino.getFloatValues(args);
-  
+
   // Get the axis that is being set
   int axis = (int)args[0];
   if (axis < 0 || axis >= 6) return;
-  
+
   // Set these values and save them to the EEPROM
   pid.Kp[axis] = args[1];
   pid.Ki[axis] = args[2];
   pid.Kd[axis] = args[3];
- 
+
   eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 }
 
@@ -139,14 +142,14 @@ void getPID(uint8_t flag, uint8_t numOfValues)
 {
   // Ignore if wrong number of arguments
   if (numOfValues != 1) return;
-  
+
   // Load the argument into memory
   float axisRaw = amarino.getFloat();
-  
+
   // Get the axis that is being set
   int axis = (int)axisRaw;
   if (axis < 0 || axis >= 6) return;
-  
+
   // Return the appropriate values to Amarino
   amarino.send(GET_PID_FN);
   amarino.send((float)axis);
@@ -173,8 +176,8 @@ void resetPID()
  * The main setup function for the vehicle.  Initalized the Amarino communications,
  * then calls the various setup functions for the various modules.
  */
-void setup() 
-{ 
+void setup()
+{
   // Core board initialization
   initBoard();
 
@@ -191,22 +194,23 @@ void setup()
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
   amarino.registerFunction(setPID, SET_PID_FN);
   amarino.registerFunction(getPID, GET_PID_FN);
-} 
+}
 
 /**
  * The main event update loop for the vehicle.  Within this function we check for
  * events from Amarino and the process timers.
  */
-void loop() 
-{     
+void loop()
+{
   // Get any incoming messages and process them
   amarino.receive();
 
   // Process the sensors
-  //  depthSensor.loop();
-  doSensor.loop();
+  monitorSensor.loop();
+  // depthSensor.loop();
+  // doSensor.loop();
   // teSensor.loop();
-  esSensor.loop();
+  // esSensor.loop();
 }
 
 /**
@@ -224,9 +228,10 @@ void update(void *)
 
   // Perform periodic updates for sensors
   // teSensor.update();
-  doSensor.update();
+  // doSensor.update();
   //  depthSensor.update();
-  esSensor.update();
+  // esSensor.update();
+  monitorSensor.update();
 
   // Decay the desired velocities slightly
   decayVelocity();
@@ -236,10 +241,10 @@ int main(void)
 {
   // Initial setup for boat
   setup();
-  
+
   // Schedule periodic updates
   Task<UserTask> task(update, NULL, UPDATE_INTERVAL);
-  
+
   // Start main tight loop
   while(true) { loop(); }
 }
