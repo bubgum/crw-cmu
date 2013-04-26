@@ -17,7 +17,7 @@
 // Define the char code for the Amarino callback
 #define RECV_MONITOR_FN 'm'
 
-#define SERIAL_BUFFER_SIZE 160
+#define SERIAL_BUFFER_SIZE 1024
 
 struct MonitorConfig
 {
@@ -59,16 +59,16 @@ class MonitorSensor : public Sensor
       if (c == '\r' || c == '\n' || serialIndex >= SERIAL_BUFFER_SIZE) {
 
 	// Check if it is a valid reading
-	if ((serialIndex > 6) && (!strncmp(serialBuffer, "$SDDBT", 6)) && (nmeaChecksum(serialBuffer))) {
+	if ((serialIndex > 3) && (!strncmp(serialBuffer, "59,", 3))) {
 
 	  // Send parsed reading to server
 	  amarino->send(RECV_MONITOR_FN);
-	  amarino->send(parseSERIAL(serialBuffer));
+	  amarino->send(serialBuffer);
 	  amarino->sendln();
 	} 
 
 	// Clear out existing buffer
-	clearSERIAL();
+	clearSerial();
       }
     }
   }
@@ -83,28 +83,7 @@ class MonitorSensor : public Sensor
   char serialBuffer[SERIAL_BUFFER_SIZE+1];
   uint8_t serialIndex;
   
-  // Parses the NMEA string to just the depth in meters.
-  static char* parseSERIAL(char* depth) {
-
-    // Null-terminate the string after the depth reading
-    depth[22] = '\0';
-    return &depth[16];
-  }
-
-  // Calculate nmea checksum and return if it is correct or not
-  static bool nmeaChecksum(const char *depth) {
-    char checksum = 0;
-    char cs[3];
-
-    const char *indx = depth + 1;
-    for (int i = 1; i < 33; i++, indx++)
-      checksum ^= *indx;
-    
-    sprintf(cs, "%02X", checksum);
-    return (!strncmp(cs, &depth[34], 2));
-  }
-
-  void clearSERIAL(void)
+  void clearSerial(void)
   {
     memset(serialBuffer, 0, SERIAL_BUFFER_SIZE);
     serialIndex = 0;
