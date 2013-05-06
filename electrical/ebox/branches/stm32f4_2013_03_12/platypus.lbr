@@ -503,26 +503,26 @@ current sense, integrated in Smart SIPMOS chip on chip technology. Providing 
 &lt;br&gt;
 N channel vertical power FET with charge pump, ground referenced CMOS compatible input and diagnostic feedback, monolithically integrated in Smart SIPMOS technology. Providing embedded protective functions.</description>
 <gates>
-<gate name="G$1" symbol="BTS712N1" x="0" y="0"/>
-<gate name="G$2" symbol="BTS712N1" x="0" y="-40.64"/>
+<gate name="A" symbol="BTS712N1" x="0" y="0"/>
+<gate name="B" symbol="BTS712N1" x="0" y="-40.64"/>
 </gates>
 <devices>
 <device name="" package="PG-DSO-20">
 <connects>
-<connect gate="G$1" pin="GND" pad="2"/>
-<connect gate="G$1" pin="IN1" pad="3"/>
-<connect gate="G$1" pin="IN2" pad="5"/>
-<connect gate="G$1" pin="OUT1" pad="18"/>
-<connect gate="G$1" pin="OUT2" pad="17"/>
-<connect gate="G$1" pin="ST" pad="4"/>
-<connect gate="G$1" pin="VBB" pad="1 16 19 20"/>
-<connect gate="G$2" pin="GND" pad="6"/>
-<connect gate="G$2" pin="IN1" pad="7"/>
-<connect gate="G$2" pin="IN2" pad="9"/>
-<connect gate="G$2" pin="OUT1" pad="14"/>
-<connect gate="G$2" pin="OUT2" pad="13"/>
-<connect gate="G$2" pin="ST" pad="8"/>
-<connect gate="G$2" pin="VBB" pad="10 11 12 15"/>
+<connect gate="A" pin="GND" pad="2"/>
+<connect gate="A" pin="IN1" pad="3"/>
+<connect gate="A" pin="IN2" pad="5"/>
+<connect gate="A" pin="OUT1" pad="18"/>
+<connect gate="A" pin="OUT2" pad="17"/>
+<connect gate="A" pin="ST" pad="4"/>
+<connect gate="A" pin="VBB" pad="1 16 19 20"/>
+<connect gate="B" pin="GND" pad="6"/>
+<connect gate="B" pin="IN1" pad="7"/>
+<connect gate="B" pin="IN2" pad="9"/>
+<connect gate="B" pin="OUT1" pad="14"/>
+<connect gate="B" pin="OUT2" pad="13"/>
+<connect gate="B" pin="ST" pad="8"/>
+<connect gate="B" pin="VBB" pad="10 11 12 15"/>
 </connects>
 <technologies>
 <technology name="">
@@ -540,47 +540,47 @@ N channel vertical power FET with charge pump, ground referenced CMOS compatible
 &lt;br&gt;
 Robust pin-configurable transceiver that supports RS232, RS485, and RS422 standards while operating on a single 3V to 5.5V supply.</description>
 <gates>
-<gate name="G$1" symbol="LTC2872_PWR" x="0" y="0" addlevel="must"/>
-<gate name="G$2" symbol="LTC2872_XCV" x="0" y="-35.56" swaplevel="1"/>
-<gate name="G$3" symbol="LTC2872_XCV" x="0" y="-71.12" swaplevel="1"/>
+<gate name="A" symbol="LTC2872_PWR" x="0" y="0" addlevel="must"/>
+<gate name="B" symbol="LTC2872_XCV" x="0" y="-35.56" swaplevel="1"/>
+<gate name="C" symbol="LTC2872_XCV" x="0" y="-71.12" swaplevel="1"/>
 </gates>
 <devices>
 <device name="" package="LTC-UHF">
 <connects>
-<connect gate="G$1" pin="CAP" pad="17"/>
-<connect gate="G$1" pin="FEN" pad="16"/>
-<connect gate="G$1" pin="GND" pad="5 18 27 34"/>
-<connect gate="G$1" pin="H/!F" pad="15"/>
-<connect gate="G$1" pin="LB" pad="36"/>
-<connect gate="G$1" pin="SW" pad="19"/>
-<connect gate="G$1" pin="VCC" pad="1 21 31"/>
-<connect gate="G$1" pin="VDD" pad="20"/>
-<connect gate="G$1" pin="VEE" pad="39"/>
-<connect gate="G$1" pin="VL" pad="35"/>
-<connect gate="G$2" pin="!RXEN" pad="9"/>
-<connect gate="G$2" pin="485/!232" pad="13"/>
-<connect gate="G$2" pin="A" pad="2"/>
-<connect gate="G$2" pin="B" pad="3"/>
-<connect gate="G$2" pin="DXEN" pad="10"/>
-<connect gate="G$2" pin="DY" pad="7"/>
-<connect gate="G$2" pin="DZ" pad="8"/>
-<connect gate="G$2" pin="RA" pad="37"/>
-<connect gate="G$2" pin="RB" pad="38"/>
-<connect gate="G$2" pin="TE485" pad="11"/>
-<connect gate="G$2" pin="Y" pad="4"/>
-<connect gate="G$2" pin="Z" pad="6"/>
-<connect gate="G$3" pin="!RXEN" pad="23"/>
-<connect gate="G$3" pin="485/!232" pad="14"/>
-<connect gate="G$3" pin="A" pad="30"/>
-<connect gate="G$3" pin="B" pad="29"/>
-<connect gate="G$3" pin="DXEN" pad="22"/>
-<connect gate="G$3" pin="DY" pad="25"/>
-<connect gate="G$3" pin="DZ" pad="24"/>
-<connect gate="G$3" pin="RA" pad="33"/>
-<connect gate="G$3" pin="RB" pad="32"/>
-<connect gate="G$3" pin="TE485" pad="12"/>
-<connect gate="G$3" pin="Y" pad="28"/>
-<connect gate="G$3" pin="Z" pad="26"/>
+<connect gate="A" pin="CAP" pad="17"/>
+<connect gate="A" pin="FEN" pad="16"/>
+<connect gate="A" pin="GND" pad="5 18 27 34"/>
+<connect gate="A" pin="H/!F" pad="15"/>
+<connect gate="A" pin="LB" pad="36"/>
+<connect gate="A" pin="SW" pad="19"/>
+<connect gate="A" pin="VCC" pad="1 21 31"/>
+<connect gate="A" pin="VDD" pad="20"/>
+<connect gate="A" pin="VEE" pad="39"/>
+<connect gate="A" pin="VL" pad="35"/>
+<connect gate="B" pin="!RXEN" pad="9"/>
+<connect gate="B" pin="485/!232" pad="13"/>
+<connect gate="B" pin="A" pad="2"/>
+<connect gate="B" pin="B" pad="3"/>
+<connect gate="B" pin="DXEN" pad="10"/>
+<connect gate="B" pin="DY" pad="7"/>
+<connect gate="B" pin="DZ" pad="8"/>
+<connect gate="B" pin="RA" pad="37"/>
+<connect gate="B" pin="RB" pad="38"/>
+<connect gate="B" pin="TE485" pad="11"/>
+<connect gate="B" pin="Y" pad="4"/>
+<connect gate="B" pin="Z" pad="6"/>
+<connect gate="C" pin="!RXEN" pad="23"/>
+<connect gate="C" pin="485/!232" pad="14"/>
+<connect gate="C" pin="A" pad="30"/>
+<connect gate="C" pin="B" pad="29"/>
+<connect gate="C" pin="DXEN" pad="22"/>
+<connect gate="C" pin="DY" pad="25"/>
+<connect gate="C" pin="DZ" pad="24"/>
+<connect gate="C" pin="RA" pad="33"/>
+<connect gate="C" pin="RB" pad="32"/>
+<connect gate="C" pin="TE485" pad="12"/>
+<connect gate="C" pin="Y" pad="28"/>
+<connect gate="C" pin="Z" pad="26"/>
 </connects>
 <technologies>
 <technology name="">
@@ -600,18 +600,18 @@ Robust pin-configurable transceiver that supports RS232, RS485, and RS422 standa
 &lt;br&gt;
 UL Recognized at 45 amps, AC or DC.</description>
 <gates>
-<gate name="G$1" symbol="MV" x="0" y="0"/>
-<gate name="G$2" symbol="M" x="0" y="-2.54"/>
-<gate name="G$3" symbol="M" x="0" y="-5.08"/>
-<gate name="G$4" symbol="M" x="0" y="-7.62"/>
+<gate name="-1" symbol="MV" x="0" y="0"/>
+<gate name="-2" symbol="M" x="0" y="-2.54"/>
+<gate name="-3" symbol="M" x="0" y="-5.08"/>
+<gate name="-4" symbol="M" x="0" y="-7.62"/>
 </gates>
 <devices>
 <device name="" package="PP45PC22R">
 <connects>
-<connect gate="G$1" pin="S" pad="1"/>
-<connect gate="G$2" pin="S" pad="2"/>
-<connect gate="G$3" pin="S" pad="3"/>
-<connect gate="G$4" pin="S" pad="4"/>
+<connect gate="-1" pin="S" pad="1"/>
+<connect gate="-2" pin="S" pad="2"/>
+<connect gate="-3" pin="S" pad="3"/>
+<connect gate="-4" pin="S" pad="4"/>
 </connects>
 <technologies>
 <technology name="">
