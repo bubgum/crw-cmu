@@ -1,6 +1,0 @@
-[ProjectGroup]
-Version=1.0
-[Project1]
-ProjectPath=crw.PrjPCB
-[Project2]
-ProjectPath=crw-lib\crw-lib.LibPkg

@@ -1,9 +1,0 @@
-Record=SheetSymbol|SourceDocument=crw.SchDoc|Designator=U_crw_comm|SchDesignator=U_crw_comm|FileName=crw_comm.SchDoc|SymbolType=Normal|RawFileName=crw_comm.SchDoc
-Record=SheetSymbol|SourceDocument=crw.SchDoc|Designator=U_crw_controller|SchDesignator=U_crw_controller|FileName=crw_controller.SchDoc|SymbolType=Normal|RawFileName=crw_controller.SchDoc
-Record=SheetSymbol|SourceDocument=crw.SchDoc|Designator=U_crw_drive|SchDesignator=U_crw_drive|FileName=crw_drive.SchDoc|SymbolType=Normal|RawFileName=crw_drive.SchDoc
-Record=SheetSymbol|SourceDocument=crw.SchDoc|Designator=U_crw_gyro|SchDesignator=U_crw_gyro|FileName=crw_gyro.SchDoc|SymbolType=Normal|RawFileName=crw_gyro.SchDoc
-Record=SheetSymbol|SourceDocument=crw.SchDoc|Designator=U_crw_power|SchDesignator=U_crw_power|FileName=crw_power.SchDoc|SymbolType=Normal|RawFileName=crw_power.SchDoc
-Record=SheetSymbol|SourceDocument=crw.SchDoc|Designator=U_crw_sensor|SchDesignator=U_crw_sensor|FileName=crw_sensor.SchDoc|SymbolType=Normal|RawFileName=crw_sensor.SchDoc
-Record=SheetSymbol|SourceDocument=crw.SchDoc|Designator=U_crw_sensor|SchDesignator=U_crw_sensor|FileName=crw_sensor.SchDoc|SymbolType=Normal|RawFileName=crw_sensor.SchDoc
-Record=SheetSymbol|SourceDocument=crw.SchDoc|Designator=U_crw_sensor|SchDesignator=U_crw_sensor|FileName=crw_sensor.SchDoc|SymbolType=Normal|RawFileName=crw_sensor.SchDoc
-Record=TopLevelDocument|FileName=crw.SchDoc
