@@ -26,8 +26,7 @@ pidConstants_t EEMEM pidEeprom;
 #include <util/delay.h>
 
 // Core modules
-#include "rudder.h"
-#include "thruster.h"
+#include "thruster2.h"
 
 // Sensor modules
 #include "depth_sensor.h"
@@ -69,11 +68,11 @@ SerialHW<SerialBluetooth> bluetooth(BAUD_115200);
 MeetAndroid amarino(&bluetooth);
 
 // Module configuration
-ServoHW0<Motor> motor;
-Thruster thruster(&amarino, &motor);
+Servo2HW0<Motor> motor;
+Thruster2 thruster(&amarino, &motor);
 
-ServoHW1<Servo1> servo1;
-Rudder rudder(&amarino, &servo1);
+//ServoHW1<Servo1> servo1;
+//Rudder rudder(&amarino, &servo1);
 
 MonitorConfig monitorConfig = { &PORTK, PIN4 };
 MonitorSensor<monitorConfig, Serial2> monitorSensor(&amarino);
@@ -182,7 +181,7 @@ void setup()
   initBoard();
 
   // Arm thruster
-  //  thruster.arm();
+  thruster.arm();
 
   // Reset all PID values to zero
   resetPID();
@@ -223,7 +222,7 @@ void update(void *)
   led.toggle();
 
   // Update the thrust and rudder control loops
-  rudder.update();
+  //  rudder.update();
   thruster.update();
 
   // Perform periodic updates for sensors

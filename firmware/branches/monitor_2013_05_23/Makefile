@@ -91,11 +91,13 @@ PROJECTNAME=crw_ebox
 # (NOT .s !!!) for assembly source code files.
 PRJSRC= src/main.cpp \
 	src/hardware/servo.cpp \
+	src/hardware/servo2.cpp \
 	src/hardware/serial.cpp \
 	src/hardware/led.cpp \
 	src/system/meet_android.cpp \
 	src/system/portability.cpp \
 	src/thruster.cpp \
+	src/thruster2.cpp \
 	src/rudder.cpp
 
 
