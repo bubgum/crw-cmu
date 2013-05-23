@@ -34,14 +34,14 @@ struct Servo2Config0
 
 class Servo2
 {
- protected:
+protected:
   Servo2();
   virtual ~Servo2() = 0;
-
+  
   volatile int _position1, _position2;
   virtual void update(uint16_t pos1, uint16_t pos2) = 0;
-
- public:
+  
+public:
   void set1(int16_t position);
   void set2(int16_t position);
   int16_t get1(void);
@@ -55,26 +55,26 @@ class Servo2
 template<const Servo2Config0 &_config>
 class Servo2HW0 : public Servo2
 {
- public:
- Servo2HW0() : Servo2() {
+public:
+  Servo2HW0() : Servo2() {
     // Initialize the timer to the default position
     update(_position1, _position2);
-
+    
     // Set up the timer pin as an output
     _config.port->OUTCLR = _BV(_config.pin1);
     _config.port->DIRSET = _BV(_config.pin1);
     _config.port->OUTCLR = _BV(_config.pin2);
     _config.port->DIRSET = _BV(_config.pin2);
-
+    
     // Set up the timer to a 0.5MHz tick resolution, so we
     // can convert timings easily (1 tick = 2uS)
     _config.timer->PER = REFRESH_INTERVAL_US >> 1; // Set the PWM resolution
     _config.timer->CTRLB = TC0_CCBEN_bm | TC0_CCCEN_bm | TC_WGMODE_SS_gc; // Use compare channel B and C
-
+    
     // Start the timer running
     _config.timer->CTRLA = TC_CLKSEL_DIV64_gc; // 32MHz / 64 = 0.5Mhz
   }
-
+  
   ~Servo2HW0() {
     // Disable the timer
     _config.timer->CTRLA = 0;

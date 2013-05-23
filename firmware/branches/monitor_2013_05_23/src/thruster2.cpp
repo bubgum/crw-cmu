@@ -1,5 +1,8 @@
 #include "thruster2.h"
 
+extern float desiredVelocity[];
+extern float actualVelocity[];
+
 Thruster2::Thruster2(MeetAndroid * const a, Servo2 * const s)
   : servo(s), amarino(a)
 {
@@ -26,8 +29,8 @@ void Thruster2::update(void)
 {
   float output1, output2;
 
-  output1 = desiredVelocity[0];
-  output2 = desiredVelocity[0];
+  output1 = desiredVelocity[0] * 10000;
+  output2 = desiredVelocity[0] * 10000;
 
   if (output1 < TMIN)
     output1 = TMIN;
@@ -45,7 +48,11 @@ void Thruster2::update(void)
   sendCounter++;
   if (sendCounter > THRUSTER_UPDATE_COUNT) {
     amarino->send(RECV_THRUSTER_DEG);
-    amarino->send(output);
+    amarino->send((output1 + output2)/2);
+    amarino->sendln();
+
+    amarino->send(RECV_RUDDER_POS);
+    amarino->send((output1 - output2));
     amarino->sendln();
 
     sendCounter = 0;

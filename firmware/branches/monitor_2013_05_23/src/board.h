@@ -9,7 +9,7 @@
 
 #include "led.h"
 #include "serial.h"
-#include "servo.h"
+//#include "servo.h"
 #include "servo2.h"
 #include "task.h"
 
@@ -30,10 +30,10 @@ SerialConfig Serial4 = { &USARTD0, &PORTD, PIN2, PIN3 };
 
 // Servo PWM configurations for each sensor port
 Servo2Config0 Motor = { &TCF0, &PORTF, PIN1, PIN0 };
-ServoConfig1 Servo1 = { &TCE1, &PORTE, PIN5 };
-ServoConfig0 Servo2 = { &TCE0, &PORTE, PIN1 };
-ServoConfig1 Servo3 = { &TCD1, &PORTD, PIN5 };
-ServoConfig0 Servo4 = { &TCD0, &PORTD, PIN1 };
+//ServoConfig1 Servo1 = { &TCE1, &PORTE, PIN5 };
+//ServoConfig0 Servo2 = { &TCE0, &PORTE, PIN1 };
+//ServoConfig1 Servo3 = { &TCD1, &PORTD, PIN5 };
+//ServoConfig0 Servo4 = { &TCD0, &PORTD, PIN1 };
 
 // Set up general purpose task timer
 TaskConfig UserTask = { &TCC0 }; // No one is using TCC0

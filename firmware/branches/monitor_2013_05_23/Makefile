@@ -100,7 +100,6 @@ PRJSRC= src/main.cpp \
 	src/thruster2.cpp \
 	src/rudder.cpp
 
-
 # additional includes (e.g. -I/path/to/mydir)
 INC=-Isrc -Isrc/hardware -Isrc/sensors -Isrc/system
 

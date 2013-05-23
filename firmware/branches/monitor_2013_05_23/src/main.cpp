@@ -108,6 +108,8 @@ void setVelocity(uint8_t flag, uint8_t numOfValues)
 
   // Load these values into array of desired velocities  
   amarino.getFloatValues(desiredVelocity);
+
+  led.toggle();
 }
 
 /**
@@ -184,10 +186,10 @@ void setup()
   thruster.arm();
 
   // Reset all PID values to zero
-  resetPID();
+  //resetPID();
 
   // Load PID constants in from EEPROM
-  eeprom_read_block(&pid, &pidEeprom, sizeof(pidConstants_t));
+  //eeprom_read_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 
   // Set up serial communications
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);

@@ -17,14 +17,16 @@
 #define TMAX  32000
 
 #define RECV_THRUSTER_DEG 't'
+#define RECV_RUDDER_POS 'r'
+
 #define THRUSTER_UPDATE_INTERVAL_MS (100)
 #define THRUSTER_UPDATE_COUNT (10)
 
 class Thruster2
 {
  public:
-  Thruster(MeetAndroid * const a, Servo2 * const s);  
-  ~Thruster();
+  Thruster2(MeetAndroid * const a, Servo2 * const s);  
+  ~Thruster2();
 
   void arm(void);  
   void update(void);
@@ -41,4 +43,4 @@ class Thruster2
   int sendCounter;
 };
 
-#endif /* THRUSTER_H */
+#endif /* THRUSTER2_H */
