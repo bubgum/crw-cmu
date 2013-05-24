@@ -371,8 +371,10 @@ public class AirboatImpl extends AbstractVehicleServer {
 		case GET_MONITOR_FN:
 			// Check size of function
 			if (cmd.size() != 2) {
-				Log.w(logTag, "Received corrupt depth function: " + cmd);
+				Log.w(logTag, "Received corrupt monitor function: " + cmd);
 				return;
+			} else {
+				Log.w(logTag, "Received valid monitor function: " + cmd);
 			}
 			
 			// Broadcast the sensor reading
@@ -391,7 +393,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 			reading.type = SensorType.UNKNOWN;
 			sendSensor(reading.channel, reading);
 			logger.info("MONITOR: " + cmd);
-			
+			break;
 		default:
 			Log.w(logTag, "Received unknown function type: " + cmd);
 			break;
