@@ -96,9 +96,7 @@ PRJSRC= src/main.cpp \
 	src/hardware/led.cpp \
 	src/system/meet_android.cpp \
 	src/system/portability.cpp \
-	src/thruster.cpp \
-	src/thruster2.cpp \
-	src/rudder.cpp
+	src/thruster2.cpp
 
 # additional includes (e.g. -I/path/to/mydir)
 INC=-Isrc -Isrc/hardware -Isrc/sensors -Isrc/system

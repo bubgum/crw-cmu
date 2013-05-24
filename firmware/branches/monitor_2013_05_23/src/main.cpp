@@ -14,12 +14,6 @@
 #include <stdlib.h>
 #include <avr/eeprom.h>
 
-// Structure storing PID constants for each axis
-// TODO: This placement is currently a hack to share with rudder and thruster
-struct pidConstants_t { float Kp[6], Ki[6], Kd[6]; };
-pidConstants_t pid;
-pidConstants_t EEMEM pidEeprom;
-
 // Core functionality
 #include "board.h"
 #include "meet_android.h"
@@ -71,9 +65,6 @@ MeetAndroid amarino(&bluetooth);
 Servo2HW0<Motor> motor;
 Thruster2 thruster(&amarino, &motor);
 
-//ServoHW1<Servo1> servo1;
-//Rudder rudder(&amarino, &servo1);
-
 MonitorConfig monitorConfig = { &PORTK, PIN4 };
 MonitorSensor<monitorConfig, Serial2> monitorSensor(&amarino);
 
@@ -103,74 +94,13 @@ void decayVelocity()
  */
 void setVelocity(uint8_t flag, uint8_t numOfValues)
 {
+  led.toggle();
+
   // Ignore if wrong number of arguments
   if (numOfValues != 6) return;
 
   // Load these values into array of desired velocities  
   amarino.getFloatValues(desiredVelocity);
-
-  led.toggle();
-}
-
-/**
- * Receives PID constants for a particular axis.
- */
-void setPID(uint8_t flag, uint8_t numOfValues)
-{
-  // Ignore if wrong number of arguments
-  if (numOfValues != 4) return;
-
-  // Load all the arguments into memory
-  float args[numOfValues];
-  amarino.getFloatValues(args);
-
-  // Get the axis that is being set
-  int axis = (int)args[0];
-  if (axis < 0 || axis >= 6) return;
-
-  // Set these values and save them to the EEPROM
-  pid.Kp[axis] = args[1];
-  pid.Ki[axis] = args[2];
-  pid.Kd[axis] = args[3];
-
-  eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
-}
-
-/**
- * Sends the PID constants of a particular axis to Amarino.
- */
-void getPID(uint8_t flag, uint8_t numOfValues)
-{
-  // Ignore if wrong number of arguments
-  if (numOfValues != 1) return;
-
-  // Load the argument into memory
-  float axisRaw = amarino.getFloat();
-
-  // Get the axis that is being set
-  int axis = (int)axisRaw;
-  if (axis < 0 || axis >= 6) return;
-
-  // Return the appropriate values to Amarino
-  amarino.send(GET_PID_FN);
-  amarino.send((float)axis);
-  amarino.send(pid.Kp[axis]);
-  amarino.send(pid.Ki[axis]);
-  amarino.send(pid.Kd[axis]);
-  amarino.sendln();
-}
-
-/**
- * Sets the PID gains to zero-values.
- */
-void resetPID()
-{
-  memset(&pid, 0, sizeof(pid));
-
-  pid.Kp[0] = 32000.0;
-  pid.Kp[5] = -32000.0; // We invert the rudder so +-100% is positive RHS angle
-
-  eeprom_update_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 }
 
 /**
@@ -183,7 +113,7 @@ void setup()
   initBoard();
 
   // Arm thruster
-  thruster.arm();
+  //thruster.arm();
 
   // Reset all PID values to zero
   //resetPID();
@@ -193,8 +123,6 @@ void setup()
 
   // Set up serial communications
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
-  amarino.registerFunction(setPID, SET_PID_FN);
-  amarino.registerFunction(getPID, GET_PID_FN);
 }
 
 /**
