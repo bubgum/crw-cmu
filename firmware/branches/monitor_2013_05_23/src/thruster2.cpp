@@ -29,8 +29,8 @@ void Thruster2::update(void)
 {
   float output1, output2;
 
-  output1 = desiredVelocity[0] * 10000;
-  output2 = desiredVelocity[0] * 10000;
+  output1 = (desiredVelocity[0] + desiredVelocity[5]) * 10000;
+  output2 = (desiredVelocity[0] - desiredVelocity[5]) * 10000;
 
   if (output1 < TMIN)
     output1 = TMIN;
