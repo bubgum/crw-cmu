@@ -63,13 +63,14 @@ public:
     // Set up the timer pin as an output
     _config.port->OUTCLR = _BV(_config.pin1);
     _config.port->DIRSET = _BV(_config.pin1);
+
     _config.port->OUTCLR = _BV(_config.pin2);
     _config.port->DIRSET = _BV(_config.pin2);
     
     // Set up the timer to a 0.5MHz tick resolution, so we
     // can convert timings easily (1 tick = 2uS)
     _config.timer->PER = REFRESH_INTERVAL_US >> 1; // Set the PWM resolution
-    _config.timer->CTRLB = TC0_CCBEN_bm | TC0_CCCEN_bm | TC_WGMODE_SS_gc; // Use compare channel B and C
+    _config.timer->CTRLB = TC0_CCAEN_bm | TC0_CCBEN_bm | TC_WGMODE_SS_gc; // Use compare channel B and C
     
     // Start the timer running
     _config.timer->CTRLA = TC_CLKSEL_DIV64_gc; // 32MHz / 64 = 0.5Mhz
@@ -90,8 +91,8 @@ public:
   void update(uint16_t pos1, uint16_t pos2)
   {
     // Configure the timer period to match the servo setting
-    _config.timer->CCBBUF = pos1 >> 1; // 2 uS = 1 ticks @ 32MHz/64
-    _config.timer->CCCBUF = pos2 >> 1; // 2 uS = 1 ticks @ 32MHz/64
+    _config.timer->CCABUF = pos1 >> 1; // 2 uS = 1 ticks @ 32MHz/64
+    _config.timer->CCBBUF = pos2 >> 1; // 2 uS = 1 ticks @ 32MHz/64
   }
 };
 
