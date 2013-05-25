@@ -53,8 +53,7 @@ class MonitorSensor : public Sensor
     // Get bytes from serial buffer
     while (serial.available()) {
       char c = fgetc(stream);
-      serialBuffer[serialIndex++] = c;
-
+      
       // Parse if we receive end-of-line characters
       if (c == '\r' || c == '\n' || serialIndex >= SERIAL_BUFFER_SIZE) {
         
@@ -69,7 +68,9 @@ class MonitorSensor : public Sensor
 
         // Clear out existing buffer
         clearSerial();
-      }
+      } else {
+        serialBuffer[serialIndex++] = c;
+      }       
     }
   }
 
@@ -84,7 +85,7 @@ class MonitorSensor : public Sensor
   MeetAndroid * const amarino;
 
   char serialBuffer[SERIAL_BUFFER_SIZE+1];
-  uint8_t serialIndex;
+  uint16_t serialIndex;
   
   void clearSerial(void)
   {
