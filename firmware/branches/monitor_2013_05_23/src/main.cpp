@@ -12,7 +12,6 @@
  */
 
 #include <stdlib.h>
-#include <avr/eeprom.h>
 
 // Core functionality
 #include "board.h"
@@ -94,8 +93,6 @@ void decayVelocity()
  */
 void setVelocity(uint8_t flag, uint8_t numOfValues)
 {
-  led.toggle();
-
   // Ignore if wrong number of arguments
   if (numOfValues != 6) return;
 
@@ -117,9 +114,6 @@ void setup()
 
   // Reset all PID values to zero
   //resetPID();
-
-  // Load PID constants in from EEPROM
-  //eeprom_read_block(&pid, &pidEeprom, sizeof(pidConstants_t));
 
   // Set up serial communications
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
@@ -152,7 +146,6 @@ void update(void *)
   led.toggle();
 
   // Update the thrust and rudder control loops
-  //  rudder.update();
   thruster.update();
 
   // Perform periodic updates for sensors
