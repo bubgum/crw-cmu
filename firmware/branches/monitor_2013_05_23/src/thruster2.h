@@ -14,7 +14,7 @@
 
 #define TBUFSIZE  100
 #define TMIN  0
-#define TMAX  32000
+#define TMAX  30000
 
 #define RECV_THRUSTER_DEG 't'
 #define RECV_RUDDER_POS 'r'

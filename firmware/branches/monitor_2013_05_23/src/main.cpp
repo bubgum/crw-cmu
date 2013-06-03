@@ -64,8 +64,8 @@ MeetAndroid amarino(&bluetooth);
 Servo2HW0<Motor> motor;
 Thruster2 thruster(&amarino, &motor);
 
-MonitorConfig monitorConfig = { &PORTK, PIN4 };
-MonitorSensor<monitorConfig, Serial2> monitorSensor(&amarino);
+MonitorConfig monitorConfig = { &PORTK, PIN6 };
+MonitorSensor<monitorConfig, Serial1> monitorSensor(&amarino);
 
 //DepthConfig depthConfig = { &PORTK, PIN4 };
 //DepthSensor<depthConfig, Serial2> depthSensor(&amarino);
@@ -110,10 +110,7 @@ void setup()
   initBoard();
 
   // Arm thruster
-  //thruster.arm();
-
-  // Reset all PID values to zero
-  //resetPID();
+  thruster.arm();
 
   // Set up serial communications
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
