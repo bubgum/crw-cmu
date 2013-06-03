@@ -111,16 +111,19 @@ public enum AirboatController {
 					pos = 1.0;
 				
 				// THRUST CONTROL SEGMENT
-				double thrust = AirboatImpl.CONST_THRUST;
+				double[] thrust_pids = server_impl.getGains(0);
+				double thrust = AirboatImpl.CONST_THRUST * thrust_pids[0];
 				
 				// update twist
 				twist.dx(thrust);
 				twist.drz(pos);
-				// log relevant variables 
+				// log relevant variables
+				/*
 				logger_osman.info("Waypoint: " + waypoint);
 				logger_osman.info("DEBUG: " + distanceSq + " " + angle_destination + " " + angle_boat + " " + drz + " " +
 						prev_angle_destination + " " + angle_destination_change + " " + pos + " " + thrust
 						+ " " + bSum + " " + rudder_pids[0] + " " + rudder_pids[1] + " " + rudder_pids[2]);
+				*/
 				// update angle error
 				prev_angle_destination = angle_destination;
 				// Set the desired velocity
