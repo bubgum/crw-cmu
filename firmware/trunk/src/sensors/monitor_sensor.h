@@ -38,7 +38,7 @@ class MonitorSensor : public Sensor
     //_monitorConfig.pwr_port->DIRSET = _BV(_monitorConfig.pwr_pin);
 
     // Wait until it has powered up                                            
-    _delay_ms(1000);
+    //_delay_ms(1000);
   }
 
   ~MonitorSensor() { 
@@ -49,31 +49,35 @@ class MonitorSensor : public Sensor
   }
 
   void loop() {
-    
+
     // Get bytes from serial buffer
     while (serial.available()) {
       char c = fgetc(stream);
-      serialBuffer[serialIndex++] = c;
       
       // Parse if we receive end-of-line characters
       if (c == '\r' || c == '\n' || serialIndex >= SERIAL_BUFFER_SIZE) {
+        
+        // Check if it is a valid reading
+        if ((serialIndex > 3) && (!strncmp(serialBuffer, "59,", 3))) {
+          
+          // Send parsed reading to server
+          amarino->send(RECV_MONITOR_FN);
+          amarino->send(serialBuffer);
+          amarino->sendln();
+        } 
 
-	// Check if it is a valid reading
-	if ((serialIndex > 3) && (!strncmp(serialBuffer, "59,", 3))) {
-
-	  // Send parsed reading to server
-	  amarino->send(RECV_MONITOR_FN);
-	  amarino->send(serialBuffer);
-	  amarino->sendln();
-	} 
-
-	// Clear out existing buffer
-	clearSerial();
-      }
+        // Clear out existing buffer
+        clearSerial();
+      } else {
+        serialBuffer[serialIndex++] = c;
+      }       
     }
   }
 
-  void update() { }
+  void update() {
+    // Do nothing
+    //    fputs("59,1,2,3,4,5,6,7,8,9\r\n", stream);
+  }
 
  private:
   SerialHW<_serialConfig> serial;
@@ -81,7 +85,7 @@ class MonitorSensor : public Sensor
   MeetAndroid * const amarino;
 
   char serialBuffer[SERIAL_BUFFER_SIZE+1];
-  uint8_t serialIndex;
+  uint16_t serialIndex;
   
   void clearSerial(void)
   {
