@@ -72,8 +72,8 @@ MonitorSensor<monitorConfig, Serial1> monitorSensor(&amarino);
 
 //DOSensor<Serial3> doSensor(&amarino);
 
-//TE5Config teConfig = { &PORTD, PIN1 };
-//TE5Sensor<teConfig, Serial4> teSensor(&amarino);
+TE5Config teConfig = { &PORTD, PIN1 };
+TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
 //ES2Config esConfig = { &PORTD, PIN1 };
 //ES2Sensor<esConfig, Serial4> esSensor(&amarino);
@@ -129,7 +129,7 @@ void loop()
   monitorSensor.loop();
   // depthSensor.loop();
   // doSensor.loop();
-  // teSensor.loop();
+     teSensor.loop();
   // esSensor.loop();
 }
 
@@ -146,7 +146,7 @@ void update(void *)
   thruster.update();
 
   // Perform periodic updates for sensors
-  // teSensor.update();
+     teSensor.update();
   // doSensor.update();
   //  depthSensor.update();
   // esSensor.update();

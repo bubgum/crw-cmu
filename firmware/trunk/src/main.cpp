@@ -75,16 +75,16 @@ Thruster thruster(&amarino, &motor);
 ServoHW1<Servo1> servo1;
 Rudder rudder(&amarino, &servo1);
 
-MonitorConfig monitorConfig = { &PORTK, PIN4 };
-MonitorSensor<monitorConfig, Serial2> monitorSensor(&amarino);
+//MonitorConfig monitorConfig = { &PORTK, PIN4 };
+//MonitorSensor<monitorConfig, Serial2> monitorSensor(&amarino);
 
 //DepthConfig depthConfig = { &PORTK, PIN4 };
 //DepthSensor<depthConfig, Serial2> depthSensor(&amarino);
 
-//DOSensor<Serial3> doSensor(&amarino);
+DOSensor<Serial3> doSensor(&amarino);
 
-//TE5Config teConfig = { &PORTD, PIN1 };
-//TE5Sensor<teConfig, Serial4> teSensor(&amarino);
+TE5Config teConfig = { &PORTD, PIN1 };
+TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
 //ES2Config esConfig = { &PORTD, PIN1 };
 //ES2Sensor<esConfig, Serial4> esSensor(&amarino);
@@ -206,10 +206,10 @@ void loop()
   amarino.receive();
 
   // Process the sensors
-  monitorSensor.loop();
+//  monitorSensor.loop();
   // depthSensor.loop();
-  // doSensor.loop();
-  // teSensor.loop();
+   doSensor.loop();
+   teSensor.loop();
   // esSensor.loop();
 }
 
@@ -227,11 +227,11 @@ void update(void *)
   thruster.update();
 
   // Perform periodic updates for sensors
-  // teSensor.update();
-  // doSensor.update();
+   teSensor.update();
+   doSensor.update();
   //  depthSensor.update();
   // esSensor.update();
-  monitorSensor.update();
+//  monitorSensor.update();
 
   // Decay the desired velocities slightly
   decayVelocity();
