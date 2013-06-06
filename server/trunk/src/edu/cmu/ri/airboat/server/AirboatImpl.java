@@ -42,7 +42,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 
 	private static final String logTag = AirboatImpl.class.getName();
 	public static final int UPDATE_INTERVAL_MS = 200;
-	public static final int NUM_SENSORS = 4;
+	public static final int NUM_SENSORS = 5;
 	public static final AirboatController DEFAULT_CONTROLLER = AirboatController.POINT_AND_SHOOT;
 
 	protected final SensorType[] _sensorTypes = new SensorType[NUM_SENSORS];
@@ -115,7 +115,7 @@ public class AirboatImpl extends AbstractVehicleServer {
 	 */
 	double[] r_PID = {2, 0, 3}; // Kp, Ki, Kd
 	double [] t_PID = {5, 5, 5};
-	public static final double CONST_THRUST = 0.5;
+	public static final double CONST_THRUST = 0.2;
 
 	/**
 	 * Creates a new instance of the vehicle implementation. This function
