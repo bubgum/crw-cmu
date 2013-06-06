@@ -281,7 +281,7 @@ public class AirboatActivity extends Activity {
 				startActivity(new Intent(AirboatActivity.this, AirboatObstAvoidanceActivity.class));
 			}
 		});
-        
+
         // Register handler for failsafe address that changes color 
 		// if a valid hostname seems to be reached.
 		// TODO: Move this to its own class!
