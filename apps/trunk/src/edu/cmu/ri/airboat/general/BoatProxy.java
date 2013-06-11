@@ -288,14 +288,18 @@ public class BoatProxy extends Thread {
                         if (currLoc != null) {
                             SensorData sd = new SensorData();
 
+                            /*
                             // @todo Observation
                             if (rand.nextBoolean()) {
                                 sd.type = SensorType.TE;
                             } else {
                                 sd.type = SensorType.UNKNOWN;
                             }
-
-                            sd.data = new double[4];
+                            */
+                            
+                            sd.type = SensorType.UNKNOWN;
+                            
+                            sd.data = new double[2];
 
                             if (simpleData) {
                                 for (int i = 0; i < sd.data.length; i++) {

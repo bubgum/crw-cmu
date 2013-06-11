@@ -197,12 +197,16 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
 
             // @todo Make initial position configurable            
             // Pittsburgh
-            // Configuration.setValue(AVKey.INITIAL_LATITUDE, 40.44515205369163);
-            // Configuration.setValue(AVKey.INITIAL_LONGITUDE, -80.01877404355538);
+            Configuration.setValue(AVKey.INITIAL_LATITUDE, 40.44515205369163);
+            Configuration.setValue(AVKey.INITIAL_LONGITUDE, -80.01877404355538);
             
             // Doha
-            Configuration.setValue(AVKey.INITIAL_LATITUDE, 25.3);            
-            Configuration.setValue(AVKey.INITIAL_LONGITUDE, 51.5333);
+            //Configuration.setValue(AVKey.INITIAL_LATITUDE, 25.3);            
+            //Configuration.setValue(AVKey.INITIAL_LONGITUDE, 51.5333);
+            
+            // Matilda Bay
+            //Configuration.setValue(AVKey.INITIAL_LATITUDE, -31.98);            
+            //Configuration.setValue(AVKey.INITIAL_LONGITUDE, 115.82);
             
             Configuration.setValue(AVKey.INITIAL_ALTITUDE, 3000.0);
 

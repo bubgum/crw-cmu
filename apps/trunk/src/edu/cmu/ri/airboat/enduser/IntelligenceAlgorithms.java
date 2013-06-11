@@ -9,8 +9,10 @@ import edu.cmu.ri.airboat.general.BoatProxyListener;
 import edu.cmu.ri.airboat.general.Observation;
 import edu.cmu.ri.airboat.general.ProxyManagerListener;
 import edu.cmu.ri.airboat.general.ProxyManager;
+import edu.cmu.ri.crw.PoseListener;
 import edu.cmu.ri.crw.SensorListener;
 import edu.cmu.ri.crw.data.SensorData;
+import edu.cmu.ri.crw.data.UtmPose;
 import gov.nasa.worldwind.geom.Angle;
 import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
@@ -55,7 +57,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
 
         proxies.add(bp);
         bp.addListener(this);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             bp.addSensorListener(i, new SensorListener() {
                 public void receivedSensor(SensorData sd) {
                     if (data != null) {
@@ -69,6 +71,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
                 }
             });
         }
+
     }
 
     public Algorithm getCurrAlg() {
@@ -115,12 +118,12 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
         lr[0] = utmLr.getEasting();
         lr[1] = utmLr.getNorthing();
 
-        System.out.println("DATA DISPLAY IS CREATED: " + ul[0] + " " + ul[1] + " " + lr[0] + " " + lr[1]);        
+        System.out.println("DATA DISPLAY IS CREATED: " + ul[0] + " " + ul[1] + " " + lr[0] + " " + lr[1]);
         data = new DataDisplay(ul, lr, pgon);
-        
-        lonDiff = Math.min((1.0 / 90000.0) * 10.0, (maxLon.degrees - minLon.degrees)/10.0);
+
+        lonDiff = Math.min((1.0 / 90000.0) * 10.0, (maxLon.degrees - minLon.degrees) / 10.0);
         latDiff = Math.min((1.0 / 110000.0) * 10.0, (maxLat.degrees - minLat.degrees) / 10.0);
-        
+
         System.out.println("Set lonDiff = " + lonDiff + ", latDiff " + latDiff);
 
     }
@@ -158,7 +161,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
 
     public void stop() {
         currLat = minLat;
-        
+
         if (autonomous && !allAutonomous) {
             autonomous = false;
             selectedProxy.stopBoat();
@@ -208,15 +211,15 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
                     ArrayList<Position> path = new ArrayList<Position>();
                     path.add(data.getMaxuncertaintyPoint(bp.getCurrLoc(), destLocations));
                     bp.setWaypoints(path);
-                    
+
                     // Keep track of where each has been sent
                     int index = proxies.indexOf(bp);
                     if (destLocations.size() > index) {
                         destLocations.remove(index);
                     }
                     destLocations.add(index, path.get(0));
-                                        
-                    break;
+
+                    break;                
             }
         } else {
 
@@ -229,7 +232,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
                     ArrayList<Position> path = new ArrayList<Position>();
                     path.add(data.getMaxuncertaintyPoint(bp.getCurrLoc(), null));
                     bp.setWaypoints(path);
-                    break;
+                    break;                
             }
 
         }
@@ -250,7 +253,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
 
             if (currLat.degrees > maxLat.degrees) {
                 currLat = minLat;
-                currLat = currLat.addDegrees(latDiff);                
+                currLat = currLat.addDegrees(latDiff);
             }
 
             path.add(new Position(new LatLon(currLat, getMinLonAt(minLon, currLat)), 0.0));
@@ -265,7 +268,7 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
 
             path.add(new Position(new LatLon(currLat, getMaxLonAt(maxLon, currLat)), 0.0));
             path.add(new Position(new LatLon(currLat, getMinLonAt(minLon, currLat)), 0.0));
-            
+
         }
 
         return path;
@@ -338,11 +341,11 @@ public class IntelligenceAlgorithms implements ProxyManagerListener, BoatProxyLi
     public static Polygon getArea() {
         return area;
     }
-    
+
     public LatLon getMinLatLon() {
         return new LatLon(minLat, minLon);
     }
-    
+
     public LatLon getMaxLatLon() {
         return new LatLon(maxLat, maxLon);
     }

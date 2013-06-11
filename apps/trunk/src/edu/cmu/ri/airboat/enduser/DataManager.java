@@ -162,7 +162,7 @@ public class DataManager extends JPanel implements ProxyManagerListener {
 
     public void proxyAdded(final BoatProxy bp) {
         proxies.add(bp);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             bp.addSensorListener(i, new SensorListener() {
                 public void receivedSensor(SensorData sd) {
                     addData(bp, sd, bp.getPose());

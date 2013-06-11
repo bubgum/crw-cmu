@@ -55,6 +55,7 @@ public class ProxyManager {
 
         System.out.println("Creating physical boat proxy");
         instance.createBoatProxy(name, CrwNetworkUtils.toInetSocketAddress(host), color);
+        //instance.createBoatProxy(name, new InetSocketAddress(host,11411), color);
 
         return true;
     }
