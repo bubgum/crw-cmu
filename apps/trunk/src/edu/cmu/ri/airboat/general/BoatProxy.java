@@ -273,7 +273,7 @@ public class BoatProxy extends Thread {
         // @todo Only should be on for simulation
 
         // ABHINAV COMMENT OUT THIS THREAD BEFORE RUNNING ON THE REAL BOATS!!
-        if (addr.getHostName().equalsIgnoreCase("localhost")) {
+        if ("localhost".equalsIgnoreCase(addr.getHostName())) {
             (new Thread() {
                 Random rand = new Random();
 

@@ -57,7 +57,7 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
             
             System.out.println("SecurityManager: " + System.getSecurityManager());
             
-            physicalServer.setText(Preferences.userRoot().get(LAST_URI_KEY, "http://168.192.1.X:11411"));
+            physicalServer.setText(Preferences.userRoot().get(LAST_URI_KEY, "192.168.1.X:11411"));
             imagesF.setText(Preferences.userRoot().get(LAST_IMG_DIR_KEY, "/tmp"));
             latSim.setText(Preferences.userRoot().get(LAT_SIM, "40.04"));
             lonSim.setText(Preferences.userRoot().get(LON_SIM, "80.04"));
@@ -65,7 +65,7 @@ public class ConfigureBoatsFrame extends javax.swing.JFrame {
             System.out.println("Failed to access preferences: " + e);
             
             JOptionPane.showMessageDialog(this, "A network error occurred, please restart", "Error", JOptionPane.OK_OPTION);
-            physicalServer.setText("http://168.192.1.X:11411");
+            physicalServer.setText("192.168.1.X:11411");
             imagesF.setText("/tmp");
 
         }
