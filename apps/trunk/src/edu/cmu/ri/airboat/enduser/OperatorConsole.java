@@ -72,6 +72,7 @@ import javax.swing.JPanel;
 public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerListener {
 
     static AppFrame frame = null;
+    SensorDataWidget sensorDataWidget;
     BoatPanel boatPanel = new BoatPanel();
     ImagePanel imgPanel = new ImagePanel();
     //AutonomyPanel autoPanel = new AutonomyPanel();
@@ -130,6 +131,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
         // Created to make sure listeners are started
         new IntelligenceAlgorithms();
 
+        final ProxyManager proxyManager = new ProxyManager();
         // System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Airboat Control");
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -138,6 +140,8 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                 // is done within an invokeLater call so that it executes on an AWT thread.
                 frame = new AppFrame();
                 frame.setVisible(true);
+                sensorDataWidget = new SensorDataWidget(frame.wwd);
+                proxyManager.addListener(sensorDataWidget);
 
                 try {
                     InetAddress addr = InetAddress.getLocalHost();
@@ -171,7 +175,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
             }
         });
 
-        (new ProxyManager()).addListener(this);
+        proxyManager.addListener(this);
 
     }
 
@@ -252,15 +256,15 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
              */
 
             /*
-            URL url = getClass().getResource("logo_msve.png");
-            if (url == null) {
-                System.out.println("FAILED! for " + url);
-            }
-            Icon bug = new ImageIcon(url);
-            */
+             URL url = getClass().getResource("logo_msve.png");
+             if (url == null) {
+             System.out.println("FAILED! for " + url);
+             }
+             Icon bug = new ImageIcon(url);
+             */
 
             // @todo Make layer an option (e.g., a combobox)
-            
+
             // Virtual Earth
             for (Layer layer : wwd.getModel().getLayers()) {
                 if (layer.getName().equals("MS Virtual Earth Aerial")) {
@@ -427,7 +431,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                             if (pLine != null) {
                                 polyLayer.removeRenderable(pLine);
                             }
-                            
+
                             if (ellipsoid != null) {
                                 polyLayer.removeRenderable(ellipsoid);
                                 ellipsoid = null;
@@ -449,7 +453,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
                             me.consume();
 
                             if (me.getClickCount() > 1) {
-                                
+
                                 // Remove previous
                                 Renderable prev = lastRender.get(selectedProxy);
                                 if (prev != null) {
@@ -623,7 +627,7 @@ public class OperatorConsole implements OperatorConsoleInterface, ProxyManagerLi
              * 
              */
         }
-        
+
         public void redraw() {
             wwd.redraw();
         }
