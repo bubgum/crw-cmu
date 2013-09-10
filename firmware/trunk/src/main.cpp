@@ -13,6 +13,8 @@
 
 #include <stdlib.h>
 #include <avr/eeprom.h>
+#include <avr/io.h>
+#include <avr/pgmspace.h>
 
 // Structure storing PID constants for each axis
 // TODO: This placement is currently a hack to share with rudder and thruster
@@ -88,6 +90,23 @@ TE5Sensor<teConfig, Serial4> teSensor(&amarino);
 
 //ES2Config esConfig = { &PORTD, PIN1 };
 //ES2Sensor<esConfig, Serial4> esSensor(&amarino);
+
+/**
+ * Reads ADC calibration information from EEPROM
+ */
+uint8_t readCalibrationByte( uint8_t index )
+{
+  uint8_t result;
+
+  /* Load the NVM Command register to read the calibration row. */
+  NVM_CMD = NVM_CMD_READ_CALIB_ROW_gc;
+  result = pgm_read_byte(index);
+
+  /* Clean up NVM Command register. */
+  NVM_CMD = NVM_CMD_NO_OPERATION_gc;
+
+  return( result );
+}
 
 /**
  * Gradually transition the boat to a safe state.
@@ -173,6 +192,42 @@ void resetPID()
 }
 
 /**
+ * Configures ADC to read voltage and current.
+ */
+void setupADC()
+{
+  // ADC Setup:
+  
+  // Read ADCA calibration from NVM signature row into ADC register
+  ADCB.CALL = readCalibrationByte( offsetof(NVM_PROD_SIGNATURES_t, ADCBCAL0) );
+  ADCB.CALH = readCalibrationByte( offsetof(NVM_PROD_SIGNATURES_t, ADCBCAL1) );
+
+  // 12 Bit Resolution, unsigned mode
+  ADCB.CTRLB = ADC_RESOLUTION_12BIT_gc;
+
+  // Set ADC clock
+  ADCB.PRESCALER = ADC_PRESCALER_DIV64_gc;
+  
+  // Set ADC reference voltage
+  ADCB.REFCTRL = ADC_REFSEL_VCC_gc | 0x02;
+  
+  // Configure PORTB pins as input
+  PORTB.DIRCLR = _BV(PIN3) | _BV(PIN7);
+  PORTB.OUTCLR = _BV(PIN3) | _BV(PIN7);
+  
+  // Set ADC in single-ended mode
+  ADCB.CH0.CTRL = ADC_CH_INPUTMODE0_bm;
+  ADCB.CH1.CTRL = ADC_CH_INPUTMODE0_bm;
+  
+  // Set positive terminal of ADC comparator
+  ADCB.CH0.MUXCTRL = ADC_CH_MUXPOS_PIN3_gc;
+  ADCB.CH1.MUXCTRL = ADC_CH_MUXPOS_PIN7_gc;
+  
+  // Enable ADC
+  ADCB.CTRLA |= ADC_ENABLE_bm;
+}
+
+/**
  * The main setup function for the vehicle.  Initalized the Amarino communications,
  * then calls the various setup functions for the various modules.
  */
@@ -194,6 +249,34 @@ void setup()
   amarino.registerFunction(setVelocity, SET_VELOCITY_FN);
   amarino.registerFunction(setPID, SET_PID_FN);
   amarino.registerFunction(getPID, GET_PID_FN);
+
+  // Configure ADC
+  setupADC();
+}
+
+/**
+ * Main update loop for ADC values.
+ */
+void adcUpdate() 
+{
+  // Trigger conversion on both channels
+  ADCB.CH0.CTRL |= ADC_CH_START_bm;
+  ADCB.CH1.CTRL |= ADC_CH_START_bm;
+  
+  // Wait for result on both channels
+  while(!ADCB.CH0.INTFLAGS || !ADCB.CH1.INTFLAGS);
+  
+  int voltage = ADCB.CH0RES;
+  int current = ADCB.CH1RES;
+
+  // offset = 3.3V * (4.99k / 10k), scale = 0.001 * 4.99k / 1k
+  amarino.send('i');
+  amarino.send((current - 3270) * 0.101f); 
+  amarino.sendln();
+  
+  amarino.send('v');
+  amarino.send(voltage / (331.0f));
+  amarino.sendln();
 }
 
 /**
@@ -235,6 +318,9 @@ void update(void *)
 
   // Decay the desired velocities slightly
   decayVelocity();
+
+  //Try reading analog sensor
+  adcUpdate();
 }
 
 int main(void)
