@@ -11,6 +11,8 @@
 
 package edu.cmu.ri.airboat.client.gui;
 
+import edu.cmu.ri.crw.FunctionObserver;
+import java.awt.Color;
 import java.text.DecimalFormat;
 
 /**
@@ -30,11 +32,10 @@ public class PidPanel extends AbstractAirboatPanel {
         initComponents();
         setUpdateRate(DEFAULT_UPDATE_MS);
         
-        // TODO: Fix this once delays are resolved
-        pSpinner.setEnabled(false);
-        iSpinner.setEnabled(false);
-        dSpinner.setEnabled(false);
-        setButton.setEnabled(false);
+        pSpinner.setEnabled(true);
+        iSpinner.setEnabled(true);
+        dSpinner.setEnabled(true);
+        setButton.setEnabled(true);
     }
 
     /** This method is called from within the constructor to
@@ -172,7 +173,15 @@ public class PidPanel extends AbstractAirboatPanel {
                 (Double)pSpinner.getValue(),
                 (Double)iSpinner.getValue(),
                 (Double)dSpinner.getValue()
-            }, null);
+            }, new FunctionObserver<Void>() {
+                public void completed(Void v) {
+                    setButton.setBackground(Color.GREEN);
+                }
+
+                public void failed(FunctionObserver.FunctionError fe) {
+                    setButton.setBackground(Color.RED);
+                }
+            });
             update();
         }
     }//GEN-LAST:event_setButtonActionPerformed
@@ -205,18 +214,18 @@ public class PidPanel extends AbstractAirboatPanel {
      */
     public void update() {
         if (_vehicle != null) {
+            _vehicle.getGains(_axis, new FunctionObserver<double[]>() {
+                
+                public void completed(double[] v) {
+                    pLabel.setText(PID_FORMAT.format(v[0]));
+                    iLabel.setText(PID_FORMAT.format(v[1]));
+                    dLabel.setText(PID_FORMAT.format(v[2]));
 
-            double[] pids = null; //_vehicle.getGains(_axis);
-            // TODO: what the hell? System.out.println("" + _axis);
-            if (pids == null || pids.length < 3) {
-                return;
-            }
+                    PidPanel.this.repaint();
+                }
 
-            pLabel.setText(PID_FORMAT.format(pids[0]));
-            iLabel.setText(PID_FORMAT.format(pids[1]));
-            dLabel.setText(PID_FORMAT.format(pids[2]));
-
-            PidPanel.this.repaint();
+                public void failed(FunctionObserver.FunctionError fe) {}
+            });
         }
     }
     
