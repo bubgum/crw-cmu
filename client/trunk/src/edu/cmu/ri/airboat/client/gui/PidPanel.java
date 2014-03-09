@@ -187,9 +187,23 @@ public class PidPanel extends AbstractAirboatPanel {
     }//GEN-LAST:event_setButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
-        pSpinner.setValue(Double.parseDouble(pLabel.getText()));
-        iSpinner.setValue(Double.parseDouble(iLabel.getText()));
-        dSpinner.setValue(Double.parseDouble(dLabel.getText()));
+        try {
+            pSpinner.setValue(Double.parseDouble(pLabel.getText()));
+        } catch (NumberFormatException e) {
+            pSpinner.setValue(Double.NaN);
+        }
+        
+        try {
+            iSpinner.setValue(Double.parseDouble(iLabel.getText()));
+        } catch (NumberFormatException e) {
+            iSpinner.setValue(Double.NaN);
+        }
+        
+        try {
+            dSpinner.setValue(Double.parseDouble(dLabel.getText()));
+        } catch (NumberFormatException e) {
+            dSpinner.setValue(Double.NaN);
+        }
     }//GEN-LAST:event_resetButtonActionPerformed
 
 
