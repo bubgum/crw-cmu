@@ -1,0 +1,7 @@
+# Software Architecture #
+
+![https://docs.google.com/drawings/pub?id=1P9Oe0MdZqiBi9xQTmBqR-7XFMzn9wfpLxoyfmuJasR0&w=770&h=234&fake.png](https://docs.google.com/drawings/pub?id=1P9Oe0MdZqiBi9xQTmBqR-7XFMzn9wfpLxoyfmuJasR0&w=770&h=234&fake.png)
+
+# Hardware Architecture #
+
+![https://docs.google.com/drawings/pub?id=1t3MM6UxFJ-xo8fGzSPCSSSKiZmFJDrX-tbR7R0BE4Lc&w=764&h=625&fake.png](https://docs.google.com/drawings/pub?id=1t3MM6UxFJ-xo8fGzSPCSSSKiZmFJDrX-tbR7R0BE4Lc&w=764&h=625&fake.png)
